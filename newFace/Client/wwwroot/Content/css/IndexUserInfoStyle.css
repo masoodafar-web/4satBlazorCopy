@@ -1,0 +1,29 @@
+﻿.Cards_BTNs>.btn{
+
+    padding-top: 10px;
+    padding-bottom:10px;
+}
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #0e0d0d !important;
+    border-bottom: 2px #007bff solid;
+    background-color: transparent;
+    border-radius: 0;
+}
+
+.input-group .k-dropdown-wrap {
+    border-bottom-right-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+}
+
+.tabbable .nav-tabs {
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+}
+
+.tabbable .nav-tabs .nav-link {
+    white-space: nowrap;
+}
+.card-shadow {
+    box-shadow: grey 1px 1px 7px 2px;
+}

@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNetCore.Hosting
+@using Microsoft.AspNetCore.Mvc.ViewEngines
+@inject IWebHostEnvironment Environment
+@inject ICompositeViewEngine Engine
+@inject Wangkanai.Detection.Services.IDetectionService DetectionService
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - newFace.Server</title>
+    <link rel="stylesheet"  href="~/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/font-style.css">
+    <link rel="stylesheet" href="~/css/animate.min.css">
+    <link rel="stylesheet" href="~/css/bootstrap.css">
+    <link rel="stylesheet" href="~/css/bootstrap-rtl.css">
+    <link rel="apple-touch-icon" href="touch-icon-iphone.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="~/Content/img/icon/apple-icon-152x152-manifest-205.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="~/Content/img/icon/apple-icon-180x180-manifest-205.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="~/Content/img/icon/android-icon-192x192-manifest-205.png">
+    <link rel="manifest" href="/manifest.json">
+    @if (DetectionService.Device.Type == Wangkanai.Detection.Models.Device.Mobile)
+    {
+        //اگر موبایل بود
+        <link href="~/Mobile/css/style.css" rel="stylesheet" />
+        <link href="~/Mobile/css/style-pages.css" rel="stylesheet" />
+        <link href="~/Mobile/css/ios/1.59d76b34.chunk.css" rel="stylesheet">
+        <link href="~/Mobile/css/ios/main.71bc9527.chunk.css" rel="stylesheet">
+    }
+    else
+    {
+        //اگر موبایل نبود
+        <link rel="stylesheet" href="~/css/style.css" />
+        <link rel="stylesheet" href="~/css/style-pages.css">
+    }
+   
+</head>
+<body>
+      <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <!--=============JS Files=============-->
+    <script src="~/js/jquery-3.3.1.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/wow.min.js"></script>
+    <script src="~/js/main.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,184 @@
+﻿@using newFace.Shared.Models.ViewModels
+@using newFace.Shared.Models
+@using static newFace.Shared.Models.Resource.Enums
+
+@if (buyType == BuyType.Normal)
+{
+    <div class=" col-12 py-2 border-bottom ProductColItem">
+        <div class="row">
+            <div class="col-3">
+                <a href="/ProductDetails/@ProductSummaryViewModel.Id"><img class="singleProductImgNormal" src="@ProductSummaryViewModel.Img" alt=""></a>
+            </div>
+            <div class="col-9 pt-3">
+                <div class="row">
+                    <div class="col-7">
+                        <p class=""> <a href="/ProductDetails/@ProductSummaryViewModel.Id" class="text-decoration-none">@ProductSummaryViewModel.Title</a></p>
+                        <p class="">@(String.IsNullOrEmpty(ProductSummaryViewModel.Author)?"----": ProductSummaryViewModel.Author)</p>
+                    </div>
+                    <div class="col-5 pt-2">
+                        <span class="btn btn-info">
+                            @if (ProductSummaryViewModel.Type == newFace.Shared.Models.Resource.Enums.ProductType.Book)
+                            {
+                                <text>خواندن</text>
+
+
+                            }
+                            else if (ProductSummaryViewModel.Type == newFace.Shared.Models.Resource.Enums.ProductType.Course)
+                            {
+                                <text>تماشا</text>
+
+                            }
+                            else
+                            {
+                                <text>شروع</text>
+
+                            }
+
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+}
+else if (buyType == BuyType.Shareholder)
+{
+    <div class="col-lg-4 col-md-6 col-12 py-2 border-bottom ProductColItem">
+        <div class="row">
+            <div class="col-4 py-2">
+                <a href="/ProductDetails/@ProductSummaryViewModel.Id"><img class="singleProductImg" src="@ProductSummaryViewModel.Img" alt=""></a>
+            </div>
+            <div class="col-8">
+                <div class="pr-4 py-2">
+                    <h6 class="font-weight-bold pr-2"> <a href="/ProductDetails/@ProductSummaryViewModel.Id" class="text-decoration-none">@ProductSummaryViewModel.Title</a></h6>
+                    <p class="pr-2 mb-1">@(String.IsNullOrEmpty(ProductSummaryViewModel.Author)?"----": ProductSummaryViewModel.Author)</p>
+                    <p class="mb-1">
+                        <fieldset class="border rounded mb-1">
+                            <legend class="text-muted text-small mr-4 px-2 w-auto m-0">قیمت</legend>
+                            <span class="font-weight-bold float-left pl-3 singleProductPrice">@ProductSummaryViewModel.PriceWithDiscount?.ToString("n0") &nbsp;<sup class="text-danger"><del>@ProductSummaryViewModel.Price.ToString("n0")</del></sup></span>
+                        </fieldset>
+                    <p><span class="font-weight-bold ">هر واحد:</span>&nbsp;<small>@ProductSummaryViewModel.ShareHolderUnit تومان</small></p>
+                    <p><span class="font-weight-bold ">درصد:</span>&nbsp; <small>@ProductSummaryViewModel.ShareHolderPercent %</small></p>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+}
+else if (buyType == BuyType.Gift)
+{
+    <div class="col-lg-4 col-md-6 col-12 py-2 border-bottom ProductColItem">
+        <div class="row">
+            <div class="col-4 py-2">
+                <a href="/ProductDetails/@ProductSummaryViewModel.Id"><img class="singleProductImg" src="@ProductSummaryViewModel.Img" alt=""></a>
+            </div>
+            <div class="col-8">
+                <div class="pr-4 py-2">
+                    <h6 class="font-weight-bold pr-2"> <a href="/ProductDetails/@ProductSummaryViewModel.Id" class="text-decoration-none">@ProductSummaryViewModel.Title</a></h6>
+                    <p class="pr-2 mb-1">@(String.IsNullOrEmpty(ProductSummaryViewModel.Author)?"----": ProductSummaryViewModel.Author)</p>
+                    <p class="mb-1">
+                        <fieldset class="border rounded mb-1">
+                            <legend class="text-muted text-small mr-4 px-2 w-auto m-0">قیمت</legend>
+                            <span class="font-weight-bold float-left pl-3 singleProductPrice">@ProductSummaryViewModel.PriceWithDiscount?.ToString("n0") &nbsp;<sup class="text-danger"><del>@ProductSummaryViewModel.Price.ToString("n0")</del></sup></span>
+                        </fieldset>
+                        <div class="row pt-4 singleProductRating text-center">
+                            <div class="col-12">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= ProductSummaryViewModel.Rate)
+                                    {
+                                        <span class="fa fa-star text-warning"></span>
+
+                                    }
+                                    else
+                                    {
+                                        <span class="fa fa-star-o "></span>
+
+                                    }
+                                }
+                                &nbsp; <span><small>@ProductSummaryViewModel.Rate<span>/5</span></small></span>
+
+                            </div>
+                        </div>
+
+                        @if (giftType == GiftType.GiftRecive)
+                        {
+                        <p class="py-3 pr-2"><span class="font-weight-bold ">از:</span>&nbsp;<small class="font-weight-bold text-muted">@ProductSummaryViewModel.UserSend</small></p>
+
+                    }
+                    else
+                    {
+                        <p class="py-3 pr-2"><span class="font-weight-bold ">به:</span>&nbsp;<small class="font-weight-bold text-muted">@ProductSummaryViewModel.UserRecive</small></p>
+
+                    }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    }
+    else if (buyType == BuyType.Favorit)
+    {
+        <div class="col-lg-4 col-md-6 col-12 py-2 border-bottom ProductColItem">
+            <div class="row">
+                <div class="col-4 py-2">
+                    <a href="/ProductDetails/@ProductSummaryViewModel.Id"><img class="singleProductImg" src="@ProductSummaryViewModel.Img" alt=""></a>
+                </div>
+                <div class="col-8">
+                    <div class="pr-4 py-4">
+                        <h6 class="font-weight-bold pr-2"> <a href="/ProductDetails/@ProductSummaryViewModel.Id" class="text-decoration-none">@ProductSummaryViewModel.Title</a></h6>
+                        <p class="pr-2 mb-1">@(String.IsNullOrEmpty(ProductSummaryViewModel.Author)?"----": ProductSummaryViewModel.Author)</p>
+                        <p class="mb-1">
+                            <fieldset class="border rounded mb-1">
+                                <legend class="text-muted text-small mr-4 px-2 w-auto m-0">قیمت</legend>
+                                <span class="font-weight-bold float-left pl-3 singleProductPrice">@ProductSummaryViewModel.PriceWithDiscount?.ToString("n0") &nbsp;<sup class="text-danger"><del>@ProductSummaryViewModel.Price.ToString("n0")</del></sup></span>
+                            </fieldset>
+                            <div class="row pt-4 singleProductRating text-center">
+                                <div class="col-12">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= ProductSummaryViewModel.Rate)
+                                        {
+                                            <span class="fa fa-star text-warning"></span>
+
+                                        }
+                                        else
+                                        {
+                                            <span class="fa fa-star-o "></span>
+
+                                        }
+                                    }
+                                    &nbsp; <span><small>@ProductSummaryViewModel.Rate<span>/5</span></small></span>
+
+                                </div>
+                            </div>
+
+                         
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        }
+
+@code {
+
+    [Parameter]
+    public ProductSummaryViewModels ProductSummaryViewModel { get; set; }
+
+    [Parameter]
+    public BuyType buyType { get; set; }
+
+    [Parameter]
+    public GiftType giftType { get; set; }
+
+}

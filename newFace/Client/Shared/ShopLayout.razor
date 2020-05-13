@@ -1,0 +1,979 @@
+﻿@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime;
+@using System.Net
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Identity
+@using newFace.Shared.Models
+@using System.Net.Http.Json
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@using newFace.Shared.Models.Resource
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+@inject MyService MyService
+@inject WebAlert WebAlert
+
+<div class="w-100">
+    <div class="page-wrapper chiller-theme toggled" id="closePanel">
+
+        <!--==================================================================================
+        SIDEBAR
+        ===================================================================================-->
+        @if (_IsMobileDevice)
+        {
+            //اگر موبایل بود
+            <a id="show-sidebar" class="btn btn-sm">
+                <i class="fas fa-bars"></i>
+            </a>
+        }
+        else
+        {
+            //اگر موبایل نبود
+            <a id="show-sidebar" class="btn btn-sm btn-dark">
+                <i class="fas fa-bars"></i>
+            </a>
+        }
+
+        <nav id="sidebar" class="sidebar-wrapper">
+            <div class="sidebar-brand d-flex justify-content-between">
+                <div id="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+                <div id="chat-user-show" class="text-light chat-user-show pt-1 d-none">
+                    <div class="media">
+                        @*<img id="" src="" alt="" />*@
+                        <img id="receiverAvatar" src="Content/img/NoImage.png" />
+                        @*<img  src="" />*@
+                        <div class="media-body">
+                            <h5 id="receiverName" class="mb-1 text-small mt-3" style="color: #747577; margin-right:0.5rem;"></h5>
+                            <p class="text-xsmall text-l lastmsg-chatcontact">آخرین بازدید اخیراً</p>
+                        </div>
+                    </div>
+
+                </div>
+                @if (_IsMobileDevice)
+                {
+                    //اگر موبایل بود
+                    <button class="btn btn-light ml-2 text-xlarge btn-home-side" onclick="clickHomeBtn()">
+                        <i class="fas fa-home"></i>
+                    </button>
+                }
+                else
+                {
+                    //اگر موبایل نبود
+                }
+
+
+
+                <div id="back-sidebar" class="back-sidebar text-large pointer d-none">
+                    @if (_IsMobileDevice)
+                    {
+                        //اگر موبایل بود
+                        <a class="text-dark">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        //اگر موبایل نبود
+                        <a class="text-light">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    }
+
+                </div>
+
+            </div>
+            <div class="sidebar-content tab-content smooth " id="sidebar-content">
+                <!--===================Home=====================-->
+                <div class="tab-pane active" id="profile">
+                    <div class="sidebar-header border-bottom-side">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="user-pic mr-2">
+                                    <a id="GotoProfile" href="">
+                                        @if (HiInfo != null)
+                                        {
+                                            if (!string.IsNullOrEmpty(HiInfo.User.Img))
+                                            {
+                                                <img class="img-responsive img-rounded" src="@HiInfo.User.Img" alt="User picture" id="userAvatar">
+
+                                            }
+                                            else
+                                            {
+                                                <img class="img-responsive img-rounded" src="Content/img/default_logo.jpg" alt="User picture" id="userAvatar">
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <img class="img-responsive img-rounded" src="Content/img/default_logo.jpg" alt="User picture" id="userAvatar">
+
+                                        }
+
+                                    </a>
+                                </div>
+
+                            </div>
+                            <div class="col-8">
+                                <div class="user-info">
+                                    <div class="">
+
+                                        @if (HiInfo != null)
+                                        {
+                                            <span class="user-name text-medium" id="userfullName">
+                                                @HiInfo.User.FullName
+                                            </span>
+                                        }
+                                        <span class="points-1 badge badge-warning">
+                                            @if (HiInfo != null)
+                                            {
+                                                <span class="usercredit" id="usercredit">
+                                                    @HiInfo.UserPoint
+                                                </span>
+                                            }
+                                        </span> <i class="fas fa-star"></i>
+                                    </div>
+
+                                    <p class="user-role my-1" id="userNickName">
+                                        @if (HiInfo != null)
+                                        {
+                                            <span>
+                                                @HiInfo.User.NickName
+                                            </span>
+                                        }
+                                    </p>
+
+                                    @if (HiInfo != null)
+                                    {
+                                        <span class="badge badge-primary points-2">
+                                            <span id="userpoint">
+
+                                                <span>
+                                                    @HiInfo.UserCredit
+                                                </span>
+
+                                            </span>
+                                            <i class="fas fa-coins"></i>
+                                        </span>
+                                    }
+                                    @*<div class="user-status">
+                                            <!--<a ><i class="fa fa-power-off"></i></a>-->
+                                            <!--<a ><i class="fa fa-cog"></i></a>-->
+                                            <i class="fa fa-circle"></i>
+                                            <span>آنلاین</span>
+                                        </div>*@
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="px-3 border-bottom-side d-flex" id="profile-cheaker-intro">
+                        <a href="">
+                            @Url.Action("IndexUserInfo", "Account")
+                            <button class="my-2 btn btn-sm btn-outline-success profile-cheaker">تکمیل پروفایل</button>
+                        </a>
+
+                        <div class="progress w-50 mr-3 mt-3" style="position:inherit;">
+                            <div id="UserInfoComplatePecent" class="progress-bar progress-bar-striped bg-primary" role="progressbar" style="width: 0%;height:1rem" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">0%</div>
+                        </div>
+                    </div>*@
+                    @*<div class="sidebar-header border-bottom-side pb-2">
+                            <div class="show-person-cog">
+                                <div class="px-3 welcome-profile text-center">
+                                    <div class="badge badge-success points-2">236 <i class="fas fa-coins"></i></div>
+                                    <div class="welcome-profile-price">
+                                        <a href="@Url.Action("IndexUserInfo","Account")"><img src="Content/img/default_logo.jpg" class="img-fluid " alt=""></a>
+                                        <div class="points-1 badge badge-warning">565</div>
+                                    </div>
+                                    <h6 class="mt-3 mb-2">@userFullName</h6>
+                                    <h6 class="text-primary text-small">برنامه‌نویس ارشد پروژه فرصت</h6>
+                                </div>
+                            </div>
+                        </div>*@
+
+
+
+                    <div class="sidebar-menu mb-5">
+                        <ul>
+                            <li class="header-menu">
+                                <span>پنل مدیریت</span>
+                            </li>
+                            <li>
+                                <a href="shopCart" @onclick="closeSidbar">
+                                    @*@Url.Action("ShoppingCard", "Shops")*@
+                                    <i class="fas fa-cart-arrow-down"></i>
+                                    <span>سبد خرید</span>
+                                    @if (HiInfo != null)
+                                    {
+                                        <span class="badge badge-pill badge-success cartcount1" id="cartCount">
+
+                                            @HiInfo.Cartcount
+                                        </span>
+                                    }
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/MyWallet" @onclick="closeSidbar">
+                                    <i class="fas fa-coins"></i>
+                                    <span>کیف پول</span>
+                                    @if (HiInfo != null)
+                                    {
+                                        <span class="badge badge-pill badge-primary">
+                                            <span>
+                                                <span id="pointuser">
+
+                                                    @string.Format("{0:N0}", @HiInfo.WalletCredit)
+                                                </span>
+
+                                            </span> ت
+                                        </span>
+                                    }
+                                </a>
+                            </li>
+                            @*<li>
+                                    <a>
+                                        <i class="fas fa-award"></i>
+                                        <span>اعتبار</span>
+                                        <span class="badge badge-pill badge-warning" id="crdit">
+
+                                        </span>
+                                    </a>
+                                </li>*@
+                            <li>
+                                <a href="/transaction" @onclick="closeSidbar">
+                                    @*@Url.Action("Transaction", "Shops")*@
+                                    <i class="fas fa-list"></i>
+                                    <span>لیست تراکنش‌ها</span>
+
+                                    @if (HiInfo != null)
+                                    {
+                                        <span class="badge badge-pill badge-secondary" id="BillCount">
+
+                                            @HiInfo.BillCount
+                                        </span>
+                                    }
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/MyProduct/0" @onclick="closeSidbar">
+                                    @*@Url.Action("MyProducts", "Account", new { BuyType = BuyType.Normal })*@
+                                    <i class="fas fa-book"></i>
+                                    <span>محصولات خریداری شده</span>
+                                    @if (HiInfo != null)
+                                    {
+                                        <span class="badge badge-pill badge-info" id="ProductsCount">
+
+                                            @HiInfo.ProductsCount
+                                        </span>
+                                    }
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/MyProduct/2" @onclick="closeSidbar">
+                                    @*@Url.Action("MyShareholders", "Account")*@
+                                    <i class="fas fa-book"></i>
+                                    <span>محصولات من(دارای سهام)</span>
+                                    @if (HiInfo != null)
+                                    {
+                                        <span class="badge badge-pill badge-info" id="ShareholderListCount">
+
+                                            @HiInfo.ShareholderListCount
+                                        </span>
+                                    }
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/MyProduct/3" @onclick="closeSidbar">
+                                    @*@Url.Action("Index", "Favorite")*@
+                                    <i class="fas fa-bookmark"></i>
+                                    <span>نشان شده‌ها</span>
+
+                                    @if (HiInfo != null)
+                                    {
+                                        <span class="badge badge-pill badge-success favoritecount" id="countfaved">
+
+                                            @HiInfo.CountFaved
+                                        </span>
+                                    }
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="/MyProduct/1" @onclick="closeSidbar">
+                                    @*@Url.Action("MyGifts", "Account", new { BuyType = BuyType.Gift })*@
+                                    <i class="fas fa-hand-holding-heart"></i>
+                                    <span>محصولات هدیه</span>
+                                    @if (HiInfo != null)
+                                    {
+                                        <span class="badge badge-pill badge-danger" id="MySentGifts">
+
+                                            @HiInfo.MySentGifts
+                                        </span>
+                                    }
+                                    @if (HiInfo != null)
+                                    {
+                                        <span class="badge badge-pill badge-info" id="MyRecievedGifts">
+
+                                            @HiInfo.MyRecievedGifts
+                                        </span>
+                                    }
+                                </a>
+                            </li>
+                            <li>
+                                <a href="" @onclick="closeSidbar">
+                                    @*@Url.Action("Index", "CommissionPerMonths", new { BuyType = BuyType.Gift })*@
+                                    <i class="fas fa-funnel-dollar"></i>
+                                    <span>کمیسیون</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    @*@Url.Action("IndexUserInfo", "Account")*@
+                                    <i class="fas fa-cogs"></i>
+                                    <span>تنظیمات حساب کاربری</span>
+                                </a>
+                            </li>
+                            <li>
+
+                                <a @onclick="BeginSignOut" class="pointer">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>خروج</span>
+                                </a>
+
+
+
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <!-- sidebar-menu  -->
+
+
+                </div>
+
+                <!--===================Goals=====================-->
+                <div class="tab-pane" id="goals">
+
+                    <!-- sidebar-menu  -->
+                    <div class="adviser my-3">
+                        <div class="adviser-head d-flex justify-content-between">
+                            <p class="mb-0 mr-2"><i class="fas fa-bullseye"></i> اهداف </p>
+                            <p class="mb-0 mr-2"><i class="fas fa-bullseye"></i> اهداف </p>
+
+                        </div>
+                        <span id="VisionLayout">
+
+                        </span>
+                    </div>
+
+                    <div class="adviser my-3" id="adviser" style="margin-bottom:7.5rem !important;">
+                        <div class="adviser-head d-flex justify-content-between">
+                            <p class="mb-0 mr-2">مشاوره </p>
+                            @*<p class="ml-2"><a>مشاوره بیشتر <i class="fas fa-angle-double-left"></i></a></p>*@
+                        </div>
+
+                        <div class="shop-book">
+                            <ul id="AdviceProduct"></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!--===================category=====================-->
+                <div class="tab-pane fade" id="category">
+
+                    <!-- sidebar-header  -->
+                    <!-- sidebar-header  -->
+                    <div class="sidebar-search mt-2">
+                        @*<div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control search-menu" autofocus placeholder="جستجوی کتاب ...">
+                                    <div class="input-group-append">
+                                        <button class="bg-trans btn" type="submit"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>*@
+                    </div>
+                    <!-- sidebar-search  -->
+                    <div class="sidebar-menu">
+
+                    </div>
+                    <!-- sidebar-menu  -->
+                    <!-- sidebar-header  -->
+                    @*<div class="sidebar-search mt-2">
+                            <div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control search-menu" autofocus placeholder="جستجوی کتاب ...">
+                                    <div class="input-group-append">
+                                        <button class="bg-trans btn" type="submit"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+                    <!-- sidebar-search  -->
+                    <div class="sidebar-search mt-2">
+                        <div class="k-rtl">
+                            @*<input type="text" class="form-control search-menu" autofocus placeholder="جستجوی کتاب ...">
+                                <div class="input-group-append">
+                                    <button class="bg-trans btn" type="submit"><i class="fas fa-search"></i></button>
+                                </div>*@
+                            <div class="demo-section k-content  ">
+                                @*@Html.Partial("_ProductSearch")*@
+                            </div>
+                        </div>
+                    </div>
+                    <!--sidebar - search-->
+                    <div class="sidebar-menu mt-3">
+
+                        <div class="demo-section k-content container k-rtl" style="background-color: #dee2e6 !important">
+                            @*@(Html.Kendo().TreeView()
+                                .Name("treeview")
+                                .DataTextField("Name")
+                                .DataSource(dataSource => dataSource
+                                .Read(read => read
+                                .Action("Remote_Data_Binding_Get_Categories", "Categories", new { categoryType = Foursat.Models.CategoryTypeEnum.Subject })
+                                )
+                                )
+                                .Events(r => r.Select("selectTreeView"))
+
+                                                                )*@
+                        </div>
+                    </div>
+                    <!-- sidebar-menu  -->
+                </div>
+
+                <!--===================setting=====================-->
+                <div class="tab-pane fade" id="profile-setting">
+
+                    <!-- sidebar-header  -->
+                    <!-- sidebar-menu  -->
+
+                </div>
+
+                <!--===================Chat=====================-->
+                <!--Show it when we chat with users-->
+                <div class="tab-pane fade" id="chat">
+                    <div class="back-to-search d-none">
+                        <a role="button" class=" d-flex justify-content-between" onclick="showSearchPerson()">
+                            <span>بازگشت به پنل پیام‌ها</span>
+                            <span><i class="fas fa-search"></i></span>
+                        </a>
+                    </div>
+                    <div class="container" id="chatContainer">
+
+                    </div>
+                    <div class="lazyLoadspinnerChat text-center" id="chatHistoryLoading">
+                        <div class="spinner-grow text-info"></div>
+                    </div>
+
+                    <div id="text-chat">
+
+                        <div class="reply-chat justify-content-between mb-1 d-none" id="reply-chat">
+                            <div class="input-group-prepend">
+                                <button onclick="CancelReplyChat()" class="btn btn-light px-3 rounded-right rounded-right " type="button"><i class="fas fa-times"></i></button>
+                            </div>
+                            <div class="ml-auto mr-2">
+                                <p id="reply-sendername" class="text-small mb-0 text-b text-muted"></p>
+                                <p id="reply-message" class="text-xsmall mb-0 text-l text-muted"></p>
+                            </div>
+                            <div class="input-group-append">
+                                <span class="input-group-text px-2 rounded-left"><i class="fa fa-reply"></i></span>
+                            </div>
+                        </div>
+
+                        <div class="progress d-none">
+
+                            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="progressBar">
+                                0%
+                            </div>
+
+                        </div>
+
+                        @*<div class="progress">
+                                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="progressBar">
+                                    0%
+                                </div>
+
+                            </div>*@
+
+
+                        <form class="mt-1" style="bottom: 0;">
+
+                            @*<textarea id="message" name="text-chat" rows="1" placeholder="متن خود را وارد کنید ..."></textarea>*@
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a id="OpenFileUpload" class="btn btn-light border px-1 rounded-right"><i class="fas fa-paperclip"></i></a>
+                                        <a class="btn btn-light border px-2 rounded-0" id="recordButton"><i class="fas fa-microphone"></i></a>
+                                        <a class="btn btn-light border px-2 rounded-0" id="stopButton" hidden><i class="fas fa-microphone-alt" style="color: red;"></i></a>
+                                    </div>
+                                </div>
+                                <textarea id="message" class="form-control note-chat px-1 rounded-0" name="text-chat" rows="1" aria-label="" aria-describedby="basic-addon1" placeholder="متن خود را وارد کنید ..."></textarea>
+                                @*<input type="text" class="form-control px-1" id="message" aria-label="" aria-describedby="basic-addon1" name="text-chat" placeholder="متن خود را وارد کنید ...">*@
+                                <div class="input-group-append">
+                                    <button id="btnSend" class="btn btn-light px-1" onclick="setTimeout(scrollBottom, 100)" type="button"><i class="fas fa-paper-plane"></i>@*<i class="fas fa-arrow-up btnSend"></i>*@</button>
+                                </div>
+                            </div>
+
+                            <input type="file" id="fileupload" style="display:none" onchange="Upload()" />
+                            <button id="btnSend" class="btn btn-default float-left rounded-circle" onclick="setTimeout(scrollBottom, 100)" type="button">@*<i class="fas fa-paper-plane"></i>*@</button>
+
+                        </form>
+
+
+
+                    </div>
+
+                </div>
+
+                <!--===============Messages================-->
+                <div class="tab-pane fade" id="comments">
+                    <div class="sidebar-search border-bottom-side pt-0">
+                        <div>
+                            <form id="formSearchPerson">
+                                <div class="input-group">
+                                    <input id="searchUserTxt" type="text" class="form-control search-menu" placeholder="جستجوی کاربران ...">
+                                    <div class="input-group-append">
+                                        <a id="searchUserBtn" class="bg-trans btn" type="submit"><i class="fas fa-search"></i></a>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                    <div id="chatContact">
+
+                    </div>
+                    <div class="lazyLoadspinnerChat text-center" id="chatContactLoading">
+                        <div class="spinner-grow text-info"></div>
+                    </div>
+
+                    <audio id="chatSound" src="Content/Sounds/water_drop_notif.mp3"></audio>
+
+                    @*<button id="unmuteButton">با صدا کردن</button>
+
+                        <script>
+                            unmuteButton.addEventListener('click', function () {
+                                audio.muted = false;
+                            });
+                        </script>*@
+                </div>
+
+                <!--===============feed================-->
+                <div class="tab-pane fade" id="feed">
+                    @*<div class="sidebar-search border-bottom-side pt-0">
+                            <div>
+                                <form id="formSearchPerson">
+                                    <div class="input-group">
+                                        <input id="searchUserTxt" type="text" class="form-control search-menu" placeholder="جستجوی کاربران ...">
+                                        <div class="input-group-append">
+                                            <a id="searchUserBtn" class="bg-trans btn" type="submit"><i class="fas fa-search"></i></a>
+                                        </div>
+                                    </div>
+                                </form>
+                                <script>
+                                    $("#formSearchPerson").submit(function (e) {
+                                        e.preventDefault();
+                                    });
+                                </script>
+                            </div>
+                        </div>*@
+
+                    @*<div class=" show-persons">
+                            <a onclick="feedShowComments()">
+                                <div class="m-2 p-1 media d-flex justify-content-between feed-archive">
+                                    <div class="d-flex">
+                                        <img src="Content/img/download.png" />
+                                        <div class="media-body">
+                                            <p class=" mb-0">
+                                                آرشیو چت
+                                            </p>
+                                            <small> سعید توکلی، داود دلورای، آرش ملکی و ...</small>
+                                        </div>
+                                    </div>
+                                    <div class="badge badge-danger badge-comment">12</div>
+                                </div>
+                            </a>
+                        </div>*@
+
+                    <div id="feed-content" class="mt-3">
+
+
+
+                    </div>
+                    <div class="lazyLoadspinnerChat text-center" id="chatContactLoading">
+                        <div class="spinner-grow text-info"></div>
+                    </div>
+
+                    <audio id="chatSound" src="Content/Sounds/water_drop_notif.mp3"></audio>
+                </div>
+            </div>
+            <!--sidebar - content-->
+
+
+          @*  <div class="sidebar-footer-side sidebar-footer nav nav-pills d-none d-lg-flex">
+          
+                <a class="nav-link" data-toggle="pill" id="show-search-person-sidebar" href="#comments">
+
+                    @if (HiInfo != null)
+                    {
+                        @if (HiInfo.unSeenCount != 0)
+                        {
+                            <span class="badge badge-pill badge-danger notification unSeenCount">
+                                @HiInfo.unSeenCount
+                            </span>
+                        }
+
+                    }
+                    <i class="fas fa-paper-plane"></i>
+                    <p class="text-small mb-0">پیام‌ها</p>
+                </a>
+                <a class="nav-link" data-toggle="pill" id="show-notifi-sidebar" href="#feed">
+                    <span class="badge badge-pill badge-danger notification"></span>
+                    <i class="fas fa-bell"></i>
+                    <p class="text-small mb-0">اعلان ‌ها</p>
+                </a>
+
+            
+
+
+                <a class="new-advertising nav-link" style="margin-left:2rem;" onsubmit="return false" data-toggle="pill" id="show-best-person" href="#profile">
+                    <button class="btn btn-info rounded-circle">
+                        <i class="fas fa-home"></i>
+                    </button>
+                </a>
+                <a class="nav-link" data-toggle="pill" id="show-category" href="#category">
+                    <i class="fas fa-list"></i>
+                    <p class="text-small mb-0">دسته‌بندی‌ها</p>
+                </a>
+
+
+
+                <!--<a class="nav-link" data-toggle="pill" href="#search-person-sidebar">
+                    <i class="fas fa-comments"></i>
+                    <p class="text-small">چت</p>
+                </a>-->
+                <!--<a class="nav-link active" data-toggle="pill" id="show-category" href="#category">
+                    <i class="fas fa-search"></i>
+                    <p class="text-small">جستجو</p>
+                </a>-->
+                <!--==============hidden in footer===========-->
+                <a class="nav-link d-none" data-toggle="pill" id="show-profile" href="#chat"></a>
+            </div>*@
+        </nav>
+
+        <!--==================================================================================
+        MAIN WRAPPER
+        ===================================================================================-->
+        <main class="page-content">
+            <div>
+
+                @*//اگر موبایل نبود*@
+                <nav class="navbar navbar-expand-lg navbar-fix-top fixed-top p-0 pl-3 border-bottom">
+
+                    @if (_IsMobileDevice)
+                    {
+                        //اگر موبایل بود
+                        <a href="shopCart" class="navbar-toggler fixed-top mr-5">
+                            @*@Url.Action("ShoppingCard", "Shops")*@
+                            <i class="fas fa-shopping-cart"></i>
+                            @if (HiInfo != null)
+                            {
+                                <span class="badge badge-pill badge-success notification cartcount2" id="cartcount2">
+
+                                    @HiInfo.Cartcount
+                                </span>
+                            }
+                        </a>
+                        @if (LayoutLoading.Show)
+                        {
+                            <div id="layoutLoading" class="spinner-border text-secondary fixed-top" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        }
+
+
+                        <span class="mx-auto h5 pt-2 pr-3">
+                            فروشگاه
+                        </span>
+
+
+                    }
+                    else
+                    {
+                        //اگر موبایل نبود
+                        <a href="shopCart" role="button" id="shopping-cart">
+                            @*@Url.Action("ShoppingCard", "Shops")*@
+                            <i class="fas fa-cart-arrow-down ml-2"></i><span class="">سبد خرید</span> <i class="material-icons mr-2 cartcount2" id="cartcount2">
+                                @if (HiInfo != null)
+                                {
+                                    <span>
+                                        @HiInfo.Cartcount
+                                    </span>
+                                }
+                            </i>
+                        </a>
+
+                    }
+
+
+
+                    <div class="collapse navbar-collapse" id="navbar-fix-top">
+                        <ul class="navbar-nav ml-auto mt-5 mt-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Course"><i class="fab fa-youtube"></i> دوره‌ها</a>
+                                @*@Url.Action("Index", "Home", new { postType = PostType.Post })*@
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Exam"><i class="fas fa-file-signature"></i> آزمون‌ها</a>
+                                @*@Url.Action("Index", "Home", new { postType = PostType.Knowledg })*@
+                            </li>
+                            @*<li class="nav-item">
+                                    <a class="nav-link" ><i class="fas fa-newspaper"></i> وبلاگ</a>
+                                </li>*@
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="/"><i class="fas fa-book"></i> کتاب‌ها</a>
+                                @*@Url.Action("Index", "Home", new { postType = PostType.Ads })*@
+                            </li>
+                        </ul>
+                    </div>
+
+
+
+                    <a class="logo-site mx-auto d-none">
+                        <img src="Content/img/FLogo.png" class="img-fluid" alt="" />
+                    </a>
+
+
+
+
+                    <button class="navbar-toggler fixed-top mr-auto" onclick="goBack()">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+
+
+                    @if (_IsMobileDevice)
+                    {
+
+                        <button class="navbar-toggler fixed-top mr-auto pl-2 ml-5" id="shopSearchBtnMenu" onclick="openSideCategory()">
+                            <i class="fas fa-search"></i>
+                        </button>
+
+                    }
+                    else
+                    {
+                        //اگر موبایل نبود
+                        <button class="navbar-toggler fixed-top" type="button" data-toggle="collapse" data-target="#navbar-fix-top" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <i class="fas fa-user-graduate"></i>
+                        </button>
+                    }
+                </nav>
+
+                <!--=========================NAVBAR FIX TOP=================================-->
+                <!--==================================================================================
+                CONTENT
+                ===================================================================================-->
+                <div style="margin-top:2.4rem"></div>
+                <div id="body">
+                    @Body
+
+                    @if (WebAlert.Show)
+                    {
+                        if (_IsMobileDevice)
+                        {
+                            <div class="alert alert-@WebAlert.Style fixed-top" style="width: 90%; margin-top: 55px; left: 10px; right: unset;" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                @*<strong>Success!</strong> You have been signed in successfully!*@
+                                <strong>@WebAlert.Message</strong>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-@WebAlert.Style fixed-bottom" style="width: 30%;left: 10px; right: unset;" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                @*<strong>Success!</strong> You have been signed in successfully!*@
+                                <strong>@WebAlert.Message</strong>
+                            </div>
+                        }
+
+                    }
+                </div>
+
+                <!--==================================================================================
+                FOOTER
+                ===================================================================================-->
+
+            </div>
+
+
+
+        </main>
+        @if (_IsMobileDevice)
+        {
+            //اگر موبایل بود
+
+            //ViewBag.PageType == "Shop"
+            <div class="fixed-bottom sidebar-footer nav nav-pills border-top">
+                <a class="new-advertising nav-link text-secondary" href="">
+                    @*@Url.Action("Index", "Home")*@
+                    @*<button class="btn btn-primary rounded-circle">*@
+                    <i class="fas fa-home"></i>
+                    <p class="text-file-signature">خانه</p>
+                    @*</button>*@
+                </a>
+
+                <a class="nav-link text-secondary" id="show-search-person-sidebar" href="/">
+                    @*@Url.Action("Index", "Shops", new { productType = Product.ProductType.Book })*@
+                    <i class="fas fa-book"></i>
+                    <p class="text-small">کتاب‌ها</p>
+                </a>
+                <a class="nav-link text-secondary" id="show-best-person" href="/Course">
+                    @*@Url.Action("Index", "Shops", new { productType = Product.ProductType.Course })*@
+                    <i class="fab fa-youtube"></i>
+                    <p class="text-small">دوره‌ها</p>
+                </a>
+                <a class="nav-link text-secondary" id="show-category" href="/Exam">
+                    @*@Url.Action("Index", "Shops", new { productType = Product.ProductType.Exam })*@
+                    <i class="fas fa-graduation-cap"></i>
+                    <p class="text-file-signature">آزمون‌ها</p>
+                </a>
+
+                <a class="nav-link text-secondary" href="/MyProduct">
+                    @*@Url.Action("MyProducts", "Account", new { BuyType = BuyType.Normal })*@
+                    <i class="fas fa-dollar-sign"></i>
+                    <p class="text-file-signature">محصولات</p>
+                </a>
+            </div>
+
+
+
+
+
+        }
+
+
+        @*@(Html.Kendo().Notification()
+                                                  .Name("popupNotification")
+                                                  .Position(p => p.Pinned(false).Bottom(75).Left(30))
+                                                  .AutoHideAfter(5000)
+                                                  .Stacking(NotificationStackingSettings.Up)
+                                                  .Button(true)
+                                                  .Templates(t =>
+                                                  {
+                                                      t.Add().Type("info").ClientTemplateID("emailTemplate");
+                                                      t.Add().Type("error").ClientTemplateID("emailTemplate");
+                                                      t.Add().Type("success").ClientTemplateID("emailTemplate");
+
+                                                      t.Add().Type("push").ClientTemplateID("emailTemplate");
+                                                      t.Add().Type("pushContainImg").ClientTemplateID("pushTemplate");
+
+                                                  })
+            )*@
+        @*<script id="emailTemplate" type="text/x-kendo-template">
+                <div class="new-mail">
+                    <img src="Content/img/204042-200.png" style="width:24px;height:24px;" />
+                    <h3>#= title #</h3>
+                    <p>#= message #</p>
+                </div>
+            </script>
+            <script id="pushTemplate" type="text/x-kendo-template">
+                <div class="new-mail">
+                    <div class="row">
+                        <div class="col-3">
+                            <h3>#= title #</h3>
+                        </div>
+                        <div class="col-9">
+                            <img class="img-thumbnail" src="#= img #" style="max-height:150px" />
+                        </div>
+                    </div>
+
+
+                </div>
+            </script>*@
+        <!-- page-content" -->
+
+    </div>
+
+</div>
+
+
+
+@code{
+    private bool _IsMobileDevice;
+    private ResultHi HiInfo;
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthState { get; set; }
+
+    private async void RefreshMe()
+    {
+        ClaimsPrincipal user = (await AuthState).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            FirstgetToken = false;
+
+            var SecurityStamp = user.FindFirst("SecurityStamp");
+
+            var requestHi = new RequestHi { Version = 1000, Token = SecurityStamp.Value, IsWebRequest = true };
+            var Hi = await Http.PostAsJsonAsync("api/Hi", requestHi);
+            if (Hi.StatusCode == HttpStatusCode.OK)
+            {
+                HiInfo = Hi.Content.ReadFromJsonAsync<ResultHi>().Result;
+                StateHasChanged();
+            }
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        WebAlert.OnChange += StateHasChanged;
+        LayoutLoading.OnChange += StateHasChanged;
+        MyService.RefreshRequested += RefreshMe;
+
+        _IsMobileDevice = await JSRuntime.InvokeAsync<bool>("isMobileDevice");
+
+        await JSRuntime.InvokeVoidAsync("afterLoadLayout");
+
+        StateHasChanged();
+
+
+    }
+
+
+    private bool FirstgetToken = true;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        ClaimsPrincipal user = (await AuthState).User;
+
+        if (user.Identity.IsAuthenticated && FirstgetToken)
+        {
+            FirstgetToken = false;
+
+            var SecurityStamp = user.FindFirst("SecurityStamp");
+
+            var requestHi = new RequestHi { Version = 1000, Token = SecurityStamp.Value, IsWebRequest = true };
+            var Hi = await Http.PostAsJsonAsync("api/Hi", requestHi);
+            if (Hi.StatusCode == HttpStatusCode.OK)
+            {
+                HiInfo = Hi.Content.ReadFromJsonAsync<ResultHi>().Result;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private async Task BeginSignOut(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
+    }
+    private void closeSidbar()
+    {
+        JSRuntime.InvokeVoidAsync("CloseSidbar");
+    }
+}

@@ -1,0 +1,96 @@
+/*****************Font Styles*****************/
+@font-face {
+    font-family: Shabnam-FD;
+    font-style: normal;
+    font-weight: normal;
+    src: url("../fonts/Shabnam-FD.eot"),
+        url("../fonts/Shabnam-FD.woff2") format('woff2'),
+        url("../fonts/Shabnam-FD.woff") format('woff'),
+        url("../fonts/Shabnam-FD.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: Shabnam-FD;
+    font-style: normal;
+    font-weight: bold;
+    src: url("../fonts/Shabnam-Bold-FD.eot"),
+    url("../fonts/Shabnam-Bold-FD.woff2") format('woff2'),
+    url("../fonts/Shabnam-Bold-FD.woff") format('woff'),
+    url("../fonts/Shabnam-Bold-FD.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: Shabnam-FD;
+    font-style: normal;
+    font-weight: 300;
+    src: url("../fonts/Shabnam-Light-FD.eot"),
+    url("../fonts/Shabnam-Light-FD.woff2") format('woff2'),
+    url("../fonts/Shabnam-Light-FD.woff") format('woff'),
+    url("../fonts/Shabnam-Light-FD.ttf") format('truetype');
+}
+
+*, span, p, h1, h2, h3, h4, h5, h6,input, textarea {
+    font-family: Shabnam-FD;
+}
+
+.text-xsmall {
+    font-weight: normal;
+    font-size: 0.75rem;
+}
+.text-small {
+    font-weight: normal;
+    font-size: 0.85rem;
+}
+.text-medium {
+    font-weight: normal;
+    font-size: 1.0rem;
+}
+.text-large {
+    font-weight: normal;
+    font-size: 1.2rem;
+}
+.text-xlarge {
+    font-weight: normal;
+    font-size: 1.4rem;
+}
+.text-x2large {
+    font-weight: normal;
+    font-size: 1.6rem;
+}
+.text-x3large {
+    font-weight: normal;
+    font-size: 1.8rem;
+}
+.text-x4large {
+    font-weight: normal;
+    font-size: 2rem;
+}
+.text-x5large {
+    font-weight: normal;
+    font-size: 2.2rem;
+}
+.text-x6large {
+    font-weight: normal;
+    font-size: 2.4rem;
+}
+.text-x7large {
+    font-weight: normal;
+    font-size: 2.6rem;
+}
+.text-x8large {
+    font-weight: normal;
+    font-size: 2.8rem;
+}
+.text-x9large {
+    font-weight: normal;
+    font-size: 3rem;
+}
+
+.text-b {
+    font-weight: bold;
+}
+
+.text-l {
+    font-weight: 300;
+}
+

@@ -1,0 +1,27 @@
+﻿@page "/MoreProducts/{producttype:int}/{productsearchtype:int}"
+@using static newFace.Shared.Models.Resource.Enums
+
+<AllProductComponent productSearchType="(ProductSearchType)productSearchType" productType="(ProductType)productType" userToken="userToken"  />
+@code {
+
+    [Parameter]
+    public int productSearchType { get; set; }
+
+
+    [Parameter]
+    public int productType { get; set; }
+
+    [Parameter]
+    public string userToken { get; set; }
+
+    [CascadingParameter]
+    protected Task<AuthenticationState> Authentication { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        if (productSearchType == 2)
+        {
+            System.Security.Claims.ClaimsPrincipal user = (await Authentication).User;
+            userToken = user.FindFirst("SecurityStamp").Value.ToString();
+        }
+    }
+}

@@ -1,0 +1,103 @@
+﻿@layout EpubLayout
+@page "/videoReader/{id:int}"
+
+@using System.Net
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
+@using newFace.Shared.Models.Resource
+@using System.Net.Http.Json
+@using newFace.Shared.Models
+@attribute [Authorize]
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime;
+@if (Model != null && Model.Courses.FirstOrDefault() != null)
+{
+    if (Model.Courses.FirstOrDefault().Videos.Any())
+    {
+        
+
+        <div class="card  ">
+            <div class="card-header ">
+                <h5 class="text-center">فیلم های این دوره</h5>
+
+            </div>
+            <div class="card-body">
+
+                <ul class="nav">
+                    @if (Model.Courses.FirstOrDefault().Videos.Count > 1)
+                    {
+                        foreach (var item in Model.Courses.FirstOrDefault().Videos)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="">@item.Title</a>
+                            </li>
+                        }
+                        
+                    }
+                    
+
+                </ul>
+
+                @*<div class="k-list-container playlist">
+                    <video width="320" height="240" controls>
+                        <source src="@Model.Courses.FirstOrDefault().Videos.FirstOrDefault().File" type="video/mp4">
+                        <source src="@Model.Courses.FirstOrDefault().Videos.FirstOrDefault().File" type="video/ogg">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>*@
+                <div class="card">
+                        <div class="card-body">
+
+                            <video width="500" controls autobuffer id="@Model.Courses.FirstOrDefault().Videos.FirstOrDefault().Id" class="course-video">
+                                <source src="@Model.Courses.FirstOrDefault().Videos.FirstOrDefault().File">
+                            </video>
+
+                        </div>
+                    </div>
+                <br />
+
+
+            </div>
+
+        </div>
+
+
+    }
+
+
+
+}
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private string userId;
+    private ResultCourse Model;
+
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthState { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        ClaimsPrincipal user = (await AuthState).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+
+            var SecurityStamp = user.FindFirst("SecurityStamp");
+            userId = user.FindFirst("UserId").Value;
+
+            var productsRequest = new Request { Token = SecurityStamp.Value, Id = Id };
+            var courseResult = await Http.PostAsJsonAsync("api/GetCourseVideos", productsRequest);
+            if (courseResult.StatusCode == HttpStatusCode.OK)
+            {
+                Model = courseResult.Content.ReadFromJsonAsync<ResultCourse>().Result;
+                StateHasChanged();
+
+            }
+        }
+    }
+
+}
+

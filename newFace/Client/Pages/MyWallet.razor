@@ -1,0 +1,85 @@
+﻿@page "/MyWallet"
+
+@layout ShopLayout
+
+@using System.Net
+@using newFace.Shared.Models.Resource
+@using System.Security.Claims
+@using newFace.Shared
+@inject NavigationManager Navigation
+@inject HttpClient Http
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0  mt-md-4">
+        <li class="breadcrumb-item"><a href="/">صفحه اصلی</a></li>
+        <li class="breadcrumb-item active" aria-current="page">کیف پول</li>
+    </ol>
+</nav>
+<div class="container">
+    <div class="row py-4">
+        @if (resultWallet != null)
+        {
+            if (resultWallet.Wallets.Any())
+            {
+                foreach (var Wallet in resultWallet.Wallets.OrderByDescending(o=>o.CDate))
+                {
+                    if (Wallet.TransactionType == newFace.Shared.Models.Shop.TransactionTypeEnum.Increase)
+                    {
+
+                        if (Wallet.Statue == Enums.Statue.Success)
+                        {
+
+                            <div class="col-lg-9 col-12 mx-lg-auto border-bottom p-4">
+                                <p> <span class="font-weight-bold">شارژ</span> کیف پول شما در تاریخ <span class="font-weight-bold">@Wallet.CDate.MiladiToJalali()</span> با مبلغ <span class="font-weight-bold">@Wallet.Amount تومان</span> با <span class="text-success">موفقیت انجام شد</span>. </p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-lg-9 col-12 mx-lg-auto border-bottom p-4">
+                                <p> <span class="font-weight-bold">شارژ</span> کیف پول شما در تاریخ <span class="font-weight-bold">@Wallet.CDate.MiladiToJalali()</span> با مبلغ <span class="font-weight-bold">@Wallet.Amount تومان</span> با <span class="text-danger">موفقیت انجام نشد</span>. </p>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-lg-9 col-12 mx-lg-auto border-bottom p-4">
+                            <p>  <span class="font-weight-bold">کسر</span> از کیف پول شما در تاریخ <span class="font-weight-bold">@Wallet.CDate.MiladiToJalali()</span> با مبلغ <span class="font-weight-bold">@Wallet.Amount تومان</span> با <span class="text-success">موفقیت انجام شد</span>. </p>
+                        </div>
+                }
+            }
+
+
+        }
+        else
+        {
+
+            <p>موردی یافت نشد</p>
+        }
+    }
+    else
+    {
+        <Spinner />
+    }
+
+
+
+    </div>
+</div>
+@code {
+
+    public ResultWallet resultWallet { get; set; }
+    [CascadingParameter]
+    protected Task<AuthenticationState> Authentication { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+
+        ClaimsPrincipal user = (await Authentication).User;
+        if (user.Identity.IsAuthenticated)
+        {
+            var userToken = user.FindFirst("SecurityStamp").Value.ToString();
+
+            var response = await Http.PostAsJsonAsync("api/GetWallet", new Request() { Token = userToken });
+            resultWallet = response.Content.ReadFromJsonAsync<ResultWallet>().Result;
+        }
+    }
+
+}

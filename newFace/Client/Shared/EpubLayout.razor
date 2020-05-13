@@ -1,0 +1,24 @@
+﻿
+
+@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime;
+
+
+<div class="main">
+    @Body
+</div>
+
+
+@code {
+
+   
+
+    protected override async Task OnInitializedAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("afterLoadEpubLayout");
+
+        StateHasChanged();
+
+       
+    }
+}

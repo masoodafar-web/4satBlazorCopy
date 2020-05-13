@@ -1,0 +1,141 @@
+﻿@page "/MyProduct/{buytype:int}"
+@layout ShopLayout
+@using newFace.Shared.Models.ViewModels
+@using newFace.Client.Components.ProductList
+@using static newFace.Shared.Models.Resource.Enums
+@using newFace.Shared.Models.Resource
+@using newFace.Shared.Models
+@inject HttpClient Http
+  
+    <div class="container py-4">
+        @if (buyType == 0)//BuyType.Normal
+        {
+            <nav class="nav nav-pills nav-justified">
+                <a class="nav-item nav-link border mx-2  @navClassBook" @onclick="@(()=>ChangeBookType(ProductType.Book))">کتاب</a>
+                <a class="nav-item nav-link border mx-2 @navClassCourse" @onclick="@(()=>ChangeBookType(ProductType.Course))">دوره</a>
+                <a class="nav-item nav-link border mx-2 @navClassExam" @onclick="@(()=>ChangeBookType(ProductType.Exam))">آزمون</a>
+            </nav>
+            <div class="@bookcontentTab">
+                <AllProductComponent productSearchType="ProductSearchType.MyProducts" productType="ProductType.Book" userToken="@userToken" buyType="(BuyType)buyType" />
+
+            </div>
+            <div class="@coursecontentTab">
+                <AllProductComponent productSearchType="ProductSearchType.MyProducts" productType="ProductType.Course" userToken="@userToken" buyType="(BuyType)buyType" />
+
+            </div>
+            <div class="@examcontentTab">
+                <AllProductComponent productSearchType="ProductSearchType.MyProducts" productType="ProductType.Exam" userToken="@userToken" buyType="(BuyType)buyType" />
+
+            </div>
+        }
+        else if (buyType == 1)//gift
+        {
+            <nav class="nav nav-pills nav-justified">
+                <a class="nav-item nav-link border mx-2  @navClassGiftSend" @onclick="@(()=>ChangeGiftType(GiftType.GiftSend))">ارسال شده</a>
+                <a class="nav-item nav-link border mx-2 @navClassGiftRecive" @onclick="@(()=>ChangeGiftType(GiftType.GiftRecive))">دریافت شده</a>
+            </nav>
+            <div class="@GiftSendcontentTab">
+                <AllProductComponent productSearchType="ProductSearchType.MyProducts" userToken="@userToken" buyType="(BuyType)buyType" giftType="GiftType.GiftSend" />
+
+            </div>
+            <div class="@GiftRecivecontentTab">
+                <AllProductComponent productSearchType="ProductSearchType.MyProducts" userToken="@userToken" buyType="(BuyType)buyType" giftType="GiftType.GiftRecive" />
+
+            </div>
+
+        }
+        else if (buyType == 2)//Shareholder
+        {
+            <AllProductComponent productSearchType="ProductSearchType.MyProducts" userToken="@userToken" buyType="(BuyType)buyType" />
+        }
+        else if (buyType == 3)//favorit
+        {
+            <AllProductComponent productSearchType="ProductSearchType.MyProducts" userToken="@userToken" buyType="(BuyType)buyType" />
+
+        }
+
+    </div>
+
+@code{
+
+    public ProductType productType { get; set; } = ProductType.Book;
+    [Parameter]
+    public int buyType { get; set; } = 0;//BuyType.Normal
+
+    public string userToken { get; set; }
+    string navClassBook = "active";
+    string navClassCourse;
+    string navClassExam;
+    string bookcontentTab;
+    string coursecontentTab = "d-none";
+    string examcontentTab = "d-none";
+
+    string navClassGiftSend = "active";
+    string navClassGiftRecive;
+    string GiftSendcontentTab;
+    string GiftRecivecontentTab = "d-none";
+
+    [CascadingParameter]
+    protected Task<AuthenticationState> Authentication { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+
+        System.Security.Claims.ClaimsPrincipal user = (await Authentication).User;
+        userToken = user.FindFirst("SecurityStamp").Value.ToString();
+
+
+    }
+
+    private void ChangeBookType(ProductType producttype)
+    {
+        switch (producttype)
+        {
+            case ProductType.Book:
+                navClassBook = "active";
+                navClassCourse = "";
+                navClassExam = "";
+                bookcontentTab = "";
+                coursecontentTab = "d-none";
+                examcontentTab = "d-none";
+                break;
+            case ProductType.Course:
+                navClassBook = "";
+                navClassCourse = "active";
+                navClassExam = "";
+                bookcontentTab = "d-none";
+                coursecontentTab = "";
+                examcontentTab = "d-none";
+                break;
+            case ProductType.Exam:
+                navClassBook = "";
+                navClassCourse = "";
+                navClassExam = "active";
+                bookcontentTab = "d-none";
+                coursecontentTab = "d-none";
+                examcontentTab = "";
+                break;
+            default:
+                break;
+        }
+    }
+    private void ChangeGiftType(GiftType giftType)
+    {
+        switch (giftType)
+        {
+            case GiftType.GiftSend:
+                navClassGiftSend = "active";
+                navClassGiftRecive = "";
+                GiftSendcontentTab = "";
+                GiftRecivecontentTab = "d-none";
+                break;
+            case GiftType.GiftRecive:
+                navClassGiftSend = "";
+                navClassGiftRecive = "active";
+                GiftSendcontentTab = "d-none";
+                GiftRecivecontentTab = "";
+                break;
+            default:
+                break;
+        }
+    }
+}

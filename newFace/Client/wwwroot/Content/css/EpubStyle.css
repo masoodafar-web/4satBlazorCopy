@@ -1,0 +1,351 @@
+﻿:root {
+    --color-primary: #2F364A;
+    --color-primary-dark: #252b38;
+    --color-primary-light: #394159;
+    --color-accent: #17A2B8;
+    --color-grey: #616161;
+    --color-grey-light: #eeeeee;
+    --color-grey-light-b: #A18F8F8F;
+}
+
+html, body, .uk-container-large, #pages {
+    display: block;
+    overflow: hidden;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 99;
+}
+
+    .footer nav {
+        height: 30px;
+        padding: 10px;
+    }
+
+.uk-container-large {
+    height: 93%;
+}
+
+#pages p {
+    color: #151515;
+    -webkit-user-select: text; /* Safari */
+    -ms-user-select: text; /* IE 10+ and Edge */
+    -moz-user-select: text;
+    user-select: text; /* Standard syntax */
+}
+
+#pages .uk-heading-line {
+    font-size: 0.8rem;
+}
+
+#pages .uk-card {
+    border-radius: 0px;
+}
+
+#pages {
+    background-color: var(--color-grey-light);
+    height: 85vh;
+}
+
+.bottom-sheet-dialog {
+    z-index: 1001;
+    display: block;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.19);
+    text-align: right;
+}
+
+    .bottom-sheet-dialog .bottom-sheet-dialog-child {
+        width: 100%;
+    }
+
+        .bottom-sheet-dialog .bottom-sheet-dialog-child h3 {
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .bottom-sheet-dialog .bottom-sheet-dialog-child .uk-card-body {
+            padding: 0px;
+        }
+
+    .bottom-sheet-dialog .bottom-sheet-dialog-content {
+        /*border-top-left-radius: 60px;*/
+        background-color: black;
+    }
+
+.bottom-sheet-dialog-close {
+    display: none !important;
+}
+
+.bottom-sheet-dialog .bottom-sheet-dialog-child .uk-dotnav > * > * {
+    width: 50px;
+    height: 50px;
+    border: 3px solid grey !important;
+}
+
+.bottom-sheet-dialog .bottom-sheet-dialog-child .uk-dotnav > .uk-active > * {
+    border: 3px solid black !important;
+}
+
+.bottom-sheet-dialog .uk-card {
+    /*border-top-left-radius: 60px;*/
+}
+
+#bottom-sheet-theme-font .uk-tab {
+    display: unset;
+}
+
+    #bottom-sheet-theme-font .uk-tab > * {
+        padding: 0px;
+    }
+
+#book-cover {
+    /* The image used */
+    background-image: url("../img/a1.png");
+    /*!* Add the blur effect *!*/
+    /*filter: blur(5px);*/
+    /*-webkit-filter: blur(5px);*/
+    filter: brightness(0.30);
+    /*!* Center and scale the image nicely *!*/
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+}
+
+#drawer-header h5 {
+    color: black;
+}
+
+#drawer-header p {
+    color: grey;
+}
+
+#drawer-content .uk-card-title .uk-label {
+    border-radius: 6px;
+    padding: 2px 20px;
+}
+
+#drawer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+#drawer-header {
+    background-color: var(--color-grey-light);
+    position: relative;
+    height: 250px;
+    /*padding: 10px 0 10px 0;*/
+    /*border-bottom-left-radius: 60px;*/
+    /*flex-grow: 0;*/
+}
+    #drawer-header img {
+        max-height: 150px;
+        display: block;
+        margin: auto;
+        width: unset;
+        max-width: unset;
+        z-index: 100;
+    }
+
+#drawer-content {
+    flex-grow: 1;
+    overflow: scroll;
+}
+
+#drawer-footer {
+    flex-grow: 0;
+    z-index: 100;
+    /*box-shadow: 0px 0px 50px rgb(0, 0, 0);*/
+}
+
+.shadow-to-up {
+    box-shadow: 0px 10px 20px rgb(0, 0, 0);
+}
+
+.shadow-to-down {
+    box-shadow: 0px -20px 40px rgb(0, 0, 0);
+}
+
+
+#drawer-content #tag p, #drawer-content #note p {
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    direction: rtl;
+}
+
+#drawer-content #note h5 {
+    font-size: 1rem;
+}
+
+#switcher-item a {
+    text-align: center;
+}
+
+.popup .uk-dotnav > * > * {
+    width: 20px;
+    height: 20px;
+}
+
+.popup {
+    display: none;
+    position: absolute;
+    z-index: 1020;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 0 25px;
+    border-radius: 12px;
+    background-color: rgba(21, 21, 21, 0.77);
+    color: white;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+}
+
+    .popup a:hover {
+        color: grey;
+    }
+
+/*overread*/
+.uk-offcanvas-bar {
+    padding: 0px;
+}
+
+.uk-slideshow-items > *, .uk-slideshow-items {
+    overflow: unset;
+}
+
+.uk-navbar-dropdown.uk-open {
+    width: 100%;
+    left: 0px !important;
+    text-align: right;
+}
+
+.uk-navbar-container:not(.uk-navbar-transparent) {
+    /*background: var(--color-primary-dark);*/
+}
+
+.uk-card, .uk-button, .uk-input, .uk-textarea {
+    border-radius: 6px;
+}
+.swiper-container {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    z-index: 1;
+}
+
+.swiper-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    transition-property: transform;
+    box-sizing: content-box;
+}
+
+.uk-offcanvas-bar {
+    padding: 0px !important;
+}
+.uk-tab > .uk-active > a {
+    color: white !important;
+}
+/*Loding Spiner*/
+.center-div {
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    margin-left: -150px;
+    margin-top: -150px;
+}
+
+.spinner {
+    position: fixed;
+    z-index: 99999999;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: white;
+    filter: alpha(opacity=60);
+    opacity: 1;
+    -moz-opacity: 1;
+}
+
+.loader {
+    margin: auto;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #15a0ec;
+    border-bottom: 16px solid #15a0ec;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+.inner-div {
+    background-color: rgba(255, 255, 255, 0.00);
+    border-radius: 15px;
+    margin: auto;
+    padding: 2%;
+    width: 90px;
+}
+
+
+
+.spinnerr > div {
+    width: 18px;
+    height: 18px;
+    background-color: black;
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinnerr .bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+}
+
+.spinnerr .bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+}
+@-webkit-keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+        -webkit-transform: scale(0)
+    }
+
+    40% {
+        -webkit-transform: scale(1.0)
+    }
+}
+
+@keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+
+    40% {
+        -webkit-transform: scale(1.0);
+        transform: scale(1.0);
+    }
+}

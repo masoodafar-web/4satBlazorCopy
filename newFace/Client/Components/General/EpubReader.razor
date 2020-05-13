@@ -1,0 +1,262 @@
+﻿@layout EpubLayout
+@page "/epubReader/{id:int}"
+
+@using System.Net
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
+@using newFace.Shared.Models.Resource
+@using System.Net.Http.Json
+@attribute [Authorize]
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime;
+
+
+@if (bookAddress != null)
+{
+    <div id="FileText" hidden>@bookAddress</div>
+    <div id="ProductId" hidden>@Id</div>
+
+    <div id="UserId" hidden>@userId</div>
+
+
+    <div class="uk-container-large">
+
+        <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
+            <nav class="uk-navbar-container shadow-to-down" uk-navbar="dropbar: true;">
+                <div class="uk-navbar-left">
+                    <a class="uk-navbar-item uk-logo" href="#">
+                        <img src="/Content/html_ePub/asset/img/ic_icon_logo.png">
+                    </a>
+                    <ul class="uk-navbar-nav">
+                        <li>
+                            Book Name
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="uk-navbar-right">
+                    <ul class="uk-navbar-nav">
+                        <li>
+                            <a id="add-note" class="uk-navbar-toggle" href="#">
+                                <span uk-icon="icon: pencil"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="uk-navbar-toggle" href="#">
+                                <span uk-icon="icon: cog"></span>
+                            </a>
+                            <div class="uk-navbar-dropdown">
+                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                    <li><a id="change-font">تغییر فونت</a></li>
+                                    <li class="uk-nav-divider"></li>
+                                    <li><a id="change-theme">حالت روز و شب</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <a class="uk-navbar-toggle" href="#" uk-toggle="target: #offcanvas-slide">
+                                <span uk-navbar-toggle-icon></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <div class="popup">
+            <span><a id="add-tag" href="#" class="uk-margin-small-right" uk-icon="pencil" data-color="white"></a></span>
+            <a href="#" class="uk-margin-small" uk-icon="paint-bucket"></a>
+            <div uk-dropdown="pos: bottom-justify; boundary: .boundary-align; boundary-align: true">
+                <ul class="uk-dotnav">
+                    <li><a href="#" style="background-color: #f5f765">yellow</a></li>
+                    <li><a href="#" style="background-color: #65b4f7">blue</a></li>
+                    <li><a href="#" style="background-color:#f7656c">red</a></li>
+                    <li><a href="#" style="background-color: #65f78b">green</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="bottom-sheet-change-theme" class="bottom-sheet-dialog bottom-sheet-dialog-close uk-width">
+            <div class="bottom-sheet-dialog-child uk-position-bottom-center">
+                <div class="animated slideInDown uk-card uk-card-default">
+                    <div class="animated slideInDown uk-card uk-card-default">
+                        <div class="uk-padding-large">
+                            <button id="close-change-theme" class="uk-align-left" type="button" uk-close></button>
+                            <h3 class="uk-margin-small-bottom uk-card-title uk-margin-remove-top">تم</h3>
+                            <p class="uk-margin-remove-top uk-margin-small-bottom">از این قسمت تم خود را امتخاب کنید</p>
+                        </div>
+                        <div class="bottom-sheet-dialog-content uk-padding-large">
+                            <ul id="theme-color" class="uk-dotnav"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="bottom-sheet-theme-font" class="bottom-sheet-dialog bottom-sheet-dialog-close uk-width">
+            <div class="bottom-sheet-dialog-child uk-position-bottom-center">
+                <div class="animated slideInDown uk-card uk-card-default">
+                    <div class="animated slideInDown uk-card uk-card-default">
+                        <div class="uk-padding-large">
+                            <button id="close-change-font" class="uk-align-left" type="button" uk-close></button>
+                            <h3 class="uk-margin-small-bottom uk-card-title">تغییر فونت</h3>
+                            <p class="uk-margin-remove-top uk-margin-small-bottom">فونت مناسب انتخاب کنید</p>
+                        </div>
+                        <div class="bottom-sheet-dialog-content uk-padding-large">
+                            <ul id="theme-font" uk-tab>
+                                <li><a id="IRANSans" href="#">IRANSans</a></li>
+                                <li><a id="tahoma" href="#">Tahoma</a></li>
+                                <li><a id="arial" href="#">Arial</a></li>
+                                <li><a id="Sans Serif" href="#">Sans Serif</a></li>
+                                <li><a id="Shabnam-FD" href="#">Shabnam-FD</a></li>
+                            </ul>
+                            <ul class="uk-switcher uk-margin">
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="bottom-sheet-add-tag" class="bottom-sheet-dialog bottom-sheet-dialog-close uk-width">
+            <div class="bottom-sheet-dialog-child uk-position-bottom-center">
+                <div class="animated slideInDown uk-card uk-card-default">
+                    <div class="animated slideInDown uk-card uk-card-default">
+                        <div class="uk-padding-large">
+                            <button id="close-add-tag" class="uk-align-left" type="button" uk-close></button>
+                            <h3 class="uk-margin-small-bottom uk-card-title">یادداشت</h3>
+                            <p class="uk-margin-remove-top uk-margin-small-bottom">یه یاداشت برای این متن</p>
+                        </div>
+                        <div class="bottom-sheet-dialog-content uk-padding-large">
+                            <form action="/Products/UpdateUserHighlightOfBook" data-ajax="true" data-ajax-method="Post" data-ajax-mode="replace" data-ajax-update="#tag" id="form0" method="post">
+
+                                <div class="uk-margin">
+                                    <textarea id="text-tag-message" name="Note" class="uk-textarea uk-text-right" rows="5"
+                                              placeholder="یادداشت"></textarea>
+                                </div>
+                                <input id="tagId" type="number" name="Id" value="" hidden>
+                                <input id="btn-add-tag" class="uk-button uk-button-primary" type="submit" value='ثبت' tabindex="-1">
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="offcanvas-slide" uk-offcanvas="overlay: true">
+            <div class="uk-offcanvas-bar">
+                <div id="drawer">
+                    <div id="drawer-header" class="uk-width">
+
+                        <img id="cover" src="" alt="" class="uk-box-shadow-large uk-position-top-center uk-margin-small-top">
+                        <div id="book-cover" class="uk-height-1-1 uk-width"></div>
+                        <div class="uk-width uk-position-bottom-center">
+                            <h5 id="title" class="uk-text-center uk-text-bold uk-margin-small-top uk-margin-remove-bottom uk-text-secondary"></h5>
+                            <p id="author" class="uk-text-center uk-margin-small-top uk-margin-small-bottom uk-text-muted"></p>
+
+
+                        </div>
+                    </div>
+                    <div id="drawer-content" class="uk-width uk-margin-small-top">
+                        <ul id="switcher-drawer" class="uk-switcher uk-padding-small">
+                            <!--a-> sub list-->
+                            <li id="navigation">
+                                <ul id="toc" class="uk-list uk-list-bullet uk-text-right"></ul>
+                            </li>
+                            <!--b-> tag-->
+                            <li id="tag">
+                            </li>
+                            <!--c-> note-->
+                            <li id="note">
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="drawer-footer" class="uk-width shadow-to-up">
+                        <ul id="switcher-item"
+                            class="uk-subnav uk-subnav-pill uk-child-width-expand uk-margin-remove-bottom"
+                            uk-switcher="animation: uk-animation-slide-right-medium, uk-animation-slide-left-medium;connect: #switcher-drawer">
+                            <li><a href="#" uk-icon="icon: list"></a></li>
+                            <li><a href="#" uk-icon="icon: tag"></a></li>
+                            <li><a href="#" uk-icon="icon: pencil"></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <div id="pages">
+
+                </div>
+            </div>
+            <!-- Add Arrows -->
+
+
+        </div>
+
+        <div class="footer shadow-to-up">
+            <nav class="uk-navbar-container" uk-navbar>
+                <div class="uk-navbar-left">
+                    <a id="prev" href="" uk-slidenav-previous></a>
+                </div>
+                <div class="uk-navbar-center uk-text-muted">
+                    <span id="current-page" class="uk-text-bold">0</span>
+                    <span class="uk-margin-small-left uk-margin-small-right">/</span>
+                    <span id="total-page">0</span>
+                </div>
+                <div class="uk-navbar-right">
+                    <a id="next" href="" uk-slidenav-next></a>
+                </div>
+            </nav>
+        </div>
+
+
+    </div>
+}
+else
+{
+    <Spinner />
+}
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private string userId;
+    private string bookAddress;
+
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthState { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        ClaimsPrincipal user = (await AuthState).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+
+            var SecurityStamp = user.FindFirst("SecurityStamp");
+            userId = user.FindFirst("UserId").Value;
+
+            var productsRequest = new ProductsRequest { Token = SecurityStamp.Value, Id = Id };
+            var bookResult = await Http.PostAsJsonAsync("api/GetBookByProductId", productsRequest);
+            if (bookResult.StatusCode == HttpStatusCode.OK)
+            {
+                bookAddress = bookResult.Content.ReadFromJsonAsync<ResultBook>().Result.Book.FileText;
+                StateHasChanged();
+                await JSRuntime.InvokeVoidAsync("epubfunc");
+
+                StateHasChanged();
+            }
+        }
+    }
+
+}

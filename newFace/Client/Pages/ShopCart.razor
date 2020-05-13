@@ -1,0 +1,691 @@
+﻿@layout ShopLayout
+@page "/shopCart"
+@using System.Net
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using newFace.Shared.Models.Education
+@using newFace.Shared.Models.Resource
+@using System.Net.Http.Json
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using newFace.Shared.Models.ViewModels
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+@inject NavigationManager Navigation
+@inject MyService MyService
+
+
+@if (Model != null)
+{
+    <div class="shopping-cart mt-4">
+
+
+        @if (_IsMobileDevice)
+        {
+            //اگر موبایل بود
+            <div class="row">
+                <div class="col-12 col-lg-8">
+
+                    @if (Model.CartCount == 0)
+                    {
+                        @*if (!string.IsNullOrEmpty(ViewBag.errorstring))
+                            {
+                                <div class="alert alert-danger">
+                                    <strong>خطا!</strong><span>@ViewBag.errorstring</span>
+                                </div>
+                            }*@
+                        <h3 class="alert alert-success mt-5 text-center">سبد خرید شما خالی است</h3>
+
+                    }
+                    else
+                    {
+                        @*if (!string.IsNullOrEmpty(ViewBag.errorstring))
+                            {
+                                <div class="alert alert-danger">
+                                    <strong> خطا! </strong><span>@ViewBag.errorstring</span>
+                                </div>
+                            }*@
+
+                        foreach (var item in Model.Carts)
+                        {
+                            <div class="book-order p-2 PL_@item.Id">
+                                <div class="row no-gutters">
+                                    <div class="col-3 pl-2">
+                                        <a href="productDetails/@item.Product.Id" target="_blank"><img src="@item.Product.Img" class="img-fluid" alt=""></a>
+                                    </div>
+                                    <div class="col-9">
+                                        <section class="books-header">
+                                            <h1 class="h5 text-b mt-0 mb-0" style="z-index:99999;">@item.Product.Title</h1>
+
+                                            @*<p class="author"><i class="fas fa-user-edit"></i> نویسنده : <span>@item.Product.Books.FirstOrDefault().Author.FullName</span></p>
+                                                <p class="author"><i class="fas fa-edit"></i> زبان : <span>@item.Product.Language.Name</span></p>
+                                                <p class="author"><i class="fas fa-cogs"></i> انتشارات : <span>@item.Product.Books.FirstOrDefault().Publishers.FullName</span></p>*@
+                                            <hr class="my-2">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    @if (item.CartType == CartType.Shareholder)
+                                                    {
+                                                        var totalShareholderPrice = item.ShareholderPercent * item.Product.ShareholderUnitPrice;
+
+                                                        <p class="text-small mb-3"><i class="fas fa-money-bill"></i> مبلغ کل : <span class="badge badge-warning">@totalShareholderPrice تومان</span> </p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="text-small mb-3"><i class="fas fa-star"></i> امتیاز دریافتی : <span class="badge badge-warning">@item.Product.ProductScale?.Sum(s => s.Credit) امتیاز</span> </p>
+
+                                                    }
+
+
+                                                    @if (item.CartType == CartType.Shareholder)
+                                                    {
+
+
+                                                        <p class="text-success mb-2">
+                                                            قیمت هر واحد سهام محصول : <span class="badge badge-success">@item.Product.ShareholderUnitPrice</span> تومان
+                                                            درصد سهام درخواستی شما : <span class="badge badge-success">@item.ShareholderPercent %</span>
+
+                                                        </p>
+                                                    }
+                                                    else
+                                                    {
+                                                        if (item.Product.Discount == 0)
+                                                        {
+                                                            <p class="text-success text-small mb-0"><span>@string.Format("{0:N0}", item.Product.Price)</span> تومان</p>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            var discountprice = item.Product.Price - ((item.Product.Price * item.Product.Discount / 100));
+                                                            <p class="text-success text-small mb-0"><span class="text-danger text-del">@item.Product.Price تومان</span> <span class="badge badge-success">@discountprice تومان</span></p>
+
+                                                        }
+                                                    }
+                                                </div>
+                                                <div @onclick="@(e => removeCart(e,item.Id))" class="mt-3 text-xlarge ml-2 text-danger"><i class="fas fa-trash-alt"></i></div>
+
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                                @if (item.CartType == CartType.Normal)
+                                {
+                                    <span class="logo-book-order"><i class="fas fa-cart-plus"></i></span>
+
+                                }
+                                else if (item.CartType == CartType.Shareholder)
+                                {
+                                    <span class="logo-book-order"><i class="fas fa-percent"></i></span>
+                                }
+                                else
+                                {
+                                    <span class="logo-book-order"><i class="fas fa-gift"></i></span>
+
+                                }
+                            </div>
+                        }
+                    }
+
+                </div>
+                <div class="col-12 col-lg-4">
+                    <button class="btn btn-success fixed-bottom btn-block mb-5 rounded-0" data-toggle="modal" data-target="#modal-next-shopping">تکمیل فرایند خرید</button>
+                    <div class="modal fade" id="modal-next-shopping" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modal-next-shoppingLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header py-2">
+                                    <h5 class="modal-title" id="staticBackdropLabel">پرداخت</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <i class="fas fa-times-circle"></i>
+                                    </button>
+                                </div>
+                                <div class="modal-body p-0">
+                                    <div class="">
+                                        <table class="table table-bordered mb-0">
+                                            <tr>
+                                                <th>مبلغ کل (<span>@Model.CartCount کالا</span>)</th>
+                                                <td><span>@($"{Model.TotalAmount:N0}")</span> تومان</td>
+                                            </tr>
+                                            <tr>
+                                                <th>سود شما از این خرید</th>
+                                                <td>2000 تومان</td>
+                                            </tr>
+                                            <tr>
+                                                <th> امتیاز کل دریافتی</th>
+                                                <td><span class="badge badge-warning">@Model.TotalPoint امتیاز</span></td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    <span>مبلغ قابل پرداخت :</span>
+                                                </th>
+                                                <td>
+                                                    <span class="text-success">@($"{Model.TotalPriceToPay:N0}") تومان</span>
+                                                </td>
+                                            </tr>
+                                            @if (Model.CartCount > 0)
+                                            {
+                                                //using (Html.BeginForm("Pay", "Shops", FormMethod.Get))
+                                                //{
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div class="custom-control custom-radio mb-2 pr-0">
+                                                            @if (Model.PayFromCredit)
+                                                            {
+                                                                <input type="radio" id="customRadio1" name="PaymentType" value="1" class="custom-control-input">
+                                                                <label class="custom-control-label " for="customRadio1">
+                                                                    <img src="~/Content/img/wallet-icon.png" width="30" class="img-fluid"
+                                                                         alt=""> پرداخت از اعتبار حساب
+                                                                </label>
+                                                            }
+                                                            else
+                                                            {
+                                                                <input type="radio" class="custom-control-input" disabled="disabled">
+                                                                <label class="custom-control-label text-muted" for="customRadio1">
+                                                                    <img src="~/Content/img/wallet-icon.png" width="30" class="img-fluid"
+                                                                         alt=""> پرداخت از اعتبار حساب
+                                                                </label>
+                                                            }
+
+                                                        </div>
+
+                                                        <div class="d-flex">
+                                                            <p class="mb-0 badge pt-2 badge-primary">موجودی: <span>@string.Format("{0:N0}", Model.User.WalletCredit) تومان</span></p>
+
+                                                            <a class="d-block btn btn-outline-primary btn-sm mr-2" role="button" data-toggle="modal" data-target="#modal-charge-account"><i class="fas fa-user-plus"></i> شارژ حساب</a>
+                                                        </div>
+
+                                                        <div class="custom-control custom-radio mt-3 pr-0">
+                                                            <input type="radio" id="customRadio2" name="PaymentType" value="2" class="custom-control-input" checked="checked">
+                                                            <label class="custom-control-label" for="customRadio2">
+                                                                <img src="~/Content/img/shetab.jpg" width="30"
+                                                                     alt=""> کارت‌های عضو شتاب
+                                                            </label>
+                                                        </div>
+
+                                                        <button class="btn btn-success px-5 mt-3 btn-block" @onclick="pay"><i class="fas fa-check-double"></i> پرداخت نهایی</button>
+                                                        @*<br>
+                                                            <small class="d-block mt-3 px-4"><a>شرایط و قوانین</a> استفاده از کتاب ملی را خوانده و قبول دارم.</small>*@
+
+                                                    </td>
+                                                </tr>
+
+                                                //}
+
+
+
+
+
+                                            }
+                                            @*<tr>
+                                                    <td colspan="2">
+                                                        <ul class="help-pay list-unstyled mr-3 mb-0">
+                                                            <li><a><i class="fas fa-info-circle"></i> راهنمای مطالعه کتاب</a></li>
+                                                            <li><a><i class="fas fa-info-circle"></i> راهنمای خرید یا هدیه کتاب</a></li>
+                                                            <li><a><i class="fas fa-info-circle"></i> راهنمای افزایش اعتبار حساب و پرداخت</a></li>
+                                                            <li><a><i class="fas fa-info-circle"></i> راهنمای افزایش امتیازات</a></li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>*@
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="spinner-money d-none" id="cartspinner">
+                <div class="spinner-grow text-info mt-2"></div>
+            </div>
+        }
+        else
+        {
+            //اگر موبایل نبود
+            <div class="row">
+                <div class="col-12 col-lg-8">
+
+                    @if (Model.CartCount == 0)
+                    {
+                        @*if (!string.IsNullOrEmpty(ViewBag.errorstring))
+                            {
+                                <div class="alert alert-danger">
+                                    <strong>خطا!</strong><span>@ViewBag.errorstring</span>
+                                </div>
+                            }*@
+                        <h3 class="alert alert-success mt-5 text-center">سبد خرید شما خالی است</h3>
+
+                    }
+                    else
+                    {
+                        @*if (!string.IsNullOrEmpty(ViewBag.errorstring))
+                            {
+                                <div class="alert alert-danger">
+                                    <strong> خطا! </strong><span>@ViewBag.errorstring</span>
+                                </div>
+                            }*@
+
+                        foreach (var item in Model.Carts)
+                        {
+                            <div class="book-order PL_@item.Id">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <a href="productDetails/@item.Product.Id" target="_blank"><img src="@item.Product.Img" class="img-fluid" alt=""></a>
+                                    </div>
+                                    <div class="col-9">
+                                        <section class="books-header">
+                                            <h1 class="h4 text-b mt-1" style="z-index:99999;"><i class="fas fa-book"></i> @item.Product.Title</h1>
+                                            <br />
+                                            <br />
+                                            <br />
+                                            @*<p class="author"><i class="fas fa-user-edit"></i> نویسنده : <span>@item.Product.Books.FirstOrDefault().Author.FullName</span></p>
+                                                <p class="author"><i class="fas fa-edit"></i> زبان : <span>@item.Product.Language.Name</span></p>
+                                                <p class="author"><i class="fas fa-cogs"></i> انتشارات : <span>@item.Product.Books.FirstOrDefault().Publishers.FullName</span></p>*@
+                                            <hr>
+                                            <div class="d-md-flex justify-content-between">
+                                                @if (item.CartType == CartType.Shareholder)
+                                                {
+
+
+                                                    <h6 class="text-success">
+                                                        قیمت هر واحد سهام محصول : <span class="badge badge-success">@item.Product.ShareholderUnitPrice</span> تومان
+                                                        <br />
+                                                        <br />
+                                                        درصد سهام درخواستی شما : <span class="badge badge-success">@item.ShareholderPercent</span> %
+
+                                                    </h6>
+                                                }
+                                                else
+                                                {
+                                                    if (item.Product.Discount == 0)
+                                                    {
+                                                        <h5 class="text-success">قیمت نسخه الکترونیک : <span>@string.Format("{0:N0}", item.Product.Price)</span> تومان</h5>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        var discountprice = item.Product.Price - ((item.Product.Price * item.Product.Discount / 100));
+                                                        <h5 class="text-success">قیمت نسخه الکترونیک : <span class="text-danger text-del">@item.Product.Price تومان</span> <span class="badge badge-success">@discountprice تومان</span></h5>
+
+                                                    }
+                                                }
+
+                                                <button @onclick="@(e => removeCart(e,item.Id))" class="btn btn-outline-danger btn-sm mb-2">حذف از سبد</button>
+                                            </div>
+                                            <br />
+                                            @if (item.CartType == CartType.Shareholder)
+                                            {
+                                                var totalShareholderPrice = item.ShareholderPercent * item.Product.ShareholderUnitPrice;
+
+                                                <p class="mb-0"><i class="fas fa-money-bill"></i> مبلغ کل : <span class="badge badge-warning">@totalShareholderPrice تومان</span> </p>
+                                            }
+                                            else
+                                            {
+                                                <p class="mb-0"><i class="fas fa-star"></i> امتیاز دریافتی : <span class="badge badge-warning">@item.Product.ProductScale?.Sum(s => s.Credit) امتیاز</span> </p>
+
+                                            }
+                                        </section>
+                                    </div>
+                                </div>
+                                @if (item.CartType == CartType.Normal)
+                                {
+                                    <span class="logo-book-order mt-md-0 mt-5"><i class="fas fa-cart-plus"></i></span>
+
+                                }
+                                else if (item.CartType == CartType.Shareholder)
+                                {
+                                    <span class="logo-book-order mt-md-0 mt-5"><i class="fas fa-percent"></i></span>
+                                }
+                                else
+                                {
+                                    <span class="logo-book-order mt-5 mt-md-0"><i class="fas fa-gift"></i></span>
+
+                                }
+                            </div>
+                        }
+                    }
+
+                </div>
+                <div class="col-12 col-lg-4">
+                    <div class="factor-shopping-cart mt-3">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>مبلغ کل (<span>@Model.CartCount کالا</span>)</th>
+                                <td><span>@($"{Model.TotalAmount:N0}")</span> تومان</td>
+                            </tr>
+                            <tr>
+                                <th> امتیاز کل دریافتی</th>
+                                <td><span class="badge badge-warning">@Model.TotalPoint امتیاز</span></td>
+                            </tr>
+                            <tr>
+                                <th colspan="2" class="text-center">
+                                    <h5 class="my-2">مبلغ قابل پرداخت :</h5>
+                                    <h5 class="text-success">@($"{Model.TotalPriceToPay:N0}") تومان</h5>
+                                </th>
+                            </tr>
+                            @if (Model.CartCount > 0)
+                            {
+                                //using (Html.BeginForm("Pay", "Shops", FormMethod.Get))
+                                //{
+                                <tr>
+                                    <td colspan="2" class="bg-blue-light py-4">
+                                        <div class="custom-control custom-radio">
+                                            @if (Model.PayFromCredit)
+                                            {
+                                                <input @onclick="payFromWallet" type="radio" id="customRadio1" name="PaymentType" value="1" class="custom-control-input">
+                                                <label class="custom-control-label " for="customRadio1">
+                                                    <img src="~/Content/img/wallet-icon.png" width="30" class="img-fluid"
+                                                         alt=""> پرداخت از اعتبار حساب
+                                                </label>
+                                            }
+                                            else
+                                            {
+                                                <input @onclick="payFromWallet" type="radio" class="custom-control-input" disabled="disabled">
+                                                <label class="custom-control-label text-muted" for="customRadio1">
+                                                    <img src="~/Content/img/wallet-icon.png" width="30" class="img-fluid"
+                                                         alt=""> پرداخت از اعتبار حساب
+                                                </label>
+                                            }
+
+                                        </div>
+                                        <p class="mb-0 mr-5 badge badge-primary">موجودی اعتبار حساب : <span>@string.Format("{0:N0}", Model.User.WalletCredit) تومان</span></p>
+                                        <br>
+                                        <a class="mr-5 btn btn-outline-primary btn-sm mt-2" role="button" data-toggle="modal" data-target="#modal-charge-account"><i class="fas fa-user-plus"></i> شارژ حساب</a>
+
+                                        <div class="custom-control custom-radio mt-3">
+                                            <input @onclick="payFromCard" type="radio" id="customRadio2" name="PaymentType" value="2" class="custom-control-input" checked="checked">
+                                            <label class="custom-control-label" for="customRadio2">
+                                                <img src="~/Content/img/shetab.jpg" width="30"
+                                                     alt=""> کارت‌های عضو شتاب
+                                            </label>
+                                        </div>
+
+                                        <button class="btn btn-success px-5 mt-4 mr-5" @onclick="pay"><i class="fas fa-check-double"></i> پرداخت نهایی</button>
+                                        <br>
+                                        <small class="d-block mt-3 px-4"><a>شرایط و قوانین</a> استفاده از فرصت را خوانده و قبول دارم.</small>
+
+                                    </td>
+                                </tr>
+
+                                //}
+
+
+
+
+
+                            }
+                            <tr>
+                                <td colspan="2">
+                                    <ul class="help-pay list-unstyled mr-3 mb-0">
+                                        <li><a><i class="fas fa-info-circle"></i> راهنمای مطالعه کتاب</a></li>
+                                        <li><a><i class="fas fa-info-circle"></i> راهنمای خرید یا هدیه کتاب</a></li>
+                                        <li><a><i class="fas fa-info-circle"></i> راهنمای افزایش اعتبار حساب و پرداخت</a></li>
+                                        <li><a><i class="fas fa-info-circle"></i> راهنمای افزایش امتیازات</a></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+    </div>
+
+    <!-- Modal Charge Account-->
+    <div class="modal fade" id="modal-charge-account" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">شارژ کیف پول</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
+                    </button>
+                </div>
+                <div class="modal-header">
+                    <h5 class="text-muted mb-0">به نام: @Model.User.FullName</h5>
+                </div>
+                @*@using (Html.BeginForm("CreditCharge", "Shops", FormMethod.Post))
+                    {*@
+                <div class="modal-body">
+                    <h5 class="mb-3">لطفا میزان شارژ کیف پول را انتخاب کنید‫:‬</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="custom-control custom-radio">
+                                <input @onclick="e=> selectChargingPrice(e,5000)" type="radio" id="charge-radio-1" name="ChargingPrice" class="custom-control-input" value="5000">
+                                <label class="custom-control-label" for="charge-radio-1">5 هزار تومان</label>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="custom-control custom-radio">
+                                <input @onclick="e=> selectChargingPrice(e,10000)" type="radio" id="charge-radio-2" name="ChargingPrice" class="custom-control-input" value="10000">
+                                <label class="custom-control-label" for="charge-radio-2">10 هزار تومان</label>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="custom-control custom-radio">
+                                <input @onclick="e=> selectChargingPrice(e,20000)" type="radio" id="charge-radio-3" name="ChargingPrice" class="custom-control-input" value="20000">
+                                <label class="custom-control-label" for="charge-radio-3">20 هزار تومان</label>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="custom-control custom-radio">
+                                <input @onclick="e=> selectChargingPrice(e,50000)" type="radio" id="charge-radio-4" name="ChargingPrice" class="custom-control-input" value="50000">
+                                <label class="custom-control-label" for="charge-radio-4">50 هزار تومان</label>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="custom-control custom-radio">
+                                <input @onclick="e=> selectChargingPrice(e,100000)" type="radio" id="charge-radio-5" name="ChargingPrice" class="custom-control-input" value="100000">
+                                <label class="custom-control-label" for="charge-radio-5">100 هزار تومان</label>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="custom-control custom-radio">
+                                <input @onclick="e=> selectChargingPrice(e,200000)" type="radio" id="charge-radio-6" name="ChargingPrice" class="custom-control-input" value="200000">
+                                <label class="custom-control-label" for="charge-radio-6">200 هزار تومان</label>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class=" input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">مبلغ دلخواه</span>
+                                </div>
+                                <input @bind="ChargingPrice" @bind:event="oninput" type="number" id="charge-radio-7" checked name="ChargingPrice" class="form-control">
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    @if (ChargingPrice > 0)
+                    {
+                        <button type="button" data-dismiss="modal" @onclick="chargeWallet" class="btn btn-primary ml-2"><i class="fas fa-money-check"></i> پرداخت شارژ</button>
+
+                    }
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">انصراف</button>
+                </div>
+                @*}*@
+
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <Spinner />
+
+}
+<!--End Modal Charge Account-->
+
+@code {
+    private bool _IsMobileDevice;
+    private CartViewModel Model;
+    private int _paymentType = 2;
+    private double ChargingPrice = 0;
+
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthState { get; set; }
+
+    void selectChargingPrice(MouseEventArgs e, double price)
+    {
+        ChargingPrice = price;
+    }
+
+    void payFromCard()
+    {
+        _paymentType = 2;
+    }
+    void payFromWallet()
+    {
+        _paymentType = 1;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        _IsMobileDevice =
+            await JSRuntime.InvokeAsync<bool>("isMobileDevice");
+        StateHasChanged();
+
+        ClaimsPrincipal user = (await AuthState).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var SecurityStamp = user.FindFirst("SecurityStamp");
+
+            var requestCart = new Request { Token = SecurityStamp.Value };
+
+            var result = await Http.PostAsJsonAsync("api/GetCart", requestCart);
+            if (result.StatusCode == HttpStatusCode.OK)
+            {
+
+                var resultCart = result.Content.ReadFromJsonAsync<ResultCart>().Result;
+                Model = resultCart.CartViewModel;
+                ChargingPrice = Model.TotalAmount;
+                StateHasChanged();
+            }
+
+        }
+    }
+
+    private async Task chargeWallet()
+    {
+
+
+        ClaimsPrincipal user = (await AuthState).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var SecurityStamp = user.FindFirst("SecurityStamp");
+            var requestCharge = new Request { Price = ChargingPrice, Token = SecurityStamp.Value };
+
+            var result = await Http.PostAsJsonAsync("api/CreditCharge", requestCharge);
+            if (result.StatusCode == HttpStatusCode.OK)
+            {
+                var resultPayment = result.Content.ReadFromJsonAsync<ResultPayment>().Result;
+                if (resultPayment.Statue == Enums.Statue.Success)
+                {
+                    Navigation.NavigateTo(resultPayment.UrlReturn);
+
+                    var requestCart = new Request { Token = SecurityStamp.Value };
+
+                    var resultcart = await Http.PostAsJsonAsync("api/GetCart", requestCart);
+                    if (result.StatusCode == HttpStatusCode.OK)
+                    {
+
+                        var resultCart = resultcart.Content.ReadFromJsonAsync<ResultCart>().Result;
+                        Model = resultCart.CartViewModel;
+
+                        StateHasChanged();
+                    }
+
+
+                }
+
+            }
+
+        }
+    }
+    private async Task pay()
+    {
+
+
+        ClaimsPrincipal user = (await AuthState).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var SecurityStamp = user.FindFirst("SecurityStamp");
+            var requestPay = new Request { Id = _paymentType, Token = SecurityStamp.Value, ReturnFrom = Enums.ReturnFrom.Site };
+
+            var result = await Http.PostAsJsonAsync("api/Pay", requestPay);
+            if (result.StatusCode == HttpStatusCode.OK)
+            {
+                var resultPayment = result.Content.ReadFromJsonAsync<ResultPayment>().Result;
+                if (resultPayment.Statue == Enums.Statue.Success)
+                {
+                    if (_paymentType == 2)
+                        Navigation.NavigateTo(resultPayment.UrlReturn);
+                    else if (_paymentType == 1)
+                    {
+                        var requestCart = new Request { Token = SecurityStamp.Value };
+
+                        var resultcart = await Http.PostAsJsonAsync("api/GetCart", requestCart);
+                        if (result.StatusCode == HttpStatusCode.OK)
+                        {
+
+                            var resultCart = resultcart.Content.ReadFromJsonAsync<ResultCart>().Result;
+                            Model = resultCart.CartViewModel;
+
+                            StateHasChanged();
+                        }
+                        MyService.CallRequestRefresh();
+
+
+                    }
+
+
+
+
+
+                }
+
+            }
+
+        }
+    }
+    private async Task removeCart(MouseEventArgs e, int Id)
+    {
+
+
+        ClaimsPrincipal user = (await AuthState).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var SecurityStamp = user.FindFirst("SecurityStamp");
+            var requestPay = new Request { Id = Id, Token = SecurityStamp.Value};
+
+            var result = await Http.PostAsJsonAsync("api/RemoveFromCart", requestPay);
+            if (result.StatusCode == HttpStatusCode.OK)
+            {
+                var resultPayment = result.Content.ReadFromJsonAsync<Result>().Result;
+                if (resultPayment.Statue == Enums.Statue.Success)
+                {
+                    var requestCart = new Request { Token = SecurityStamp.Value };
+
+                    var resultGetCart = await Http.PostAsJsonAsync("api/GetCart", requestCart);
+                    if (resultGetCart.StatusCode == HttpStatusCode.OK)
+                    {
+
+                        var resultCart = resultGetCart.Content.ReadFromJsonAsync<ResultCart>().Result;
+                        Model = resultCart.CartViewModel;
+                        ChargingPrice = Model.TotalAmount;
+                        MyService.CallRequestRefresh();
+                        StateHasChanged();
+                    }
+                }
+
+            }
+
+        }
+    }
+
+}

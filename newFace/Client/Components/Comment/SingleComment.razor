@@ -1,0 +1,186 @@
+﻿@using System.Security.Claims
+@using newFace.Shared.Models
+@if (Model != null)
+{
+
+    <div id="commentlist_@Model.Id" class="media mt-2">
+        <a class="d-flex align-self-start mt-1 pic-user-comment">
+            @if (Model.User.Img != null)
+            {
+                <img src="@Model.User.Img" class="img-fluid comment-user-img" style="width: 35px; height: 35px;" alt="@Model.User.FullName">
+            }
+            else
+            {
+                <img src="~/Content/img/default_logo.jpg" class="img-fluid comment-user-img rounded-circle ml-1" style="width: 35px; height: 35px;" alt="user-pic">
+            }
+        </a>
+        <div class="media-body py-1 px-2 border comment-content rounded">
+            <input name="commentId" id="commentId" value="@Model.Id" hidden />
+
+            <h6 class="text-muted mb-0 text-small">
+                <span><a href="">@Model.User.FullName</a></span>
+                @*@Url.Action("Profile", "Home", new { UserName = Model.User.UserName })*@
+                <span class="badge badge-warning mr-2">@Model.User.Credit <i class="fas fa-star"></i></span>
+                @if (Model.ProductId != null && Model.User != null && Model.User.FactorforsaleProducts != null && Model.User.FactorforsaleProducts.Any(f => f.ProductId == Model.ProductId))
+                {
+                    <span>(خریدار محصول)</span>
+                }
+
+            </h6>
+            <p class="text-muted mb-0 text-small">@Model.User.NickName</p>
+
+
+
+            <div class="bg-white p-2 rounded">
+                <p>@Model.Desc</p>
+            </div>
+            <div class="d-flex justify-content-end ml-3 reply-delete">
+
+                <a @onclick="@(async () => await OnClickReplyComment.InvokeAsync(Model))" data-toggle="modal" data-target="#reply-comment-modal" role="button" class="text-xsmall btn btn-sm btn-light ml-2"><i class="fa fa-reply"></i> پاسخ</a>
+                @*@Ajax.ActionLink("جواب", "Reply", "Comments", new { id = Model.Id }, new AjaxOptions { HttpMethod = "GET", OnSuccess = "SuccessOpenReplyCommentModal", OnFailure = "FailMessage", UpdateTargetId = "replyCommnetModalPartial", InsertionMode = InsertionMode.Replace }, new { @class = "text-xsmall btn btn-sm btn-light text-info ml-2", style = "display:none", id = "replycommentaction" + Model.Id })*@
+
+                @if (Model.BlogId == null)
+                {
+                    if (Model.User.UserName == UserName)
+                    {
+                        <a role="button" class="text-xsmall btn btn-sm btn-light text-danger ml-2" @onclick="@(async () => await OnClickDeleteComment.InvokeAsync(Model.Id))" data-toggle="modal" data-target="#delete-commend-modal"><i class="fas fa-trash-alt"></i> حذف</a>
+                        @*@Ajax.ActionLink("ویرایش کامنت", "Edit", "Comments", new { id = Model.Id }, new AjaxOptions { HttpMethod = "GET", OnSuccess = "SuccessOpenEditCommentModal", OnFailure = "FailMessage", UpdateTargetId = "editCommnetModalPartial", InsertionMode = InsertionMode.Replace }, new { @class = "text-xsmall btn btn-sm btn-light text-info ml-2", style = "display:none", id = "editcommentaction" + Model.Id })*@
+                        <a role="button" class="text-xsmall btn btn-sm btn-light text-info ml-2" @onclick="@(async () => await OnClickEditComment.InvokeAsync(Model))" data-toggle="modal" data-target="#edit-comment-modal"><i class="fas fa-edit"></i> ویرایش</a>
+
+                    }
+                }
+
+
+            </div>
+
+
+
+            @if (Model.FirstCommentsChilds != null && Model.FirstCommentsChilds.Any())
+            {
+
+                <div class="media-body py-1 px-2 border bg-light mb-3 m-4 rounded">
+
+                    @foreach (var item3 in Model.FirstCommentsChilds.OrderBy(f => f.Id))
+                    {
+
+                        <div id="commentlist_@item3.Id" class="media mt-2 rounded">
+
+                            <div class="media-body py-1 px-2 border rounded">
+                                <div class="d-flex align-self-start ml-1 mt-1 pic-user-comment">
+                                    @if (item3.User != null)
+                                    {
+                                        if(item3.User.Img != null)
+                                        {
+                                            <img src="@item3.User.Img" class="img-fluid comment-user-img rounded-circle" style="width: 35px; height: 35px;" alt="@item3.User.FullName">
+                                        }
+                                        else
+                                        {
+                                            <img src="Content/img/default_logo.jpg" class="img-fluid comment-user-img rounded-circle" style="width: 35px; height: 35px;" alt="user-pic">
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <img src="Content/img/default_logo.jpg" class="img-fluid comment-user-img rounded-circle" style="width: 35px; height: 35px;" alt="user-pic">
+                                    }
+
+                                <h6 class="text-muted mb-0 text-small">
+                                    <span><a href="">@item3.User.FullName</a></span>
+                                    @*@Url.Action("Profile", "Home", new { UserName = item3.User.UserName })*@
+                                    <span class="badge badge-warning mr-2">@item3.User.Credit <i class="fas fa-star"></i></span>
+
+                                    @if (item3.ProductId != null && item3.User != null && item3.User.FactorforsaleProducts != null && item3.User.FactorforsaleProducts.Any(f => f.ProductId == item3.ProductId))
+                                    {
+                                        <span>(خریدار محصول)</span>
+                                    }
+                                </h6>
+                                    @*<p class="text-muted mb-0 text-small">@item3.User.NickName</p>*@
+
+                                </div>
+                                <input name="commentId" id="commentId" value="@item3.Id" hidden />
+
+
+                                @if (item3.ParentId != null)
+                                {
+                                    if (item3.CommentParent != null)
+                                    {
+                                        <a style="text-decoration:none !important;">
+
+                                            <div class="d-flex justify-content-start text-left pr-3 mt-2 mb-3 bg-gray" style="border-right: 4px solid #007bff !important;">
+                                                <div class="pt-2 pb-2">
+                                                    <h6 class="text-muted mb-1"><span>@item3.CommentParent.User.FullName</span></h6>
+                                                    @if (item3.CommentParent.Desc.Length > 100)
+                                                    {
+                                                        <p>@item3.CommentParent.Desc.Substring(0, 100) ...</p>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>@item3.CommentParent.Desc</p>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </a>
+                                    }
+
+
+                                }
+
+                                <p>@item3.Desc</p>
+
+
+                                <div class="d-flex justify-content-end ml-3 reply-delete">
+                                    <a @onclick="@(async () => await OnClickReplyComment.InvokeAsync(item3))" data-toggle="modal" data-target="#reply-comment-modal" role="button" class="text-xsmall btn btn-sm btn-light ml-2"><i class="fa fa-reply"></i></a>
+                                    @*@Ajax.ActionLink("جواب", "Reply", "Comments", new { id = item3.Id }, new AjaxOptions { HttpMethod = "GET", OnSuccess = "SuccessOpenReplyCommentModal", OnFailure = "FailMessage", UpdateTargetId = "replyCommnetModalPartial", InsertionMode = InsertionMode.Replace }, new { @class = "text-xsmall btn btn-sm btn-light text-info ml-2", style = "display:none", id = "replycommentaction" + item3.Id })*@
+
+                                    @if (item3.User.UserName == UserName)
+                                    {
+                                        <a role="button" class="text-xsmall btn btn-sm btn-light text-danger ml-2" @onclick="@(async () => await OnClickDeleteComment.InvokeAsync(item3.Id))" data-toggle="modal" data-target="#delete-commend-modal"><i class="fas fa-trash-alt"></i></a>
+                                        @*@Ajax.ActionLink("ویرایش کامنت", "Edit", "Comments", new { id = item3.Id }, new AjaxOptions { HttpMethod = "GET", OnSuccess = "SuccessOpenEditCommentModal", OnFailure = "FailMessage", UpdateTargetId = "editCommnetModalPartial", InsertionMode = InsertionMode.Replace }, new { @class = "text-xsmall btn btn-sm btn-light text-info ml-2", style = "display:none", id = "editcommentaction" + item3.Id })*@
+                                        <a role="button" class="text-xsmall btn btn-sm btn-light text-info ml-2" @onclick="@(async () => await OnClickEditComment.InvokeAsync(item3))" data-toggle="modal" data-target="#edit-comment-modal"><i class="fas fa-edit"></i></a>
+
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+
+                </div>
+
+            }
+
+
+
+
+        </div>
+    </div>
+
+}
+
+@code {
+    [Parameter]
+    public Comment Model { get; set; }
+
+    [Parameter]
+    public EventCallback<Comment> OnClickEditComment { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnClickDeleteComment { get; set; }
+
+    [Parameter]
+    public EventCallback<Comment> OnClickReplyComment { get; set; }
+
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthState { get; set; }
+
+    private string UserName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ClaimsPrincipal user = (await AuthState).User;
+        UserName = user.FindFirst("UserName").Value; ;
+    }
+
+}

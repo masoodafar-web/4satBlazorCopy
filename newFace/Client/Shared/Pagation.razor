@@ -1,0 +1,59 @@
+﻿<ul class="pagination justify-content-center" style="margin:20px 0">
+    @if ((PageNumber - 1) < 0)
+    {
+        <li class="page-item disabled"><a class="page-link" @onclick="@(() => GetPage.InvokeAsync(0))">اولین</a></li>
+        <li class="page-item disabled"><a class="page-link" @onclick="@(() => GetPage.InvokeAsync(PageNumber-1))">قبلی</a></li>
+    }
+    else
+    {
+        <li class="page-item"><a class="page-link" @onclick="@(() => GetPage.InvokeAsync( 0))">اولین</a></li>
+        <li class="page-item"><a class="page-link" @onclick="@(() => GetPage.InvokeAsync(PageNumber-1))">قبلی</a></li>
+    }
+    @for (int i = 1; i <= PageCount; i++)
+    {
+        var buttonNumber = i;
+        @if (i > (PageNumber - 2) && i < ((PageNumber) + 4))
+        {
+            if ((PageNumber + 1) == i)
+            {
+                <li class="page-item active "><a class="page-link" @onclick="@(() => GetPage.InvokeAsync(buttonNumber-1))">@i</a></li>
+            }
+            else
+            {
+                <li class="page-item"><a class="page-link" @onclick="@(() => GetPage.InvokeAsync(buttonNumber-1))">@i</a></li>
+            }
+        }
+
+
+
+
+
+    }
+    @if ((PageNumber + 1) < PageCount)
+    {
+        <li class="page-item "><a class="page-link" @onclick="@(() => GetPage.InvokeAsync(PageNumber+1))">بعدی</a></li>
+        <li class="page-item "><a class="page-link" @onclick="@(() => GetPage.InvokeAsync(PageCount-1))">آخرین</a></li>
+
+    }
+    else
+    {
+        <li class="page-item disabled"><a class="page-link" @onclick="@(() => GetPage.InvokeAsync(PageNumber+1))">بعدی</a></li>
+        <li class="page-item disabled"><a class="page-link" @onclick="@(() => GetPage.InvokeAsync(PageCount-1))">آخرین</a></li>
+
+    }
+    <p class="px-2 mt-2 mb-0">کل:@PageCount</p>
+    <input @bind="JumpNumber" class="form-control mr-4 ml-2" style="max-width:5rem" max="@PageCount" min="0" type="number" />
+    <div class="btn btn-info" @onclick="@(() => GetPage.InvokeAsync(JumpNumber-1))">پرش </div>
+</ul>
+
+@code {
+    [Parameter]
+    public int PageCount { get; set; }
+    [Parameter]
+    public int PageNumber { get; set; }
+    [Parameter]
+    public int JumpNumber { get; set; }
+
+    [Parameter]
+    public EventCallback<int> GetPage { get; set; }
+}

@@ -1,0 +1,105 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "ثبت نام";
+}
+
+<div class="wrapper">
+    <div class="login-page-bg">
+        <div class="login-page-bg-2">
+            <div class="container">
+                <div class="row no-gutters login-page align-content-center">
+
+
+
+                    <div class="col-12 col-lg-6 p-4 login-right mx-auto rounded">
+                        <div class="logo-login text-center mt-4">
+                            <img src="~/img/Logo.png" class="img-fluid" alt="" />
+                        </div>
+                        <h1 class="login-welcome-text h3 mt-3 text-center">ثبت نام در فرصت</h1>
+
+                        <!--======================Register Form========================-->
+                        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fas fa-user"></i></div>
+                                </div>
+                                <input asp-for="Input.FullName" class="form-control" placeholder = "نام و نام خانوادگی"/>
+                                <div class="col-12">
+                                    <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="input-group mt-3">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fas fa-at"></i></div>
+                                </div>
+                                <input asp-for="Input.Email" class="form-control"  placeholder = "ایمیل: Example@example.com" />
+
+                                <div class="col-12">
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="input-group mt-3">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fas fa-mobile-alt"></i></div>
+                                </div>
+                                <input asp-for="Input.PhoneNumber" class="form-control" placeholder = "شماره همراه: 09123456789" />
+                                <div class="col-12">
+                                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group mt-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><i class="fas fa-key"></i></div>
+                                        </div>
+                                        <input asp-for="Input.Password" class="form-control" placeholder = "کلمه عبور" />
+                                        <div class="col-12">
+                                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group mt-3">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><i class="fas fa-key"></i></div>
+                                        </div>
+                                        <input asp-for="Input.ConfirmPassword" class="form-control" placeholder = "تایید کلمه عبور" />
+                                        <div class="col-12">
+                                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-block btn-info mt-4"> ثبت نام</button>
+
+                            <hr id="three" class="custom" data-symbol="یا">
+                        </form>
+                        @*ورود با گوگل بخواطر این که کاربردی در حال حاضر نداشت حذف گردید*@
+
+                        @*<div class="px-md-5">
+                                @Html.Partial("_ExternalLoginsListPartial", new newFace.Models.ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+                            </div>*@
+                        <div class="px-md-5">
+                            <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-block btn-danger" id="InstallApp">ورود به سیستم</a>
+                        </div>
+                        <!--======================End Register Form========================-->
+
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

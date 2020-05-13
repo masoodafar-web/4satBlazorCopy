@@ -1,0 +1,124 @@
+﻿@using static newFace.Shared.Models.Resource.Enums
+@using newFace.Shared.Models.Resource
+@using newFace.Shared.Models.ViewModels
+@using newFace.Shared.Models
+@layout ShopLayout
+@inject HttpClient Http
+
+
+
+<div class="container">
+    <div class="row py-4 allproduct">
+
+        @if (ProductSummaryViewModels != null)
+        {
+            if (!ProductSummaryViewModels.Any())
+            {
+                <p>not found</p>
+            }
+            else
+            {
+                <div class="col-12">
+                    <div class="row">
+                        @foreach (var productSummaryView in ProductSummaryViewModels)
+                        {
+                            <SingleProduct ProductSummaryViewModel="productSummaryView" buyType="buyType" giftType="giftType"/>
+
+                        }
+                    </div>
+                </div>
+                <div class="col-12 text-center">
+                    <Pagation JumpNumber="JumpNumber" PageCount="PageCount" PageNumber="PageNumber" GetPage="GetPage" />
+                </div>
+            }
+
+
+        }
+        else
+        {
+            <Spinner />
+        }
+
+    </div>
+</div>
+@code {
+
+    [Parameter]
+    public ProductSearchType productSearchType { get; set; }
+
+
+    [Parameter]
+    public ProductType productType { get; set; }
+
+    [Parameter]
+    public BuyType buyType { get; set; }
+
+    [Parameter]
+    public GiftType giftType { get; set; }
+
+    [Parameter]
+    public string userToken { get; set; }
+
+    private List<ProductSummaryViewModels> ProductSummaryViewModels;
+    private HttpResponseMessage response;
+    private ResultShop content;
+    private int PageCount;
+    private int PageNumber;
+    private int JumpNumber;
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        GetProductsAsync(0);
+        JumpNumber = PageNumber + 1;
+
+    }
+
+    private void GetPage(int pageNumber)
+    {
+        JumpNumber = pageNumber + 1;
+        GetProductsAsync(pageNumber);
+
+    }
+
+    private async Task GetProductsAsync(int pageNumber)
+    {
+        if (productSearchType == ProductSearchType.SuggestionProducts)
+        {
+            response = await Http.PostAsJsonAsync("api/GetProducts", new RequestShop() { PageNumber = pageNumber, PageCount = 12, productType = productType, productSearchType = productSearchType, Token = userToken });
+            content = response.Content.ReadFromJsonAsync<ResultShop>().Result;
+        }
+        else if (productSearchType == ProductSearchType.MyProducts)
+        {
+            if (buyType==BuyType.Gift)
+            {
+                response = await Http.PostAsJsonAsync("api/GetProducts", new RequestShop() { PageNumber = pageNumber, PageCount = 12, productType = null, productSearchType = productSearchType, Token = userToken, buyType = buyType,giftType= giftType });
+                content = response.Content.ReadFromJsonAsync<ResultShop>().Result;
+            }
+            else if (buyType == BuyType.Normal)
+            {
+
+                response = await Http.PostAsJsonAsync("api/GetProducts", new RequestShop() { PageNumber = pageNumber, PageCount = 12, productType = productType, productSearchType = productSearchType, Token = userToken, buyType = buyType });
+                content = response.Content.ReadFromJsonAsync<ResultShop>().Result;
+            }
+            else if (buyType == BuyType.Shareholder || buyType == BuyType.Favorit)
+            {
+
+                response = await Http.PostAsJsonAsync("api/GetProducts", new RequestShop() { PageNumber = pageNumber, PageCount = 12, productType = productType, productSearchType = productSearchType, Token = userToken, buyType = buyType });
+                content = response.Content.ReadFromJsonAsync<ResultShop>().Result;
+            }
+
+        }
+        else
+        {
+            response = await Http.PostAsJsonAsync("api/GetProducts", new RequestShop() { PageNumber = pageNumber, PageCount = 12, productType = productType, productSearchType = productSearchType });
+            content = response.Content.ReadFromJsonAsync<ResultShop>().Result;
+
+        }
+        ProductSummaryViewModels = content.ProductsSummary;
+        PageCount = content.Count;
+        PageNumber = pageNumber;
+        StateHasChanged();
+    }
+}

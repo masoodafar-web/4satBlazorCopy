@@ -1,0 +1,27 @@
+﻿@layout ShopLayout
+@page "/Exam"
+@using newFace.Client.Components.ProductListCarousel
+@using newFace.Client.Components.ProductsSlider
+@using System.Net.Http
+@using Microsoft.AspNetCore.Authorization
+@using static newFace.Shared.Models.Resource.Enums;
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+@attribute [Authorize]
+
+<div class="w-100">
+    <ProductsSlider productType="ProductType.Exam" />
+</div>
+<div class="container">
+    <AuthorizeView>
+        <Authorized>
+            <ProductListCarousel Title="محصولات پیشنهادی" productSearchType="ProductSearchType.SuggestionProducts" productType="ProductType.Exam" userToken="@context.User.FindFirst("SecurityStamp").Value" />
+        </Authorized>
+    </AuthorizeView>
+    <hr />
+    <ProductListCarousel Title="جدیدترین ها" productSearchType="ProductSearchType.NewProducts" productType="ProductType.Exam" />
+    <hr />
+
+    <ProductListCarousel Title="پرفروش ترین ها" productSearchType="ProductSearchType.BestSellerProducts" productType="ProductType.Exam" />
+
+</div>

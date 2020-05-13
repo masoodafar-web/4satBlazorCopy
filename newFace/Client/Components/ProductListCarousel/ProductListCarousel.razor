@@ -1,0 +1,96 @@
+﻿@using static newFace.Shared.Models.Resource.Enums
+@using newFace.Shared.Models.Resource
+@using newFace.Shared.Models.ViewModels
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+
+<section title="list" class="mt-4 mb-5">
+    <div class="ProdoctSlider">
+        <div class="d-flex mb-3 px-md-4">
+            <div class="Hsubject">@Title</div>
+            <a href="MoreProducts/@Convert.ToInt32(productType)/@Convert.ToInt32(productSearchType)" class="mr-auto btn btn-outline-secondary" style="border-radius: 27px; ">مشاهده همه</a>
+        </div>
+        @if (ProductSummaryViewModels != null)
+        {
+            if (ProductSummaryViewModels.Any())
+            {
+                <div class="owl-carousel owl-theme">
+                    @foreach (var ProductSummaryViewModel in ProductSummaryViewModels)
+                    {
+                        <BookItem Model="ProductSummaryViewModel" />
+                    }
+
+                </div>
+            }
+            else
+            {
+                <EmptyCarousel />
+            }
+
+        }
+        else
+        {
+            <EmptyCarousel />
+
+        }
+
+    </div>
+</section>
+@code {
+    [Parameter]
+    public string Title { get; set; } = "Title...";
+    [Parameter]
+    public ProductSearchType productSearchType { get; set; }
+
+    [Parameter]
+    public ProductType productType { get; set; }
+
+    [Parameter]
+    public string userToken { get; set; }
+
+    private List<ProductSummaryViewModels> ProductSummaryViewModels;
+
+    private HttpResponseMessage response;
+    private ResultShop content;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //if (!String.IsNullOrEmpty(userToken))
+        //{
+        //    response = await Http.PostAsJsonAsync("api/GetProducts", new RequestShop() { PageNumber = 0, PageCount = 12, productType = productType, productSearchType = productSearchType, Token = userToken });
+        //    content = response.Content.ReadFromJsonAsync<ResultShop>().Result;
+        //}
+        //else
+        //{
+        //    response = await Http.PostAsJsonAsync("api/GetProducts", new RequestShop() { PageNumber = 0, PageCount = 12, productType = productType, productSearchType = productSearchType });
+        //    content = response.Content.ReadFromJsonAsync<ResultShop>().Result;
+
+        //}
+        //ProductSummaryViewModels = content.ProductsSummary;
+        //await JSRuntime.InvokeAsync<object>("owlcarousel");
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+            if (!String.IsNullOrEmpty(userToken))
+            {
+                response = await Http.PostAsJsonAsync("api/GetProducts", new RequestShop() { PageNumber = 0, PageCount = 12, productType = productType, productSearchType = productSearchType, Token = userToken });
+                content = response.Content.ReadFromJsonAsync<ResultShop>().Result;
+
+            }
+            else
+            {
+                response = await Http.PostAsJsonAsync("api/GetProducts", new RequestShop() { PageNumber = 0, PageCount = 12, productType = productType, productSearchType = productSearchType });
+                content = response.Content.ReadFromJsonAsync<ResultShop>().Result;
+
+            }
+            ProductSummaryViewModels = content.ProductsSummary;
+            StateHasChanged();
+            await JSRuntime.InvokeAsync<object>("owlcarousel");
+            firstRender = false;
+        }
+    }
+}

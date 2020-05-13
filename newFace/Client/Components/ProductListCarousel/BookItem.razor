@@ -1,0 +1,26 @@
+﻿@using newFace.Shared.Models.ViewModels
+<div class="item">
+    <div class="book-slide">
+        <a>
+            <div class="contain">
+                <a href="/ProductDetails/@Model.Id" >
+                    <img width="200" src="@Model.Img" data-src="@Model.Img" alt="@Model.Title"></a>
+                    @*<div class="text-block">
+                <label>@Model.Author</label>
+            </div>*@
+            </div>
+        </a>
+        <span class="title-book"> <a title="@Model.Title" href="/ProductDetails/@Model.Id" class="text-decoration-none">@Model.Title </a></span>
+        @(Model.Author=Model.Author==null?"---": Model.Author)
+        <span class="text-muted"> <a title="@Model.Author">@Model.Author </a></span>
+
+        <p class="author-names">
+            <span class="price">@Model.PriceWithDiscount تومان</span>
+        </p>
+    </div>
+
+</div>
+@code {
+    [Parameter]
+    public ProductSummaryViewModels Model { get; set; }
+}

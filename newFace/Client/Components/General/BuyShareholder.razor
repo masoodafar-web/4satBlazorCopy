@@ -1,0 +1,47 @@
+﻿<p class="alert alert-info"> درصد سهام در دسترس <span class="badge badge-info text-medium">@Available %</span></p>
+<p class="alert alert-warning">درصد سهام خارج از دسترس <span class="badge badge-warning text-medium">@NotAvailable %</span></p>
+<p class="alert alert-primary">درصد سهام خریداری شده <span class="badge badge-primary text-medium">@Sold %</span></p>
+
+@if (Available != 0)
+{
+    <h5 class="alert alert-success d-flex">
+        <span>انتخاب درصد سهام</span>
+        <select class="custom-select w-25 custom-select-sm mx-3" @onchange="shareholderPercentSelet" id="ShareholderPercent" name="ShareholderPercent">
+            @for (int i = 1; i <= Available; i++)
+            {
+                <option value="@i">% @i</option>
+            }
+        </select>
+        <span id="ShareholderUnitPrice" class="badge badge-success">@shareholderUnitPrice </span> تومان
+    </h5>
+}
+@code {
+    [Parameter]
+    public int Available { get; set; }
+    [Parameter]
+    public int NotAvailable { get; set; }
+    [Parameter]
+    public int Sold { get; set; }
+    [Parameter]
+    public double ShareholderUnitPrice { get; set; }
+
+    private double shareholderUnitPrice = 0;
+
+    public string selectedString = string.Empty;
+
+    public string getPercent()
+    {
+        return selectedString;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        shareholderUnitPrice = ShareholderUnitPrice;
+    }
+    void shareholderPercentSelet(ChangeEventArgs e)
+    {
+
+        shareholderUnitPrice = ShareholderUnitPrice * int.Parse(e.Value.ToString());
+        selectedString = e.Value.ToString();
+    }
+}

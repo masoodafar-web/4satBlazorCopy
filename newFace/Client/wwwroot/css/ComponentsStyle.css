@@ -1,0 +1,170 @@
+﻿.has-search .form-control {
+    padding-right: 2.375rem;
+}
+
+/*.has-search */.form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
+.combo-photo {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-size: 32px 35px;
+    background-position: center center;
+    vertical-align: middle;
+    line-height: 32px;
+    box-shadow: inset 0 0 1px #999, inset 0 0 10px rgba(0,0,0,.2);
+    margin-left: 5px;
+}
+
+.combo-name {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 32px;
+    padding-left: 3px;
+}
+
+.comboBox {
+    margin: 10px;
+}
+.comboBoxItems {
+    height: 100px;
+    max-height: 100px;
+    margin-top: -0.99rem;
+    position: absolute;
+    width: 95%;
+    background-color: white;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+#itemBlock {
+    cursor: pointer;
+}
+    #itemBlock:hover {
+        background-color: antiquewhite;
+    }
+.singleProductImg {
+    height: 12.5rem;
+    -webkit-box-shadow: -2px 12px 14px -8px rgba(122,122,122,1);
+    -moz-box-shadow: 10px 15px 20px -10px rgba(122,122,122,1);
+    box-shadow: -2px 12px 14px -8px rgba(122,122,122,1);
+    border: 1px solid rgba(152,152,152,.45);
+}
+.singleProductImgNormal {
+    height: 5rem ;
+    -webkit-box-shadow: -2px 12px 14px -8px rgba(122,122,122,1);
+    -moz-box-shadow: 10px 15px 20px -10px rgba(122,122,122,1);
+    box-shadow: -2px 12px 14px -8px rgba(122,122,122,1);
+    border: 1px solid rgba(152,152,152,.45);
+}
+.singleProductPrice, .singleProductRating {
+    direction: ltr
+}
+
+.ProductColItem {
+    border-bottom-color: #ece7e7 !important;
+}
+
+.pagination li {
+    cursor: pointer;
+}
+
+    .pagination li.active {
+        cursor: default;
+    }
+
+    .pagination li.disabled {
+        cursor: default;
+    }
+/*  ------------------------------------  book----------------------*/
+.book-slide img {
+    width: 150px;
+    -webkit-box-shadow: -2px 12px 14px -8px rgba(122,122,122,1);
+    -moz-box-shadow: 10px 15px 20px -10px rgba(122,122,122,1);
+    box-shadow: -2px 12px 14px -8px rgba(122,122,122,1);
+    border: 1px solid rgba(152,152,152,.45);
+    margin: 0 auto;
+}
+
+.book-slide .title-book {
+    direction: rtl;
+    line-height: 1.5em;
+    text-align: center;
+    font-size: .85em;
+    margin-bottom: 0;
+    margin-top: 12px;
+    min-height: 30px;
+    display: block;
+}
+
+.book-slide p {
+    direction: rtl;
+    line-height: 1.5em;
+    text-align: center;
+    font-size: .75em;
+    margin-bottom: 0;
+    min-height: 30px;
+    padding-bottom: 0;
+    color: #04801e;
+}
+
+.book-slide a {
+    font-weight: bold;
+}
+
+.ProdoctSlider .Hsubject {
+    font-size: 1rem;
+    margin-bottom: 7px;
+    padding-top: 10px;
+    font-weight: bold;
+}
+/*-----------------------lable on image*/
+.contain {
+    position: relative;
+    font-family: Arial;
+}
+
+.text-block {
+    position: absolute;
+    bottom: 20px;
+    left: 30px;
+    right: 0;
+    background-color: #07303a;
+    color: white;
+    padding-left: 20px;
+    padding-right: 7px;
+    font-size: 0.8rem;
+    padding-top: 5px;
+    border-radius: 5px 0px 0px 5px;
+    border: 1px solid #496b73;
+}
+
+/*--------------------end lable on image-*/
+.price {
+    background-color: #07ffaa29;
+    padding: 3px;
+}
+
+.banner .banner-image {
+    width: 100%;
+}
+/*  ------------------------------------  book----------------------*/
+.CenterIcon {
+    color: white;
+    font-size: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}

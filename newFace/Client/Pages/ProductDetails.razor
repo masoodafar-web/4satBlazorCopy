@@ -1,0 +1,1988 @@
+﻿@layout ShopLayout
+@page "/productDetails/{id:int}"
+
+@using System.Net
+@using System.Net.Http
+@using Microsoft.AspNetCore.Authorization
+@using System.Net.Http.Headers
+@using System.Net.Http.Json
+@using newFace.Client.Components.MultiColumnComboBox
+@using newFace.Client.Components.General
+@using newFace.Client.Components.Comment
+@using newFace.Shared
+@using newFace.Shared.Models
+@using newFace.Shared.Models.Resource
+@using newFace.Shared.Models.ViewModels
+@using System.Security.Claims
+@using newFace.Shared.Models.Education
+@using static newFace.Shared.Models.Resource.Enums
+@using System.Text.Json
+
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+@inject MyService MyService
+
+@attribute [Authorize]
+@if (_productVm != null)
+{
+    <div>
+
+
+        @*<div id="editCommnetModalPartial">
+                @Html.Partial("Comment/_EditCommentPartial", Model)
+            </div>
+
+            <div id="replyCommnetModalPartial">
+                @Html.Partial("Comment/_ReplyCommentPartial", Model)
+            </div>
+
+            @Html.Partial("Comment/_DeleteCommentPartial")*@
+        <!--==================================================================================
+                                      CONTENT
+        ===================================================================================-->
+        <div>
+            @if (_IsMobileDevice)
+            {
+                //اگر موبایل بود
+                <div class="book-page px-2">
+
+
+                    <!--===================book presentation==================-->
+                    <div class="row">
+                        <!--=================Book Image==================-->
+                        <div class="col-4 col-md-3">
+                            <div class="book-pic">
+                                <a data-toggle="modal" data-target="#book-img"><img src="@_productVm.Product.Img" class="img-fluid img-thumbnail w-100 h-auto" alt="@_productVm.Product.Title"></a>
+                                <!-- Modal -->
+                                <div class="modal fade" id="book-img" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">نمایش جلد کتاب</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body p-2">
+                                                <img src="@_productVm.Product.Img" class="img-fluid img-thumbnail w-100" alt="@_productVm.Product.Title">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-8 col-md-9 col-lg-6">
+                            <!--==================Head Book=================-->
+                            <section class="alert alert-light books-header px-2 px-md-3 mb-2">
+                                @if (_productVm.Product.Type == Enums.ProductType.Book)
+                                {
+                                    <h6 class="head-book text-dark text-b mb-0">@_productVm.Product.Title </h6>
+                                }
+                                else if (_productVm.Product.Type == Enums.ProductType.Course)
+                                {
+                                    <h1 class="head-book text-b mb-0">@_productVm.Product.Title </h1>
+                                }
+                                else if (_productVm.Product.Type == Enums.ProductType.Exam)
+                                {
+                                    <h1 class="head-book text-b mb-0">@_productVm.Product.Title </h1>
+                                }
+                                <div class="border-bottom py-2 mb-2 stars-book text-warning mr-0 mr-md-4">
+                                    @{
+                                        float AvgRank = 0;
+                                        if (_commentsCount != 0)
+                                        {
+                                            AvgRank = _productVm.Product.Rate;
+                                        }
+                                    }
+                                    <span class="badge badge-warning ml-2">@AvgRank.ToString("0.##")</span>
+                                    @if (AvgRank >= 0 && AvgRank < 0.5)
+                                    {
+                                        <i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 0.5 && AvgRank < 1)
+                                    {
+                                        <i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 1 && AvgRank < 1.5)
+                                    {
+                                        <i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 1.5 && AvgRank < 2)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 2 && AvgRank < 2.5)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 2.5 && AvgRank < 3)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 3 && AvgRank < 3.5)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 3.5 && AvgRank < 4)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 4 && AvgRank < 4.5)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 4.5 && AvgRank < 5)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+
+                                    }
+                                    else
+                                    {
+                                        <i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+
+                                    <span class="text-muted mr-3">@_commentsCount رای</span>
+                                </div>
+                                @if (_productVm.Product.Type == Enums.ProductType.Book)
+                                {
+                                    if (_productVm.Book != null)
+                                    {
+                                        if (_productVm.Book.Author != null)
+                                        {
+                                            <p class="text-small"><i class="fas fa-user-edit"></i> نویسنده : <a href="">@_productVm.Book.Author.FullName</a></p>
+                                            //@Url.Action("Teacher","Shops",new { id = _productVm.Book.Author.Id })
+                                        }
+                                        if (_productVm.Book.Translators != null)
+                                        {
+                                            <p class="text-small"><i class="fas fa-edit"></i> مترجم : <a href="">@_productVm.Book.Translators.FullName</a></p>
+                                            //@Url.Action("Teacher","Shops",new { id = _productVm.Book.Translators.Id })
+                                        }
+                                        if (_productVm.Book.Publishers != null)
+                                        {
+                                            <p class="text-small"><i class="fas fa-cogs"></i> انتشارات : <a href="">@_productVm.Book.Publishers.FullName</a></p>
+                                            //@Url.Action("Teacher","Shops",new { id = _productVm.Book.Publishers.Id })
+                                        }
+                                        if (_productVm.Book.Speakers != null)
+                                        {
+                                            <p class="text-small"><i class="fas fa-headset"></i> گوینده : <a href="">@_productVm.Book.Speakers.FullName</a></p>
+                                            //@Url.Action("Teacher","Shops",new { id = _productVm.Book.Speakers.Id })
+                                        }
+                                    }
+
+                                }
+                                else if (_productVm.Product.Type == Enums.ProductType.Course)
+                                {
+                                    if (_productVm.Course != null)
+                                    {
+                                        <p><i class="fas fa-user-edit"></i> مدرس : <a href="">@_productVm.Course.Teacher.FullName</a></p>
+                                        //@Url.Action("Teacher","Shops",new { id = _productVm.Course.Teacher.Id })
+                                    }
+                                }
+                                else if (_productVm.Product.Type == Enums.ProductType.Exam)
+                                {
+                                    if (_productVm.Exam != null)
+                                    {
+                                        <p><i class="fas fa-user-edit"></i> طراح آزمون : <a href="">@_productVm.Exam.Designer.FullName</a></p>
+                                        //@Url.Action("Teacher","Shops",new { id = _productVm.Exam.Designer.Id })
+                                    }
+                                }
+                            </section>
+                        </div>
+
+                        <div class="px-3 pb-1 pt-2 mb-2 mx-3 bg-light w-100 rounded">
+                            @if (_productVm.Product.Price == _productVm.Product.PriceWithDiscount)
+                            {
+                                <h6>
+                                    قیمت:
+                                    <span class="badge badge-success">@_productVm.Product.PriceWithDiscount تومان</span>
+                                </h6>
+                            }
+                            else
+                            {
+                                <h6>
+                                    قیمت:
+                                    <span class="text-danger text-del">@_productVm.Product.Price تومان</span>
+                                    <span class="badge badge-success">@_productVm.Product.PriceWithDiscount تومان</span>
+                                </h6>
+
+                            }
+                        </div>
+
+                        <div class="container">
+                            <div class="row">
+                                <!--==================Price Book================-->
+                                <div class="col-12">
+                                    <div class="price-box rounded d-flex justify-content-around pb-0">
+
+
+
+                                        <div class="row no-gutters d-flex justify-content-around w-100">
+                                            <div class="col-3 text-center">
+                                                <button class="btn btn-light text-muted btn-sm" data-toggle="modal" data-target="#modal-gift-book"><span class="d-block h3 mb-0"><i class="fas fa-gift"></i></span>هدیه</button>
+
+                                            </div>
+                                            <div class="col-3 text-center">
+                                                <button class="btn btn-light text-muted btn-sm" data-toggle="modal" data-target="#modal-saham"><span class="d-block mb-0 h3"><i class="fas fa-percent"></i></span>سهام</button>
+
+                                            </div>
+                                            <div class="col-3 text-center">
+                                                <button class="btn btn-light text-muted btn-sm" data-toggle="modal" data-target="#modal-share-book"><span class="d-block mb-0 h3"><i class="fas fa-share-alt-square"></i></span>اشتراک</button>
+
+                                            </div>
+                                            <div class="col-3 text-center">
+                                                @if (!_isFaved)
+                                                {
+                                                    <button class="btn btn-light text-muted btn-sm" id="favorites" @onclick="@(()=>Addtofavorit(changetype.Add))" ><span class="d-block mb-0 h3"><i class="fas fa-heart"></i></span>علاقه‌مندی‌</button>
+
+                                                }
+                                                else
+                                                {
+                                                    <button class="btn btn-light text-danger btn-sm" id="favorites" @onclick="@(()=>Addtofavorit(changetype.Remove))"><span class="d-block mb-0 h3"><i class="fas fa-heart"></i></span>علاقه‌مندی</button>
+
+                                                }
+                                            </div>
+                                        </div>
+
+
+                                        <!--======== Modal gift Book========-->
+                                        <div class="modal fade" id="modal-gift-book" tabindex="-1" role="dialog" aria-labelledby="modal-gift-bookTitle" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">به چه کسی هدیه میدهید؟</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
+                                                        </button>
+                                                    </div>
+                                                    <UserComboBox Name="UserId" @ref="userCombobox" />
+
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-secondary ml-2" data-dismiss="modal">انصراف</button>
+                                                        <button class="btn btn-success" data-dismiss="modal" type="button" @onclick="@(e => sendCart(e,CartType.Gift))">ثبت </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--========End Modal share Book=======-->
+                                        <!--======== Modal Share Book========-->
+                                        <div class="modal fade" id="modal-share-book" tabindex="-1" role="dialog" aria-labelledby="modal-share-bookTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalCenterTitle">اشتراک گذاری @productTypeTitle در شبکه‌های اجتماعی</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body px-0">
+                                                        <div class="social-media-share text-center">
+                                                            <a target="_blank" href="https://telegram.me/share/url?url=&text=@_productVm.Product.Title">
+                                                                @*@Url.Action("Product","Shops",new {id=_productVm.Product.Id }, this.Request.Url.Scheme)*@
+                                                                <img src="Content/img/iconfinder_telegram.png" class="img-fluid img-thumbnail" alt="">
+                                                            </a>
+
+                                                            <a href="https://www.linkedin.com/shareArticle?mini=true&url=&title=@_productVm.Product.Title&summary=@_productVm.Product.Title&source=4satt" target="_blank">
+                                                                @*@Url.Action("Product","Shops",new {id=_productVm.Product.Id }, this.Request.Url.Scheme)*@
+                                                                <img src="Content/img/iconfinder_LinkedIn.png" class="img-fluid img-thumbnail" alt="">
+                                                            </a>
+
+                                                            <a href="https://twitter.com/intent/tweet?url=&text=@_productVm.Product.Title&via=4sat" target="_blank">
+                                                                @*@Url.Action("Product","Shops",new {id=_productVm.Product.Id }, this.Request.Url.Scheme)*@
+                                                                <img src="Content/img/iconfinder_twitter.png" class="img-fluid img-thumbnail" alt="">
+                                                            </a>
+
+                                                            <a href="https://plus.google.com/share?url=" target="_blank">
+                                                                @*@Url.Action("Product", "Shops", new { id = _productVm.Product.Id }, this.Request.Url.Scheme)*@
+                                                                <img src="Content/img/iconfinder_google-plus.png" class="img-fluid img-thumbnail" alt="" />
+                                                            </a>
+
+                                                            <a href="https://www.facebook.com/sharer.php?u=&t=" target="_blank">
+                                                                @*@Url.Action("Product", "Shops", new { id = _productVm.Product.Id }, this.Request.Url.Scheme)*@
+                                                                <img src="Content/img/iconfinder_facebook.png" class="img-fluid img-thumbnail" alt="">
+                                                            </a>
+
+                                                            <a href="https://web.whatsapp.com/send?text=" data-action="share/whatsapp/share" target="_blank">
+                                                                @*@Url.Action("Product","Shops",new {id=_productVm.Product.Id }, this.Request.Url.Scheme)*@
+                                                                <img src="Content/img/iconfinder_whatsapp.png" class="img-fluid img-thumbnail" alt="">
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer px-3 px-md-5">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <button class="btn btn-secondary" type="button" onclick="copyToClipboard()"><i class="fas fa-copy"></i></button>
+                                                            </div>
+                                                            <input type="text" id="postLinkAddress" class="form-control text-left" placeholder="" aria-label="" value="@_productVm.Product.Id" aria-describedby="basic-addon1">@*_shareUrl*@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--========End Modal share Book=======-->
+
+
+                                        <div class="spinner-money d-none" id="cartspinner">
+                                            <div class="spinner-grow text-info mt-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-12 col-md-6 col-lg-3 mt-3 mt-lg-0 offset-md-3 offset-lg-0 d-none">
+                            <!--==================Download App==============-->
+                            <div class="">
+
+                                @*<button class="btn btn-block btn-outline-primary mb-2" data-toggle="modal" data-target="#the-best-comment"><i class="fas fa-search-plus"></i> دیدن سریع مفیدترین نظرات</button>*@
+                                <!-- Modal -->
+                                <div class="modal fade" id="the-best-comment" tabindex="-1" role="dialog" aria-labelledby="the-best-comment" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">مفیدترین نظرات</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                @*@Html.Partial("Comment/_ProductBestCommentPartial", _productVm.Product)*@
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="px-3">
+
+                                </div>
+
+
+                                <!--========End Modal share Book=======-->
+                                <!--=======-->
+                                <!--<a class="btn btn-block btn-secondary" role="button" data-toggle="popover" data-trigger="focus" title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?"><i class="fas fa-bookmark"></i> اضافه به لیست علاقه‌مندی‌ها</a>-->
+                                @* <a tabindex="0" class="btn btn-secondary btn-block" role="button" data-toggle="popover" data-trigger="focus" data-content="با موفقیت به لیست علاقه‌مندی‌ها اضافه شد"><i class="fas fa-bookmark"></i> افزودن به علاقه‌مندی‌ها</a>*@
+                            </div>
+
+                            <div class="download-app rounded mt-1">
+                                <h5><i class="fas fa-layer-group"></i> دسته‌بندی‌ها</h5>
+                                <hr>
+                                @if (_productVm.Product.ProductScale != null)
+                                {
+                                    foreach (var item in _productVm.Product.ProductScale)
+                                    {
+                                        <a href="" class="btn btn-outline-secondary btn-sm m-1">
+                                            @*@Url.Action("AllProducts","Shops",new {catId=item.Category.Id })*@
+                                            @item.Category.Title <span class="badge badge-light"> @item.Credit</span>
+                                        </a>
+
+                                    }
+                                }
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                    <div class="download-app rounded mt-3 mb-5  d-md-none">
+                        <h5><i class="fas fa-layer-group"></i> دسته‌بندی‌ها</h5>
+                        <hr>
+                        @if (_productVm.Product.ProductScale != null)
+                        {
+                            foreach (var item in _productVm.Product.ProductScale)
+                            {
+                                <a href="" class="btn btn-outline-secondary btn-sm m-1">
+                                    @*@Url.Action("AllProducts","Shops",new {catId=item.Category.Id })*@
+                                    @item.Category.Title <span class="badge badge-light"> @item.Credit</span>
+                                </a>
+
+                            }
+                        }
+                    </div>
+                    <div class="modal fade" id="modal-saham" tabindex="-1" role="dialog" aria-labelledby="modal-share-bookTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">خرید سهام این محصول</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <BuyShareholder @ref="buyShareholder" ShareholderUnitPrice="@_productVm.Product.ShareholderUnitPrice" Sold="@_productVm.Product.ShareholderPercentSold" Available="@(_productVm.Product.ShareholderPercentForSell - _productVm.Product.ShareholderPercentSold)" NotAvailable="@(100 - _productVm.Product.ShareholderPercentForSell)" />
+                                </div>
+
+
+                                <div class="modal-footer">
+                                    @if ((_productVm.Product.ShareholderPercentForSell - _productVm.Product.ShareholderPercentSold) != 0)
+                                    {
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">انصراف</button>
+                                        <button type="button" data-dismiss="modal" class="btn btn-success px-3 mr-2 pt-0 py-1" @onclick="@(e => sendCart(e,CartType.Shareholder))">خرید سهام</button>
+                                    }
+                                </div>
+                                @*@using (Ajax.BeginForm("AddToCart", "Shops", new AjaxOptions { HttpMethod = "Get", OnComplete = "addtocartresult", LoadingElementId = "cartspinner" }))
+                                    {
+                                        var Available = _productVm.Product.ShareholderPercentForSell - _productVm.Product.ShareholderPercentSold;
+                                        var NotAvailable = 100 - _productVm.Product.ShareholderPercentForSell;
+                                        var Sold = _productVm.Product.ShareholderPercentSold;
+
+                                        <div class="modal-body">
+
+                                            <input type="hidden" name="id" value="@_productVm.Product.Id" />
+                                            <input type="hidden" name="CartType" value="@CartType.Shareholder" />
+                                            <p class="alert alert-info"> درصد سهام در دسترس <span class="badge badge-info text-medium">@Available %</span></p>
+                                            <p class="alert alert-warning">درصد سهام خارج از دسترس <span class="badge badge-warning text-medium">@NotAvailable %</span></p>
+                                            <p class="alert alert-primary">درصد سهام خریداری شده <span class="badge badge-primary text-medium">@Sold %</span></p>
+
+                                            @if (Available != 0)
+                                            {
+                                                <h5 class="alert alert-success d-flex">
+                                                    <span>انتخاب درصد سهام</span>
+                                                    <select class="custom-select w-25 custom-select-sm mx-3" id="ShareholderPercent" name="ShareholderPercent">
+                                                        @for (int i = 1; i <= Available; i++)
+                                                        {
+                                                            <option value="@i">% @i</option>
+                                                        }
+                                                    </select>
+                                                    <span id="ShareholderUnitPrice" class="badge badge-success">@_productVm.Product.ShareholderUnitPrice </span> تومان
+                                                </h5>
+                                            }
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            @if (Available != 0)
+                                            {
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">انصراف</button>
+                                                <button type="submit" class="btn btn-success px-3 mr-2 pt-0 py-1">خرید سهام</button>
+                                            }
+                                        </div>
+                                    }*@
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="bg-light rounded my-2 px-2 py-3">
+                        @*<h5><i class="fas fa-pen-nib"></i> درباره @productTypeTitle @_productVm.Product.Title</h5>*@
+                        <h5><i class="fas fa-pen-nib"></i> معرفی کتاب</h5>
+                        <hr class="my-2">
+                        <p class="mb-0">
+                            @_productVm.Product.Description
+                        </p>
+                    </div>
+
+                    <div class="">
+                        @if (_productVm.Product.Type == Enums.ProductType.Book)
+                        {
+                            <table class="table table-bordered table-striped rounded">
+
+                                <tbody class="rounded">
+                                    @if (_productVm.Book != null)
+                                    {
+                                        if (_productVm.Book.Author != null)
+                                        {
+                                            <tr>
+                                                <th scope="row"><i class="fas fa-building"></i> انتشارات :</th>
+                                                <td>@_productVm.Book.Publishers.FullName</td>
+                                            </tr>
+                                        }
+                                        <tr>
+                                            <th scope="row"><i class="fas fa-calendar-alt"></i> تاریخ انتشار :</th>
+                                            <td>@_productVm.Book.Publishers.FullName</td>
+                                        </tr>
+
+                                        <tr>
+                                            @if (_productVm.Product.Language != null)
+                                            {
+                                                <th scope="row"><i class="fas fa-globe"></i> زبان :</th>
+                                                <td>@_productVm.Product.Language.Name</td>
+                                            }
+                                        </tr>
+
+                                        <tr>
+                                            <th scope="row"><i class="fas fa-copy"></i> تعداد صفحات :</th>
+                                            <td>@_productVm.Book.PageCount</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"><i class="fas fa-compact-disc"></i> سایز کتاب :</th>
+                                            <td>@_productVm.Book.Size کیلوبایت</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"><i class="fas fa-barcode"></i> شابک :</th>
+                                            <td>@_productVm.Book.Barcode</td>
+                                        </tr>
+
+                                    }
+                                </tbody>
+
+                            </table>
+                        }
+                        else if (_productVm.Product.Type == Enums.ProductType.Course)
+                        {
+                            <table class="table table-bordered table-striped rounded">
+
+                                <tbody class="rounded">
+                                    @if (_productVm.Course != null)
+                                    {
+                                        if (_productVm.Course.Teacher != null)
+                                        {
+                                            <tr>
+                                                <th scope="row"><i class="fas fa-building"></i> مدرس :</th>
+                                                <td>@_productVm.Course.Teacher.FullName</td>
+                                            </tr>
+
+                                        }
+                                    }
+                                    <tr>
+                                        <th scope="row"><i class="fas fa-calendar-alt"></i> تاریخ انتشار :</th>
+                                        <td>@_productVm.Product.Date.MiladiToJalali()</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><i class="fas fa-globe"></i> زبان :</th>
+                                        <td>@_productVm.Product.Language.Name</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><i class="fas fa-copy"></i> تعداد ویدئو :</th>
+                                        <td>@_productVm.Course.Videos.Count()</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><i class="fas fa-compact-disc"></i> حجم دوره :</th>
+                                        <td>@_productVm.Course.Videos.Sum(p => p.Size) مگابایت</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><i class="fas fa-clock"></i> مدت زمان :</th>
+                                        <td>@_productVm.Course.Videos.Sum(p => p.VideoTime.TimeOfDay.Hours)</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        }
+                        else if (_productVm.Product.Type == Enums.ProductType.Exam)
+                        {
+                            <table class="table table-bordered table-striped rounded">
+
+                                <tbody class="rounded">
+                                    @if (_productVm.Exam != null)
+                                    {
+                                        if (_productVm.Exam.Designer != null)
+                                        {
+                                            <tr>
+                                                <th scope="row"><i class="fas fa-building"></i> طراح :</th>
+                                                <td>@_productVm.Exam.Designer.FullName</td>
+                                            </tr>
+                                        }
+                                    }
+                                    <tr>
+                                        <th scope="row"><i class="fas fa-calendar-alt"></i> تاریخ انتشار :</th>
+                                        <td>@_productVm.Product.Date.MiladiToJalali()</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><i class="fas fa-globe"></i> زبان :</th>
+                                        <td> @_productVm.Product.Language.Name</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><i class="fas fa-copy"></i> تعداد سوال :</th>
+                                        <td>@_productVm.Exam.Questions.Count()</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><i class="fas fa-compact-disc"></i> وضعیت :</th>
+                                        <td>@_productVm.Exam.Status</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><i class="fas fa-clock"></i> مدت زمان :</th>
+                                        <td>@_productVm.Exam.ExamTime</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+
+                    <div class="points-comment bg-gray-light rounded py-3 px-2">
+                        <div class="row no-gutters">
+                            <div class="col-4 show-points text-center border-left pl-1">
+                                <h1 class="mb-0">@AvgRank.ToString("0.##")</h1>
+                                <div class="text-warning">
+                                    @if (AvgRank >= 0 && AvgRank < 0.5)
+                                    {
+                                        <i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 0.5 && AvgRank < 1)
+                                    {
+                                        <i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 1 && AvgRank < 1.5)
+                                    {
+                                        <i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 1.5 && AvgRank < 2)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 2 && AvgRank < 2.5)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 2.5 && AvgRank < 3)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 3 && AvgRank < 3.5)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 3.5 && AvgRank < 4)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 4 && AvgRank < 4.5)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 4.5 && AvgRank < 5)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+
+                                    }
+                                    else
+                                    {
+                                        <i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+
+                                </div>
+                                <div class="mt-2">
+                                    <i class="fas fa-user-check"></i>
+                                    <span>@_productVm.RateCount</span>
+                                </div>
+                            </div>
+                            <div class="col-4 pr-2 mt-1 head">
+                                <div class="d-flex mb-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="d-flex mb-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="d-flex mb-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="d-flex mb-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="d-flex mb-0">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                            @{
+                                var rate1 = _productVm.PercentStar1;
+                                var rate2 = _productVm.PercentStar2;
+                                var rate3 = _productVm.PercentStar3;
+                                var rate4 = _productVm.PercentStar4;
+                                var rate5 = _productVm.PercentStar5;
+                                var commentCount = _productVm.RateCount;
+
+                                var countrate1 = _productVm.Star1;
+                                var countrate2 = _productVm.Star2;
+                                var countrate3 = _productVm.Star3;
+                                var countrate4 = _productVm.Star4;
+                                var countrate5 = _productVm.Star5;
+
+                            }
+                            <div class="col-4 col-sm-7 mt-1">
+                                <div class="progress-comment pr-2">
+                                    <div class="progress mb-2">
+                                        <div class="d-flex progress-bar progress-bar-striped bg-success" role="progressbar" style="width: @rate5%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                            <span>
+                                                <span>@countrate5</span>
+                                                <i class="fas fa-user"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="progress mb-2">
+                                        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: @rate4%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                            <span>
+                                                <span>@countrate4</span>
+                                                <i class="fas fa-user"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="progress mb-2">
+                                        <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: @rate3%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                            <span>
+                                                <span>@countrate3</span>
+                                                <i class="fas fa-user"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress mb-2">
+                                        <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: @rate2%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                            <span>
+                                                <span>@countrate2</span>
+                                                <i class="fas fa-user"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="progress mb-0">
+                                        <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: @rate1%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                            <span>
+                                                <span>@countrate1</span>
+                                                <i class="fas fa-user"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="content-book mt-3">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <nav class="nav nav-pills nav-fill w-100">
+
+                                    <a class="nav-item nav-link px-2 d-none" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="far fa-comment-alt"></i> معرفی</a>
+
+                                    @if (_productVm.Product.Type == Enums.ProductType.Course)
+                                    {
+                                        <a class="nav-item nav-link px-3" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"><i class="far fa-list-alt"></i> فهرست</a>
+                                    }
+                                    @if (_productVm.Product.Type == Enums.ProductType.Book)
+                                    {
+                                        <a class="nav-item nav-link px-3 active" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false"><i class="fas fa-book-open"></i> نمونه</a>
+                                    }
+                                    else if (_productVm.Product.Type == Enums.ProductType.Course)
+                                    {
+                                        <a class="nav-item nav-link px-3 active" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false"><i class="fas fa-book-open"></i>نمونه </a>
+                                    }
+
+                                    <a class="nav-item nav-link px-3" id="nav-comment-tab" data-toggle="tab" href="#nav-comment" role="tab" aria-controls="nav-comment" aria-selected="false"><i class="far fa-comments"></i> نظرات</a>
+                                    @*@if (Model.RelatedProducts != null && Model.RelatedProducts.Any())
+                                        {
+                                            <a class="nav-item nav-link px-3" id="nav-related-tab" data-toggle="tab" href="#nav-related" role="tab" aria-controls="nav-related" aria-selected="false"><i class="fas fa-boxes"></i> مرتبط</a>
+                                        }*@
+
+
+                                </nav>
+                                <div class="tab-content p-2 p-md-4 w-100" id="nav-tabContent">
+                                    <div class="tab-pane fade d-none" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                                        <h5><i class="fas fa-pen-nib"></i> درباره @productTypeTitle @_productVm.Product.Title</h5>
+
+
+                                        <hr>
+                                        <p>
+                                            @_productVm.Product.Description
+                                        </p>
+                                    </div>
+                                    @if (_productVm.Product.Type == Enums.ProductType.Course)
+                                    {
+                                        if (_productVm.Course != null)
+                                        {
+                                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                                <ul>
+                                                    @foreach (var item in _productVm.Course.Videos)
+                                                    {
+                                                        <li>@item.Title</li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        }
+
+                                    }
+
+                                    <div class="tab-pane fade show active" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+
+
+                                        @if (_productVm.Book != null)
+                                        {
+                                            <div id="book-slider" class="carousel slide" data-ride="carousel">
+                                                <div class="carousel-inner">
+                                                    <span>
+                                                        @((MarkupString)_productVm.Book.Partofbook)
+                                                        @*@Html.Raw(_productVm.Book.Partofbook)*@
+                                                    </span>
+                                                </div>
+                                                <a class="carousel-control-prev" href="#book-slider" role="button" data-slide="prev">
+                                                    <i class="fas fa-angle-double-left"></i>
+                                                </a>
+                                                <a class="carousel-control-next" href="#book-slider" role="button" data-slide="next">
+                                                    <i class="fas fa-angle-double-right"></i>
+                                                </a>
+                                            </div>
+
+                                        }
+                                        else if (_productVm.Course != null)
+                                        {
+                                            <video height="300" controls>
+                                                <source src="@_productVm.Course.SampleofCourse">
+                                                Your browser does not support HTML5 video.
+                                            </video>
+                                        }
+                                        else
+                                        {
+
+                                        }
+
+
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-comment" role="tabpanel" aria-labelledby="nav-comment-tab">
+
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="bg-gray-light create-comment rounded px-2 px-md-3 pt-2 pt-md-4 pb-3 mt-3 mb-3">
+                                                    <div class="d-lg-flex justify-content-between">
+                                                        <h5 class="text-b mt-1">کاربر گرامی ، دیگران را با ثبت نظرات خود برای انتخاب این @productTypeTitle ، راهنمایی کنید.</h5>
+                                                        @*<button class="btn btn-info px-5 ml-4" data-toggle="collapse" data-target="#collapseComment" aria-expanded="false" aria-controls="collapseComent">ارسال نظر</button>*@
+                                                    </div>
+                                                    <CommentsList ProductId="@Id" productTypeTitle="@productTypeTitle" />
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div class="">
+                        <!--==================Download App==============-->
+                        <div class="">
+
+                            @*<button class="btn btn-block btn-outline-primary mb-2" data-toggle="modal" data-target="#the-best-comment"><i class="fas fa-search-plus"></i> دیدن سریع مفیدترین نظرات</button>*@
+                            <!-- Modal -->
+                            <div class="modal fade" id="the-best-comment" tabindex="-1" role="dialog" aria-labelledby="the-best-comment" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">مفیدترین نظرات</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            @*@Html.Partial("Comment/_ProductBestCommentPartial", _productVm.Product)*@
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="px-3">
+
+                            </div>
+
+
+                            <!--========End Modal share Book=======-->
+                            <!--=======-->
+                            <!--<a class="btn btn-block btn-secondary" role="button" data-toggle="popover" data-trigger="focus" title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?"><i class="fas fa-bookmark"></i> اضافه به لیست علاقه‌مندی‌ها</a>-->
+                            @* <a tabindex="0" class="btn btn-secondary btn-block" role="button" data-toggle="popover" data-trigger="focus" data-content="با موفقیت به لیست علاقه‌مندی‌ها اضافه شد"><i class="fas fa-bookmark"></i> افزودن به علاقه‌مندی‌ها</a>*@
+                        </div>
+
+                    </div>
+                    @if (_productVm.IsBuyed)
+                    {
+                        @*<button class="btn btn-success rounded-circle btn-shopping-circle" disabled="true"><i class="fas fa-cart-plus"></i></button>*@
+                    }
+                    else
+                    {
+                        <button class="btn btn-success rounded-circle btn-shopping-circle " id="addtocart" @onclick="@(e => sendCart(e,CartType.Normal))"><i class="fas fa-cart-plus"></i></button>
+
+                    }
+
+
+
+
+                </div>
+            }
+            else
+            {
+                //اگر موبایل نبود
+                <div class="book-page px-2">
+
+
+                    <!--===================book presentation==================-->
+                    <div class="row">
+                        <!--=================Book Image==================-->
+                        <div class="col-4 col-md-3">
+                            <div class="book-pic">
+                                <a data-toggle="modal" data-target="#book-img"><img src="@_productVm.Product.Img" class="img-fluid img-thumbnail w-100 h-auto" alt="@_productVm.Product.Title"></a>
+                                <!-- Modal -->
+                                <div class="modal fade" id="book-img" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">نمایش جلد کتاب</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body p-2">
+                                                <img src="@_productVm.Product.Img" class="img-fluid img-thumbnail w-100" alt="@_productVm.Product.Title">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                        <div class="col-8 col-md-9 col-lg-6">
+                            <!--==================Head Book=================-->
+                            <section class="alert alert-light books-header px-2 px-md-3 mb-2">
+                                @if (_productVm.Product.Type == Enums.ProductType.Book)
+                                {
+
+                                    //اگر موبایل نبود
+                                    <h1 class="head-book text-dark text-b mb-0"><i class="fas fa-book"></i> @_productVm.Product.Title </h1>
+
+
+
+                                }
+                                else if (_productVm.Product.Type == Enums.ProductType.Course)
+                                {
+                                    <h1 class="head-book text-b mb-0">@_productVm.Product.Title </h1>
+
+                                }
+                                else if (_productVm.Product.Type == Enums.ProductType.Exam)
+                                {
+                                    <h1 class="head-book text-b mb-0">@_productVm.Product.Title </h1>
+
+                                }
+                                <div class="border-bottom py-2 mb-2 stars-book text-warning mr-0 mr-md-4">
+                                    @{
+                                        float AvgRank = 0;
+                                        if (_commentsCount != 0)
+                                        {
+                                            AvgRank = _productVm.Product.Rate;
+                                        }
+                                    }
+                                    <span class="badge badge-warning ml-2">@AvgRank.ToString("0.##")</span>
+                                    @if (AvgRank >= 0 && AvgRank < 0.5)
+                                    {
+                                        <i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 0.5 && AvgRank < 1)
+                                    {
+                                        <i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 1 && AvgRank < 1.5)
+                                    {
+                                        <i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 1.5 && AvgRank < 2)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 2 && AvgRank < 2.5)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 2.5 && AvgRank < 3)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 3 && AvgRank < 3.5)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 3.5 && AvgRank < 4)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 4 && AvgRank < 4.5)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+                                    else if (AvgRank >= 4.5 && AvgRank < 5)
+                                    {
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+
+                                    }
+                                    else
+                                    {
+                                        <i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                    }
+
+                                    <span class="text-muted mr-3">@_commentsCount رای</span>
+                                </div>
+                                @if (_productVm.Product.Type == Enums.ProductType.Book)
+                                {
+                                    if (_productVm.Book != null)
+                                    {
+                                        if (_productVm.Book.Author != null)
+                                        {
+                                            <p class="text-small"><i class="fas fa-user-edit"></i> نویسنده : <a href="">@_productVm.Book.Author.FullName</a></p>
+                                            //@Url.Action("Teacher","Shops",new { id = _productVm.Book.Author.Id })
+
+                                        }
+                                        if (_productVm.Book.Translators != null)
+                                        {
+                                            <p class="text-small"><i class="fas fa-edit"></i> مترجم : <a href="">@_productVm.Book.Translators.FullName</a></p>
+                                            //@Url.Action("Teacher","Shops",new { id = _productVm.Book.Translators.Id })
+
+                                        }
+                                        if (_productVm.Book.Publishers != null)
+                                        {
+                                            <p class="text-small"><i class="fas fa-cogs"></i> انتشارات : <a href="">@_productVm.Book.Publishers.FullName</a></p>
+
+                                            //@Url.Action("Teacher","Shops",new { id = _productVm.Book.Publishers.Id })
+
+                                        }
+                                        if (_productVm.Book.Speakers != null)
+                                        {
+                                            <p class="text-small"><i class="fas fa-headset"></i> گوینده : <a href="">@_productVm.Book.Speakers.FullName</a></p>
+                                            //@Url.Action("Teacher","Shops",new { id = _productVm.Book.Speakers.Id })
+
+                                        }
+                                    }
+
+                                }
+                                else if (_productVm.Product.Type == Enums.ProductType.Course)
+                                {
+                                    if (_productVm.Course != null)
+                                    {
+                                        <p><i class="fas fa-user-edit"></i> مدرس : <a href="">@_productVm.Course.Teacher.FullName</a></p>
+                                        //@Url.Action("Teacher","Shops",new { id = _productVm.Course.Teacher.Id })
+                                    }
+                                }
+                                else if (_productVm.Product.Type == Enums.ProductType.Exam)
+                                {
+                                    if (_productVm.Exam != null)
+                                    {
+                                        <p><i class="fas fa-user-edit"></i> طراح آزمون : <a href="">@_productVm.Exam.Designer.FullName</a></p>
+                                        @*@Url.Action("Teacher","Shops",new { id = _productVm.Exam.Designer.Id })*@
+                                    }
+                                }
+                            </section>
+
+
+                            <!--==================Price Book================-->
+                            <div class="price-box rounded">
+                                @if (_productVm.Product.Price == _productVm.Product.PriceWithDiscount)
+                                {
+                                    <h5 class="text-success mt-3 mb-3 pb-2 border-bottom">
+                                        @*<span class="text-danger text-del">@_productVm.Product.Price تومان</span>*@
+                                        <span class="badge badge-success">@_productVm.Product.PriceWithDiscount تومان</span>
+                                    </h5>
+                                }
+                                else
+                                {
+                                    <h5 class="text-success mt-3 mb-3 pb-2 border-bottom">
+                                        <span class="text-danger text-del">@_productVm.Product.Price تومان</span>
+                                        <span class="badge badge-success">@_productVm.Product.PriceWithDiscount تومان</span>
+                                    </h5>
+
+                                }
+
+                                @if (_productVm.IsBuyed)
+                                {
+                                    <button class="btn btn-success" disabled="true"><i class="fas fa-cart-plus"></i> اضافه به سبد خرید</button>
+
+                                }
+                                else
+                                {
+                                    <button class="btn btn-success" id="addtocart" @onclick="@(e => sendCart(e,CartType.Normal))"><i class="fas fa-cart-plus"></i> اضافه به سبد خرید</button>
+
+                                }
+
+                                <button class="btn btn-danger mt-3 mt-md-0" data-toggle="modal" data-target="#modal-gift-book"><i class="fas fa-gift"></i> اضافه به سبد هدیه</button>
+
+                                <!--======== Modal gift Book========-->
+                                <div class="modal fade" id="modal-gift-book" tabindex="-1" role="dialog" aria-labelledby="modal-gift-bookTitle" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">به چه کسی هدیه می دهید؟</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
+                                                </button>
+                                            </div>
+                                            <UserComboBox Name="UserId" @ref="userCombobox" />
+                                            <div class="modal-footer">
+                                                <button class="btn btn-secondary ml-2" data-dismiss="modal">انصراف</button>
+                                                <button class="btn btn-success" type="button" data-dismiss="modal" @onclick="@(e => sendCart(e,CartType.Gift))">ثبت </button>
+                                            </div>
+                                            @*@using (Ajax.BeginForm("AddToCart", "Shops", new AjaxOptions { HttpMethod = "Get", OnComplete = "addtocartresult", LoadingElementId = "cartspinner" }))*@
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--========End Modal share Book=======-->
+                                <!--======== Modal Share Book========-->
+                                <div class="modal fade" id="modal-share-book" tabindex="-1" role="dialog" aria-labelledby="modal-share-bookTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalCenterTitle">اشتراک گذاری @productTypeTitle در شبکه‌های اجتماعی</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body px-0">
+                                                <div class="social-media-share text-center">
+                                                    <a target="_blank" href="https://telegram.me/share/url?url=&text=@_productVm.Product.Title">
+                                                        <img src="Content/img/iconfinder_telegram.png" class="img-fluid img-thumbnail" alt="">
+                                                    </a>
+
+                                                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=&title=@_productVm.Product.Title&summary=@_productVm.Product.Title&source=4satt" target="_blank">
+                                                        <img src="Content/img/iconfinder_LinkedIn.png" class="img-fluid img-thumbnail" alt="">
+                                                    </a>
+
+                                                    <a href="https://twitter.com/intent/tweet?url=&text=@_productVm.Product.Title&via=4sat" target="_blank">
+                                                        <img src="Content/img/iconfinder_twitter.png" class="img-fluid img-thumbnail" alt="">
+                                                    </a>
+
+                                                    <a href="https://plus.google.com/share?url=" target="_blank">
+                                                        <img src="Content/img/iconfinder_google-plus.png" class="img-fluid img-thumbnail" alt="" />
+                                                    </a>
+
+                                                    <a href="https://www.facebook.com/sharer.php?u=&t=" target="_blank">
+                                                        <img src="Content/img/iconfinder_facebook.png" class="img-fluid img-thumbnail" alt="">
+                                                    </a>
+
+                                                    <a href="https://web.whatsapp.com/send?text=" data-action="share/whatsapp/share" target="_blank">
+                                                        <img src="Content/img/iconfinder_whatsapp.png" class="img-fluid img-thumbnail" alt="">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer px-3 px-md-5">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <button class="btn btn-secondary" type="button" onclick="copyToClipboard()"><i class="fas fa-copy"></i></button>
+                                                    </div>
+                                                    <input type="text" id="postLinkAddress" class="form-control text-left" placeholder="" aria-label="" value="@_productVm.Product.Id" aria-describedby="basic-addon1">@*_shareUrl*@
+                                                    @*@ViewBag.LoginUserGenId*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--========End Modal share Book=======-->
+
+                                <div class="border-top pt-4 mb-0 mt-3">
+                                    <p class="text-muted">
+                                        قابل استفاده در اپلیکیشن‌
+                                        <span class="badge text-l text-small badge-success"><i class="fab fa-android"></i> Android</span>
+                                    </p>
+                                </div>
+                                <div class="spinner-money d-none" id="cartspinner">
+                                    <div class="spinner-grow text-info mt-2"></div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="col-12 col-md-6 col-lg-3 mt-3 mt-lg-0 offset-md-3 offset-lg-0">
+                            <!--==================Download App==============-->
+                            <div class="download-app rounded">
+                                <p>برای نمایش قانونی <span class="text-info text-b">"@_productVm.Product.Title"</span> و دسترسی به هزاران محصول آموزشی دیگر، اپلیکیشن <span class="badge badge-primary"></span> را رایگان دانلود کنید.</p>
+                                <a href="" class="btn btn-block btn-outline-success px-1"><i class="fas fa-download"></i> ورود به اپلیکیشن </a>
+                                @*@Url.Action("Product", "Shops", new { id = _productVm.Product.Id })*@
+                                <!-- Modal -->
+                                <div class="modal fade" id="download-app" tabindex="-1" role="dialog" aria-labelledby="download-app" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">دانلود اپلیکیشن </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">×</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <table class="table table-bordered mb-0">
+                                                    <tr>
+                                                        <th rowspan="3"><i class="fab fa-android"></i></th>
+                                                        <td><button class="btn btn-success btn-block"><i class="fab fa-google-play"></i> دانلود از گوگل‌پلی</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><button class="btn btn-success btn-block"><i class="fas fa-shopping-bag"></i> دانلود از بازار</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><button class="btn btn-success btn-block"><i class="fas fa-download"></i> دانلود مستقیم</button></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr>
+                                @*<button class="btn btn-block btn-outline-primary mb-2" data-toggle="modal" data-target="#the-best-comment"><i class="fas fa-search-plus"></i> دیدن سریع مفیدترین نظرات</button>*@
+                                <!-- Modal -->
+                                <div class="modal fade" id="the-best-comment" tabindex="-1" role="dialog" aria-labelledby="the-best-comment" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">مفیدترین نظرات</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                @*@Html.Partial("Comment/_ProductBestCommentPartial", _productVm.Product)*@
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="px-3">
+                                    <a class="ellipsis-post-2" data-toggle="modal" data-target="#modal-saham"><i class="fas fa-percent ml-3" data-toggle="tooltip" data-placement="top" title="خرید سهام محصول"></i></a>
+                                    <a class="ellipsis-post-2" data-toggle="modal" data-target="#modal-share-book"><i class="fas fa-share-alt-square ml-3" data-toggle="tooltip" data-placement="top" title="به اشتراک‌گذاری"></i></a>
+                                    @if (!_isFaved)
+                                    {
+                                        <a class="ellipsis-post-2" id="favorites" @onclick="@(()=>Addtofavorit(changetype.Add))" data-toggle="tooltip" data-placement="top" title="اضافه به علاقه‌مندی‌ها"><i class="fas fa-heart"></i></a>
+
+                                    }
+                                    else
+                                    {
+                                        <a class="ellipsis-post-2 text-danger" id="favorites" @onclick="@(()=>Addtofavorit(changetype.Remove))" data-toggle="tooltip" data-placement="top" title="به علاقه مندی ها اضافه شده"><i class="fas fa-heart"></i></a>
+
+                                    }
+                                </div>
+
+                                <!--======== Modal Saham========-->
+                                <!--========End Modal share Book=======-->
+                                <!--=======-->
+                                <!--<a class="btn btn-block btn-secondary" role="button" data-toggle="popover" data-trigger="focus" title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?"><i class="fas fa-bookmark"></i> اضافه به لیست علاقه‌مندی‌ها</a>-->
+                                @* <a tabindex="0" class="btn btn-secondary btn-block" role="button" data-toggle="popover" data-trigger="focus" data-content="با موفقیت به لیست علاقه‌مندی‌ها اضافه شد"><i class="fas fa-bookmark"></i> افزودن به علاقه‌مندی‌ها</a>*@
+                            </div>
+
+                            <div class="download-app rounded mt-1">
+                                <h5><i class="fas fa-layer-group"></i> دسته‌بندی‌ها</h5>
+                                <hr>
+                                @if (_productVm.Product.ProductScale != null)
+                                {
+                                    foreach (var item in _productVm.Product.ProductScale)
+                                    {
+                                        <a href="" class="btn btn-outline-secondary btn-sm m-1">
+                                            @*@Url.Action("AllProducts","Shops",new {catId=item.Category.Id })*@
+                                            @item.Category.Title <span class="badge badge-light"> @item.Credit</span>
+                                        </a>
+
+                                    }
+                                }
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                    <div class="download-app rounded mt-3 mb-5  d-md-none">
+                        <h5><i class="fas fa-layer-group"></i> دسته‌بندی‌ها</h5>
+                        <hr>
+                        @if (_productVm.Product.ProductScale != null)
+                        {
+                            foreach (var item in _productVm.Product.ProductScale)
+                            {
+                                <a href="" class="btn btn-outline-secondary btn-sm m-1">
+                                    @*@Url.Action("AllProducts","Shops",new {catId=item.Category.Id })*@
+                                    @item.Category.Title <span class="badge badge-light"> @item.Credit</span>
+                                </a>
+
+                            }
+                        }
+                    </div>
+                    <div class="modal fade" id="modal-saham" tabindex="-1" role="dialog" aria-labelledby="modal-share-bookTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">خرید سهام این محصول</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true"><i class="far fa-times-circle"></i></span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <BuyShareholder @ref="buyShareholder" ShareholderUnitPrice="@_productVm.Product.ShareholderUnitPrice" Sold="@_productVm.Product.ShareholderPercentSold" Available="@(_productVm.Product.ShareholderPercentForSell - _productVm.Product.ShareholderPercentSold)" NotAvailable="@(100 - _productVm.Product.ShareholderPercentForSell)" />
+                                </div>
+
+
+                                <div class="modal-footer">
+                                    @if ((_productVm.Product.ShareholderPercentForSell - _productVm.Product.ShareholderPercentSold) != 0)
+                                    {
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">انصراف</button>
+                                        <button type="button" data-dismiss="modal" class="btn btn-success px-3 mr-2 pt-0 py-1" @onclick="@(e => sendCart(e,CartType.Shareholder))">خرید سهام</button>
+                                    }
+                                </div>
+                                @*@using (Ajax.BeginForm("AddToCart", "Shops", new AjaxOptions { HttpMethod = "Get", OnComplete = "addtocartresult", LoadingElementId = "cartspinner" }))
+                                    {
+                                        var Available = _productVm.Product.ShareholderPercentForSell - _productVm.Product.ShareholderPercentSold;
+                                        var NotAvailable = 100 - _productVm.Product.ShareholderPercentForSell;
+                                        var Sold = _productVm.Product.ShareholderPercentSold;
+
+                                        <div class="modal-body">
+
+                                            <input type="hidden" name="id" value="@_productVm.Product.Id" />
+                                            <input type="hidden" name="CartType" value="@CartType.Shareholder" />
+                                            <p class="alert alert-info"> درصد سهام در دسترس <span class="badge badge-info text-medium">@Available %</span></p>
+                                            <p class="alert alert-warning">درصد سهام خارج از دسترس <span class="badge badge-warning text-medium">@NotAvailable %</span></p>
+                                            <p class="alert alert-primary">درصد سهام خریداری شده <span class="badge badge-primary text-medium">@Sold %</span></p>
+
+                                            @if (Available != 0)
+                                            {
+                                                <h5 class="alert alert-success d-flex">
+                                                    <span>انتخاب درصد سهام</span>
+                                                    <select class="custom-select w-25 custom-select-sm mx-3" id="ShareholderPercent" name="ShareholderPercent">
+                                                        @for (int i = 1; i <= Available; i++)
+                                                        {
+                                                            <option value="@i">% @i</option>
+                                                        }
+                                                    </select>
+                                                    <span id="ShareholderUnitPrice" class="badge badge-success">@_productVm.Product.ShareholderUnitPrice </span> تومان
+                                                </h5>
+                                            }
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            @if (Available != 0)
+                                            {
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">انصراف</button>
+                                                <button type="submit" class="btn btn-success px-3 mr-2 pt-0 py-1">خرید سهام</button>
+                                            }
+                                        </div>
+                                    }*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-book p-3 mt-3">
+                        @if (_productVm.Product.Type == Enums.ProductType.Book)
+                        {
+
+
+                            <div class="row">
+                                @if (_productVm.Book != null)
+                                {
+                                    if (_productVm.Book.Author != null)
+                                    {
+                                        <div class="col-12 col-sm-6 col-md-4">
+                                            <p><i class="fas fa-building"></i> انتشارات : @_productVm.Book.Publishers.FullName</p>
+                                        </div>
+                                    }
+
+
+
+                                    <div class="col-12 col-sm-6 col-md-4">
+                                        <p><i class="fas fa-calendar-alt"></i> تاریخ انتشار : @_productVm.Product.Date.MiladiToJalali()</p>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4">
+                                        @if (_productVm.Product.Language != null)
+                                        {
+                                            <p><i class="fas fa-globe"></i> زبان : @_productVm.Product.Language.Name</p>
+                                        }
+                                    </div>
+
+                                    <div class="col-12 col-sm-6 col-md-4">
+                                        <p><i class="fas fa-copy"></i> تعداد صفحات : @_productVm.Book.PageCount</p>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4">
+                                        <p><i class="fas fa-compact-disc"></i> سایز کتاب : @_productVm.Book.Size کیلوبایت</p>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4">
+                                        <p><i class="fas fa-barcode"></i> شابک : @_productVm.Book.Barcode</p>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else if (_productVm.Product.Type == Enums.ProductType.Course)
+                        {
+                            <div class="row">
+                                @if (_productVm.Course != null)
+                                {
+                                    if (_productVm.Course.Teacher != null)
+                                    {
+                                        <div class="col-12 col-sm-6 col-md-4">
+                                            <p><i class="fas fa-building"></i> مدرس : @_productVm.Course.Teacher.FullName</p>
+                                        </div>
+                                    }
+                                }
+
+
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <p><i class="fas fa-calendar-alt"></i> تاریخ انتشار : @_productVm.Product.Date.MiladiToJalali()</p>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <p><i class="fas fa-globe"></i> زبان : @_productVm.Product.Language.Name</p>
+                                </div>
+
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <p><i class="fas fa-copy"></i> تعداد ویدئو : @_productVm.Course.Videos.Count()</p>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <p><i class="fas fa-compact-disc"></i> حجم دوره : @_productVm.Course.Videos.Sum(p => p.Size) مگابایت</p>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <p><i class="fas fa-clock"></i> مدت زمان : @_productVm.Course.Videos.Sum(p => p.VideoTime.TimeOfDay.Hours)</p>
+                                </div>
+                            </div>
+                        }
+                        else if (_productVm.Product.Type == Enums.ProductType.Exam)
+                        {
+                            <div class="row">
+                                @if (_productVm.Exam != null)
+                                {
+                                    if (_productVm.Exam.Designer != null)
+                                    {
+                                        <div class="col-12 col-sm-6 col-md-4">
+                                            <p><i class="fas fa-building"></i> طراح : @_productVm.Exam.Designer.FullName</p>
+                                        </div>
+                                    }
+                                }
+
+
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <p><i class="fas fa-calendar-alt"></i> تاریخ انتشار : @_productVm.Product.Date.MiladiToJalali()</p>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <p><i class="fas fa-globe"></i> زبان : @_productVm.Product.Language.Name</p>
+                                </div>
+
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <p><i class="fas fa-copy"></i> تعداد سوال : @_productVm.Exam.Questions.Count()</p>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <p><i class="fas fa-compact-disc"></i> وضعیت : @_productVm.Exam.Status</p>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4">
+                                    <p><i class="fas fa-clock"></i> مدت زمان : @_productVm.Exam.ExamTime</p>
+                                </div>
+                            </div>
+                        }
+
+
+                    </div>
+                    <div class="content-book mt-3">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <nav class="nav nav-pills nav-fill w-100">
+
+                                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="far fa-comment-alt"></i> معرفی @productTypeTitle</a>
+
+                                    @if (_productVm.Product.Type == Enums.ProductType.Course)
+                                    {
+                                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"><i class="far fa-list-alt"></i> فهرست مطالب</a>
+                                    }
+                                    @if (_productVm.Product.Type == Enums.ProductType.Book)
+                                    {
+                                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false"><i class="fas fa-book-open"></i> نسخه نمونه کتاب</a>
+                                    }
+                                    else if (_productVm.Product.Type == Enums.ProductType.Course)
+                                    {
+                                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false"><i class="fas fa-book-open"></i> نسخه نمونه دوره</a>
+                                    }
+
+                                    <a class="nav-item nav-link" id="nav-comment-tab" data-toggle="tab" href="#nav-comment" role="tab" aria-controls="nav-comment" aria-selected="false"><i class="far fa-comments"></i> نظرات کاربران</a>
+                                    @*@if (Model.RelatedProducts != null && Model.RelatedProducts.Any())
+                                        {
+                                            <a class="nav-item nav-link" id="nav-related-tab" data-toggle="tab" href="#nav-related" role="tab" aria-controls="nav-related" aria-selected="false"><i class="fas fa-boxes"></i> محصولات مرتبط </a>
+                                        }*@
+                                </nav>
+                                <div class="tab-content p-2 p-md-4 w-100" id="nav-tabContent">
+                                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                                        <h5><i class="fas fa-pen-nib"></i> درباره @productTypeTitle @_productVm.Product.Title</h5>
+
+
+                                        <hr>
+                                        <p>
+                                            @_productVm.Product.Description
+                                        </p>
+                                    </div>
+                                    @if (_productVm.Product.Type == Enums.ProductType.Course)
+                                    {
+                                        if (_productVm.Course != null)
+                                        {
+                                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                                <ul>
+                                                    @foreach (var item in _productVm.Course.Videos)
+                                                    {
+                                                        <li>@item.Title</li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        }
+
+                                    }
+
+                                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+
+
+                                        @if (_productVm.Book != null)
+                                        {
+                                            <div id="book-slider" class="carousel slide" data-ride="carousel">
+                                                <div class="carousel-inner">
+                                                    <span>
+                                                        @((MarkupString)_productVm.Book.Partofbook)
+                                                        @*@Html.Raw(_productVm.Book.Partofbook)*@
+                                                    </span>
+                                                </div>
+                                                <a class="carousel-control-prev" href="#book-slider" role="button" data-slide="prev">
+                                                    <i class="fas fa-angle-double-left"></i>
+                                                </a>
+                                                <a class="carousel-control-next" href="#book-slider" role="button" data-slide="next">
+                                                    <i class="fas fa-angle-double-right"></i>
+                                                </a>
+                                            </div>
+
+                                        }
+                                        else if (_productVm.Course != null)
+                                        {
+                                            <video height="300" controls>
+                                                <source src="@_productVm.Course.SampleofCourse">
+                                                Your browser does not support HTML5 video.
+                                            </video>
+                                        }
+                                        else
+                                        {
+
+                                        }
+
+
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-comment" role="tabpanel" aria-labelledby="nav-comment-tab">
+
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6">
+                                                <div class="head-comment-book mb-3">
+                                                    <h4 class="text-dark bg-gray-light rounded"><i class="text-warning fas fa-star"></i> امتیاز کاربران به محصول :</h4>
+                                                    <hr>
+                                                    <h3 class="text-b text-dark h4"><i class="fas fa-book"></i> @_productVm.Product.Title</h3>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <div class="points-comment bg-gray-light rounded">
+                                                    <div class="row no-gutters">
+                                                        <div class="col-12 col-sm-3">
+                                                            <div class="show-points text-center rounded px-0 py-2">
+                                                                <h1 class="mb-0">@AvgRank.ToString("0.##")</h1>
+                                                                <div class="text-warning">
+                                                                    @if (AvgRank >= 0 && AvgRank < 0.5)
+                                                                    {
+                                                                        <i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                                                    }
+                                                                    else if (AvgRank >= 0.5 && AvgRank < 1)
+                                                                    {
+                                                                        <i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                                                    }
+                                                                    else if (AvgRank >= 1 && AvgRank < 1.5)
+                                                                    {
+                                                                        <i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                                                    }
+                                                                    else if (AvgRank >= 1.5 && AvgRank < 2)
+                                                                    {
+                                                                        <i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                                                    }
+                                                                    else if (AvgRank >= 2 && AvgRank < 2.5)
+                                                                    {
+                                                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                                                    }
+                                                                    else if (AvgRank >= 2.5 && AvgRank < 3)
+                                                                    {
+                                                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                                                    }
+                                                                    else if (AvgRank >= 3 && AvgRank < 3.5)
+                                                                    {
+                                                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                                                    }
+                                                                    else if (AvgRank >= 3.5 && AvgRank < 4)
+                                                                    {
+                                                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i>
+
+                                                                    }
+                                                                    else if (AvgRank >= 4 && AvgRank < 4.5)
+                                                                    {
+                                                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+
+                                                                    }
+                                                                    else if (AvgRank >= 4.5 && AvgRank < 5)
+                                                                    {
+                                                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                                                    }
+
+                                                                </div>
+                                                                <div class="mt-2">
+                                                                    <i class="fas fa-user-check"></i>
+                                                                    <span>@_productVm.RateCount</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-3 col-sm-2 pr-2 mt-1 head">
+                                                            <div class="d-flex mb-2">
+                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star"></i>
+                                                            </div>
+                                                            <div class="d-flex mb-2">
+                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star"></i>
+                                                            </div>
+                                                            <div class="d-flex mb-2">
+                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star"></i>
+                                                            </div>
+                                                            <div class="d-flex mb-2">
+                                                                <i class="fas fa-star"></i>
+                                                                <i class="fas fa-star"></i>
+                                                            </div>
+                                                            <div class="d-flex mb-0">
+                                                                <i class="fas fa-star"></i>
+                                                            </div>
+                                                        </div>
+                                                        @{
+                                                            var rate1 = _productVm.PercentStar1;
+                                                            var rate2 = _productVm.PercentStar2;
+                                                            var rate3 = _productVm.PercentStar3;
+                                                            var rate4 = _productVm.PercentStar4;
+                                                            var rate5 = _productVm.PercentStar5;
+                                                            var commentCount = _productVm.RateCount;
+
+                                                            var countrate1 = _productVm.Star1;
+                                                            var countrate2 = _productVm.Star2;
+                                                            var countrate3 = _productVm.Star3;
+                                                            var countrate4 = _productVm.Star4;
+                                                            var countrate5 = _productVm.Star5;
+
+                                                        }
+                                                        <div class="col-9 col-sm-7 mt-1">
+                                                            <div class="progress-comment pr-2">
+                                                                <div class="progress mb-2">
+                                                                    <div class="d-flex progress-bar progress-bar-striped bg-success" role="progressbar" style="width: @rate5%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                                                        <span>
+                                                                            <span>@countrate5</span>
+                                                                            <i class="fas fa-user"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="progress mb-2">
+                                                                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: @rate4%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                                                        <span>
+                                                                            <span>@countrate4</span>
+                                                                            <i class="fas fa-user"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="progress mb-2">
+                                                                    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: @rate3%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                                                        <span>
+                                                                            <span>@countrate3</span>
+                                                                            <i class="fas fa-user"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="progress mb-2">
+                                                                    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: @rate2%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                                                        <span>
+                                                                            <span>@countrate2</span>
+                                                                            <i class="fas fa-user"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="progress mb-0">
+                                                                    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: @rate1%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                                                        <span>
+                                                                            <span>@countrate1</span>
+                                                                            <i class="fas fa-user"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="bg-gray-light create-comment rounded px-2 px-md-3 pt-2 pt-md-4 pb-3 mt-3 mb-3">
+                                                    <div class="d-lg-flex justify-content-between">
+                                                        <h5 class="text-b mt-1">کاربر گرامی ، دیگران را با ثبت نظرات خود برای انتخاب این @productTypeTitle ، راهنمایی کنید.</h5>
+                                                        @*<button class="btn btn-info px-5 ml-4" data-toggle="collapse" data-target="#collapseComment" aria-expanded="false" aria-controls="collapseComent">ارسال نظر</button>*@
+                                                    </div>
+
+
+                                                    <CommentsList ProductId="@Id" productTypeTitle="@productTypeTitle" />
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <!--=====================breadcrumb=======================-->
+
+        </div>
+
+        <!--==================================================================================
+                                         FOOTER
+        ===================================================================================-->
+
+    </div>
+
+}
+else
+{
+    <Spinner />
+}
+
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+    private bool _IsMobileDevice;
+    private ProductVm _productVm;
+    private int _commentsCount = 0;
+    private string productTypeTitle = "";
+    private string _shareUrl;
+    private bool _isFaved = false;
+    private UserComboBox userCombobox;
+    private BuyShareholder buyShareholder;
+
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        _IsMobileDevice =
+            await JSRuntime.InvokeAsync<bool>("isMobileDevice");
+        StateHasChanged();
+
+        ClaimsPrincipal user = (await AuthState).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var SecurityStamp = user.FindFirst("SecurityStamp");
+
+            var requestShop = new RequestShop { Token = SecurityStamp.Value, Id = Id };
+
+            var result = await Http.PostAsJsonAsync("api/GetProduct", requestShop);
+            if (result.StatusCode == HttpStatusCode.OK)
+            {
+
+                var resultShop = result.Content.ReadFromJsonAsync<ResultShop>().Result;
+                _productVm = resultShop.ProductVm;
+                _commentsCount = _productVm.RateCount;
+                _isFaved = _productVm.Product.IsFavorite;
+                if (_productVm.Product != null)
+                {
+                    var productType = _productVm.Product.Type;
+                    switch (productType)
+                    {
+                        case Enums.ProductType.Book:
+                            productTypeTitle = "کتاب";
+                            break;
+                        case Enums.ProductType.Course:
+                            productTypeTitle = "دوره";
+                            break;
+                        case Enums.ProductType.Exam:
+                            productTypeTitle = "آزمون";
+                            break;
+
+                    }
+                }
+
+                StateHasChanged();
+            }
+
+        }
+
+    }
+    private async Task Addtofavorit(changetype Changetype)
+    {
+        ClaimsPrincipal user = (await AuthState).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var SecurityStamp = user.FindFirst("SecurityStamp");
+            var favoritRequest = new Request() {Id= Id, changeType = Changetype, Token = SecurityStamp.Value, FavedType = FavedType.Product };
+            var result = await Http.PostAsJsonAsync("api/FavoriteAddRemove", favoritRequest);
+            if (result.StatusCode == HttpStatusCode.OK)
+            {
+                var resultfavorit = result.Content.ReadFromJsonAsync<Result>().Result;
+                if (resultfavorit.Statue == Enums.Statue.Success)
+                    if (Changetype == changetype.Add)
+                    {
+                        _isFaved = true;
+                        WebAlert.alert(resultfavorit.Message, "success", true);
+                        Task.Delay(5000).ContinueWith(t => WebAlert.alert(resultfavorit.Message));
+                    }
+                    else
+                    {
+                        _isFaved = false;
+                        WebAlert.alert(resultfavorit.Message, "success", true);
+                        Task.Delay(5000).ContinueWith(t => WebAlert.alert(resultfavorit.Message));
+
+                    }
+                MyService.CallRequestRefresh();
+
+            }
+        }
+
+    }
+    private async Task sendCart(MouseEventArgs e, CartType cartType)
+    {
+
+        LayoutLoading.showLoding(true);
+        ClaimsPrincipal user = (await AuthState).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var SecurityStamp = user.FindFirst("SecurityStamp");
+            RequestCart requestCart = new RequestCart();
+            if (cartType == CartType.Gift)
+            {
+                var ReciverUserId = userCombobox.getUserId();
+                requestCart = new RequestCart { Id = Id, Token = SecurityStamp.Value, CartType = cartType, ReciverUserId = ReciverUserId };
+
+            }
+            else if (cartType == CartType.Normal)
+            {
+                requestCart = new RequestCart { Id = Id, Token = SecurityStamp.Value, CartType = cartType };
+
+            }
+            else if (cartType == CartType.Shareholder)
+            {
+                var ShareholderPercent = 0;
+                if (!string.IsNullOrEmpty(buyShareholder.getPercent()))
+                {
+                    var Percent = buyShareholder.getPercent();
+                    ShareholderPercent = int.Parse(Percent);
+                }
+                requestCart = new RequestCart { Id = Id, Token = SecurityStamp.Value, CartType = cartType, ShareholderPercent = ShareholderPercent };
+
+            }
+            var result = await Http.PostAsJsonAsync("api/AddToCart", requestCart);
+            if (result.StatusCode == HttpStatusCode.OK)
+            {
+                var resultCart = result.Content.ReadFromJsonAsync<Result>().Result;
+                if (resultCart.Statue == Enums.Statue.Success)
+                {
+                    MyService.CallRequestRefresh();
+                    WebAlert.alert(resultCart.Message, "success", true);
+                    Task.Delay(5000).ContinueWith(t => WebAlert.alert(resultCart.Message));
+                }
+                else
+                {
+                    WebAlert.alert(resultCart.Message, "danger", true);
+                    Task.Delay(5000).ContinueWith(t => WebAlert.alert(resultCart.Message));
+                }
+                LayoutLoading.showLoding();
+
+            }
+
+        }
+
+    }
+}

@@ -1,0 +1,11 @@
+{
+  "crawl": false,
+  "customTests": [],
+  "dest": "/PATH/TO/modernizr-output.js",
+  "tests": [],
+  "options": [
+    "mq",
+    "setClasses"
+  ],
+  "uglify": true
+}

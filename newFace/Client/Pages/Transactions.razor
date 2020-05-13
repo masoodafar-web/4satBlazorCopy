@@ -1,0 +1,103 @@
+﻿@page "/transaction"
+@layout ShopLayout
+
+@using System.Net
+@using newFace.Shared.Models.Resource
+@using System.Security.Claims
+
+@inject NavigationManager Navigation
+@inject HttpClient Http
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0  mt-md-4">
+        <li class="breadcrumb-item"><a href="/">صفحه اصلی</a></li>
+        <li class="breadcrumb-item active" aria-current="page">لیست تراکنش‌ها</li>
+    </ol>
+</nav>
+<div class="container">
+    <div class="row py-4">
+        @if (resultTransaction.BillViewModels != null)
+        {
+            if (resultTransaction.BillViewModels.Any())
+            {
+                foreach (var billViewModel in resultTransaction.BillViewModels.OrderByDescending(o=>o.Date))
+                {
+                    if (billViewModel.PaymentStatus == 1)
+                    {
+                        <div class="col-lg-9 col-12 mx-lg-auto border-bottom p-4">
+                            <p> <span class="text-success">@billViewModel.Status</span> در تاریخ <span class="font-weight-bold">@billViewModel.Date</span> به مبلغ <span class="font-weight-bold">@billViewModel.TotalPrice تومان</span> با مجموع تخفیف <span class="font-weight-bold">@billViewModel.TotalDiscount تومان</span> و مبلغ نهایی <span class="font-weight-bold">@billViewModel.TotalPayment تومان</span>  ثبت شد.</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-6 col-12 border-bottom p-4">
+                            <p class="d-block"> <span class="text-danger">@billViewModel.Status</span> در تاریخ <span class="font-weight-bold">@billViewModel.Date</span> به مبلغ <span class="font-weight-bold">@billViewModel.TotalPrice تومان</span> با مجموع تخفیف <span class="font-weight-bold">@billViewModel.TotalDiscount تومان</span> و مبلغ نهایی <span class="font-weight-bold">@billViewModel.TotalPayment تومان</span>  ثبت شد.</p>
+                            <div class="btn btn-info" @onclick="@(()=>Repay(billViewModel.Id))">پرداخت</div>
+                        </div>
+                    }
+                }
+
+
+            }
+            else
+            {
+
+                <p>موردی یافت نشد</p>
+            }
+        }
+        else
+        {
+            <Spinner />
+        }
+
+
+
+    </div>
+</div>
+@code {
+
+    public ResultTransaction resultTransaction { get; set; } = new ResultTransaction() { };
+    [CascadingParameter]
+    protected Task<AuthenticationState> Authentication { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+
+        ClaimsPrincipal user = (await Authentication).User;
+        var userToken = user.FindFirst("SecurityStamp").Value.ToString();
+        var response = await Http.PostAsJsonAsync("api/GetTransactions", new Request() { Token = userToken });
+        resultTransaction = response.Content.ReadFromJsonAsync<ResultTransaction>().Result;
+
+    }
+    private async Task Repay(int billId)
+    {
+
+
+        ClaimsPrincipal user = (await Authentication).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            var SecurityStamp = user.FindFirst("SecurityStamp");
+            var requestPay = new Request { Id = billId, Token = SecurityStamp.Value, ReturnFrom = Enums.ReturnFrom.Site };
+
+            var result = await Http.PostAsJsonAsync("api/RePay", requestPay);
+            if (result.StatusCode == HttpStatusCode.OK)
+            {
+                var resultPayment = result.Content.ReadFromJsonAsync<ResultPayment>().Result;
+                if (resultPayment.Statue == Enums.Statue.Success)
+                {
+                    if (resultPayment.PaymentType == newFace.Shared.Models.Financial.BillType.PaymentGateway)
+                        Navigation.NavigateTo(resultPayment.UrlReturn);
+                    else if (resultPayment.PaymentType == newFace.Shared.Models.Financial.BillType.Credit)
+                    {
+                        var response = await Http.PostAsJsonAsync("api/GetTransactions", new Request() { Token = SecurityStamp.Value });
+                        resultTransaction = response.Content.ReadFromJsonAsync<ResultTransaction>().Result;
+
+                    }
+
+                }
+
+            }
+
+        }
+    }
+
+}

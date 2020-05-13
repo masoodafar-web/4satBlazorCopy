@@ -1,0 +1,1966 @@
+﻿@charset "UTF-8";
+.text-del {
+  text-decoration: line-through; }
+
+.wrapper .login-page-bg {
+  background: url("../img/pattern-bg-1.jpg"); }
+  .wrapper .login-page-bg .login-page-bg-2 {
+    background-color: rgba(255, 255, 255, 0.85); }
+    .wrapper .login-page-bg .login-page-bg-2 .login-page {
+      min-height: 100vh; }
+        .wrapper .login-page-bg .login-page-bg-2 .login-page .login-right {
+            background-color: #eaeff296;
+            -webkit-border-radius: 0 5px 5px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        .wrapper .login-page-bg .login-page-bg-2 .login-page .login-right .logo-login img {
+          width: 9rem;
+          height: auto; }
+        .wrapper .login-page-bg .login-page-bg-2 .login-page .login-right .login-welcome-text {
+          font-weight: 300;
+          color: #2F364A; }
+        .wrapper .login-page-bg .login-page-bg-2 .login-page .login-right .form-login {
+          margin-top: 1rem; }
+          .wrapper .login-page-bg .login-page-bg-2 .login-page .login-right .form-login .input-group {
+            opacity: 0.8; }
+          .wrapper .login-page-bg .login-page-bg-2 .login-page .login-right .form-login .btn-danger {
+            background-color: #DF1000; }
+        .wrapper .login-page-bg .login-page-bg-2 .login-page .login-right .form-control::-webkit-input-placeholder {
+          font-size: 1rem; }
+        .wrapper .login-page-bg .login-page-bg-2 .login-page .login-right .form-control:-ms-input-placeholder {
+          font-size: 1rem; }
+        .wrapper .login-page-bg .login-page-bg-2 .login-page .login-right .form-control::-ms-input-placeholder {
+          font-size: 1rem; }
+        .wrapper .login-page-bg .login-page-bg-2 .login-page .login-right .form-control::placeholder {
+          font-size: 1rem; }
+      .wrapper .login-page-bg .login-page-bg-2 .login-page video {
+        -webkit-border-radius: 5px 0 0 5px;
+                border-radius: 5px 0 0 5px;
+        width: 100%;
+        height: auto; }
+
+.wrapper hr {
+  height: 1px;
+  background: white;
+  border: none;
+  outline: none;
+  margin: 1.5rem 2rem 1.5em;
+  position: relative; }
+
+    .wrapper hr:before {
+        content: attr(data-symbol);
+        position: absolute;
+        top: 0;
+        left: 50%;
+        background-color: #eaeff296;
+        color: white;
+        padding: 0.5em 1em;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
+.wrapper hr#one {
+  width: 50%;
+  margin: 1rem auto; }
+
+.wrapper hr#two {
+  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuMCIgeTE9IjAuNSIgeDI9IjEuMCIgeTI9IjAuNSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==");
+  -webkit-background-size: 100% 100%;
+          background-size: 100%;
+  background-image: -webkit-gradient(linear, left top, right top, from(#000000), to(#ffffff));
+  background-image: -webkit-linear-gradient(left, #000000, #ffffff);
+  background-image: -o-linear-gradient(left, #000000, #ffffff);
+  background-image: linear-gradient(to right, #000000, #ffffff); }
+
+.wrapper hr#two:before {
+  left: 90%;
+  width: 20%;
+  padding: 1em;
+  top: 1px; }
+
+.wrapper hr#three {
+  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuMCIgeTE9IjAuNSIgeDI9IjEuMCIgeTI9IjAuNSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzM0OThkYiIvPjxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjMTBkN2FmIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMzQ5OGRiIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmFkKSIgLz48L3N2Zz4g");
+  -webkit-background-size: 100% 100%;
+          background-size: 100%;
+  background-image: -webkit-gradient(linear, left top, right top, from(#3498db), color-stop(#10d7af), to(#3498db));
+  background-image: -webkit-linear-gradient(left, #3498db, #10d7af, #3498db);
+  background-image: -o-linear-gradient(left, #3498db, #10d7af, #3498db);
+  background-image: linear-gradient(to right, #3498db, #10d7af, #3498db); }
+
+.wrapper hr#three:before {
+  color: #10d7af; }
+
+.wrapper hr#four:before {
+  border: 1px solid white; }
+
+.wrapper hr#five:before {
+  font-size: 2em;
+  padding: 0.5em 1em;
+  font-weight: lighter;
+  font-family: Helvetica Neue; }
+
+.wrapper hr#six {
+  background: black;
+  border-bottom: 1px dashed white; }
+
+.wrapper hr#six:before {
+  border: 1px dashed white;
+  -webkit-border-radius: 20px;
+          border-radius: 20px; }
+
+.wrapper hr#seven {
+  background: black;
+  border-bottom: 1px double white; }
+
+.wrapper hr#seven:before {
+  border-left: 1px solid white;
+  border-right: 1px solid white; }
+
+.wrapper hr#eight {
+  background: transparent;
+  border-bottom: 2px dashed white;
+  width: 40%;
+  margin: 0 auto; }
+
+.wrapper hr#eight:before {
+  top: 3px;
+  left: 0;
+  padding-right: 2em; }
+
+.wrapper hr#nine:before {
+  border: 1px solid white;
+  padding: 1em 1.25em;
+  -webkit-border-radius: 50%;
+          border-radius: 50%; }
+
+body .smooth {
+  scroll-behavior: smooth; }
+
+body .page-content #main-slider .carousel-inner img {
+  -webkit-border-radius: 5px;
+          border-radius: 5px; }
+
+body .page-content .modal-show-post .card .card-header {
+  background-color: #EEF1F7; }
+  body .page-content .modal-show-post .card .card-header a {
+    text-decoration: none;
+    color: #2f364a;
+    font-size: 1rem; }
+    body .page-content .modal-show-post .card .card-header a:hover {
+      font-weight: bold; }
+
+body .page-content .modal-show-post .card .card-body {
+  position: relative;
+  background-color: #fafafa; }
+  body .page-content .modal-show-post .card .card-body .angle-circle-right, body .page-content .modal-show-post .card .card-body .angle-circle-left {
+    width: 4rem;
+    height: 4rem;
+    -webkit-border-radius: 50%;
+            border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    font-size: 2rem;
+    text-align: center;
+    line-height: 2.2;
+    position: absolute;
+    top: 7rem;
+    z-index: 999; }
+    body .page-content .modal-show-post .card .card-body .angle-circle-right:hover, body .page-content .modal-show-post .card .card-body .angle-circle-left:hover {
+      cursor: pointer; }
+  body .page-content .modal-show-post .card .card-body .angle-circle-left {
+    left: 0; }
+  body .page-content .modal-show-post .card .card-body a {
+    color: #2f364a; }
+    body .page-content .modal-show-post .card .card-body a:hover {
+      text-decoration: none; }
+    body .page-content .modal-show-post .card .card-body a .card {
+      width: 10rem;
+      max-width: 10rem;
+      height: 20rem;
+      overflow: hidden;
+      border-color: #EEF1F7; }
+      body .page-content .modal-show-post .card .card-body a .card img {
+        width: 100%;
+        height: 15rem; }
+      body .page-content .modal-show-post .card .card-body a .card .card-body {
+        background-color: #ffffff; }
+        body .page-content .modal-show-post .card .card-body a .card .card-body .card-text {
+          height: 1.2rem;
+          overflow: hidden; }
+        body .page-content .modal-show-post .card .card-body a .card .card-body .price.delete {
+          text-decoration: line-through !important; }
+
+body .page-content .book-page .books-header {
+  background-color: #fafafa;
+  border-color: #f2f2f2; }
+  body .page-content .book-page .books-header h1 {
+      font-size:1.2rem;
+    color: #2F364A; }
+  body .page-content .book-page .books-header p {
+    margin: 0 0 0.3rem 0;
+    font-size: 0.85rem;
+    color: #495473; }
+body .page-content .show-books .card .card-body {
+    position: relative;
+    background-color: #fafafa;
+}
+    body .page-content .book-page .books-header p i {
+      color: #495473;
+      width: 25px;
+      height: 25px;
+      line-height: 25px;
+      text-align: center;
+      margin-left: 0.5rem;
+      background-color: #eeeeee;
+      -webkit-border-radius: 4px;
+              border-radius: 4px; }
+
+body .page-content .book-page #modal-gift-book .media {
+  background-color: #3c455f;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  color: #EEF1F7;
+  position: relative; }
+  body .page-content .book-page #modal-gift-book .media:hover {
+    background-color: #454f6c; }
+  body .page-content .book-page #modal-gift-book .media img {
+    width: 2.7rem;
+    height: 2.7rem;
+    -webkit-border-radius: 50%;
+            border-radius: 50%;
+    padding: 0.15rem;
+    background-color: #454f6c;
+    border: 1px solid #616f98; }
+  body .page-content .book-page #modal-gift-book .media h6 {
+    margin-top: 0.15rem;
+    margin-bottom: 0;
+    font-size: 0.95rem; }
+body .page-content .show-books .card .card-body a .card {
+    width: 8rem;
+    max-width: 8rem;
+    overflow: hidden;
+    border-color: #b7b7b7;
+    border-radius: 3px !important;
+    box-shadow: grey 1px 0 3px 0px;
+}
+  body .page-content .book-page #modal-gift-book .media .badge-comment {
+    position: absolute;
+    top: 0.3rem;
+    right: 0.3rem; }
+body .page-content .show-books .card .card-body a .card .card-body {
+    background-color: #ffffff;
+}
+body .page-content .book-page .create-star form {
+  text-align: center;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  margin: auto; }
+
+body .page-content .book-page .create-star fieldset {
+  display: inline-block;
+  font-size: 2.3rem;
+  text-indent: 5px; }
+
+body .page-content .book-page .create-star label {
+  top: -10px;
+  text-indent: -28px;
+  display: inline-block;
+  position: relative;
+  color: #ccc;
+  cursor: pointer;
+  margin-bottom: 0; }
+
+body .page-content .book-page .create-star input[type="radio"] {
+  opacity: 0; }
+  body .page-content .book-page .create-star input[type="radio"] + label:before {
+    content: "★";
+    position: absolute;
+    color: gold;
+    text-indent: 0;
+    -webkit-transition: color 0.5s ease;
+    -o-transition: color 0.5s ease;
+    transition: color 0.5s ease; }
+  body .page-content .book-page .create-star input[type="radio"]:checked + label ~ label:before {
+    color: transparent; }
+
+body .page-content .book-page .price-box {
+  background-color: #fafafa;
+  padding: 0.5rem 0.2rem;
+  border: 1px solid #f2f2f2; }
+    /*body .page-content .book-page .price-box .btn {
+        width:18%;
+        padding:0;
+        text-align:center;
+    }*/
+
+    body .page-content .book-page .download-app {
+        background-color: #fafafa;
+        padding: 1rem 0.5rem;
+        border: 1px solid #f2f2f2;
+    }
+  body .page-content .book-page .download-app #the-best-comment .comment-box {
+    background-color: #EEF1F7;
+    padding: 1rem 1rem;
+    -webkit-border-radius: 10px;
+            border-radius: 10px;
+    border: 1px solid #f0f0f0; }
+    body .page-content .book-page .download-app #the-best-comment .comment-box .media {
+      background-color: #fafafa;
+      padding: 0.65rem 0.5rem;
+      -webkit-border-radius: 10px;
+              border-radius: 10px; }
+      body .page-content .book-page .download-app #the-best-comment .comment-box .media img {
+        width: 60px;
+        height: 60px;
+        -webkit-border-radius: 5px;
+                border-radius: 5px; }
+      body .page-content .book-page .download-app #the-best-comment .comment-box .media .media-body p {
+        margin-bottom: 0; }
+    body .page-content .book-page .download-app #the-best-comment .comment-box .person-text {
+      margin-top: 1rem;
+      min-height: 6rem; }
+      body .page-content .book-page .download-app #the-best-comment .comment-box .person-text p {
+        margin-bottom: 0; }
+    body .page-content .book-page .download-app #the-best-comment .comment-box .person-test p {
+      margin-bottom: 0;
+      color: #686868; }
+    body .page-content .book-page .download-app #the-best-comment .comment-box .show-price {
+      -webkit-border-radius: 10px;
+              border-radius: 10px;
+      padding: 0.7rem 1rem 0rem;
+      background-color: #fafafa; }
+
+body .page-content .book-page .info-book {
+  background-color: #fafafa;
+  -webkit-border-radius: 10px;
+          border-radius: 10px; }
+  body .page-content .book-page .info-book p {
+    color: #686868;
+    margin: 0.5rem 0; }
+    body .page-content .book-page .info-book p i {
+      margin-left: 0.2rem;
+      font-size: 1.3rem;
+      -webkit-border-radius: 5px;
+              border-radius: 5px;
+      width: 35px;
+      height: 35px;
+      text-align: center;
+      line-height: 35px;
+      background-color: #e9e9e9; }
+
+body .page-content .book-page .content-book nav {
+  background-color: #fafafa;
+  border: 1px solid #dfdfdf;
+  -webkit-border-radius: 5px 5px 0 0;
+          border-radius: 5px 5px 0 0; }
+  body .page-content .book-page .content-book nav .nav-tabs .nav-item {
+    padding: 0.6rem 1rem;
+    color: #686868;
+    border: 1px solid #dfdfdf;
+    font-size: 1rem;
+    white-space:nowrap;
+    background-color: #fafafa;
+    -webkit-border-radius: 0;
+            border-radius: 0;
+    border-top: 0;
+    border-bottom: 0; }
+    body .page-content .book-page .content-book nav .nav-tabs .nav-item:hover {
+      background-color: #f2f2f2; }
+    body .page-content .book-page .content-book nav .nav-tabs .nav-item:active, body .page-content .book-page .content-book nav .nav-tabs .nav-item .active {
+      border-top: 5px solid #17A2B8; }
+  body .page-content .book-page .content-book nav .nav-tabs .active {
+    background-color: #FFFFFF;
+    border-top: 5px solid #17A2B8; }
+    body .page-content .book-page .content-book nav .nav-tabs .active:hover {
+      background-color: #FFFFFF; }
+
+body .page-content .book-page .content-book .tab-content {
+  min-height: 500px;
+  border: 1px solid #eeeeee;
+  border-top: 0;
+  font-size: 1rem; }
+  body .page-content .book-page .content-book .tab-content p {
+    line-height: 2; }
+  body .page-content .book-page .content-book .tab-content #nav-contact #book-slider {
+    background-color: #EEF1F7;
+    padding: 1rem 2rem;
+    -webkit-border-radius: 5px;
+            border-radius: 5px;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none; }
+    body .page-content .book-page .content-book .tab-content #nav-contact #book-slider .carousel-item {
+      -webkit-column-count: 2;
+              column-count: 2;
+      -webkit-column-gap: 50px;
+              column-gap: 50px;
+      text-align: justify; }
+    @media screen and (max-width: 768px) {
+      body .page-content .book-page .content-book .tab-content #nav-contact #book-slider .carousel-item {
+        -webkit-column-count: 1;
+                column-count: 1;
+        -webkit-column-gap: 0;
+                column-gap: 0;
+        text-align: justify; } }
+    body .page-content .book-page .content-book .tab-content #nav-contact #book-slider .carousel-control-prev,
+    body .page-content .book-page .content-book .tab-content #nav-contact #book-slider .carousel-control-next {
+      color: #2F364A; }
+      body .page-content .book-page .content-book .tab-content #nav-contact #book-slider .carousel-control-prev:hover,
+      body .page-content .book-page .content-book .tab-content #nav-contact #book-slider .carousel-control-next:hover {
+        background-color: rgba(0, 0, 0, 0.1); }
+      body .page-content .book-page .content-book .tab-content #nav-contact #book-slider .carousel-control-prev i,
+      body .page-content .book-page .content-book .tab-content #nav-contact #book-slider .carousel-control-next i {
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        line-height: 50px;
+        background-color: rgba(0, 0, 0, 0.1);
+        color: #FFFFFF;
+        font-size: 2rem;
+        -webkit-border-radius: 5px;
+                border-radius: 5px; }
+  body .page-content .book-page .content-book .tab-content #nav-comment .head-comment-book {
+    padding: 1rem;
+    -webkit-border-radius: 4px;
+            border-radius: 4px;
+    background-color: #fafafa; }
+  body .page-content .book-page .content-book .tab-content #nav-comment .points-comment {
+    padding: 1rem 1rem; }
+    body .page-content .book-page .content-book .tab-content #nav-comment .points-comment .head {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #686868; }
+    body .page-content .book-page .content-book .tab-content #nav-comment .points-comment .show-points {
+      background-color: #f2f2f2 !important; }
+    body .page-content .book-page .content-book .tab-content #nav-comment .points-comment .progress-comment .progress {
+      margin-right: 1rem;
+      margin-bottom: 0.7rem; }
+      body .page-content .book-page .content-book .tab-content #nav-comment .points-comment .progress-comment .progress .progress-bar > span {
+        color: #fff;
+        font-weight: 300; }
+  body .page-content .book-page .content-book .tab-content #nav-comment #comment-modal .person-comment {
+    background-color: #fcfcfc;
+    padding: 1rem 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #f2f2f2;
+    color: #1b1e21; }
+  body .page-content .book-page .content-book .tab-content #nav-comment .comment-box {
+    background-color: #EEF1F7;
+    padding: 1rem 1rem;
+    -webkit-border-radius: 10px;
+            border-radius: 10px;
+    border: 1px solid #f0f0f0; }
+    body .page-content .book-page .content-book .tab-content #nav-comment .comment-box .media {
+      background-color: #fafafa;
+      padding: 0.5rem;
+      -webkit-border-radius: 10px;
+              border-radius: 10px; }
+      body .page-content .book-page .content-book .tab-content #nav-comment .comment-box .media img {
+        width: 60px;
+        height: 60px;
+        -webkit-border-radius: 5px;
+                border-radius: 5px; }
+      body .page-content .book-page .content-book .tab-content #nav-comment .comment-box .media .media-body p {
+        margin-bottom: 0;
+        line-height: 1.5;
+        font-size: 0.9rem; }
+    body .page-content .book-page .content-book .tab-content #nav-comment .comment-box .person-text {
+      min-height: 10.8rem; }
+      body .page-content .book-page .content-book .tab-content #nav-comment .comment-box .person-text p {
+        margin-bottom: 0; }
+    body .page-content .book-page .content-book .tab-content #nav-comment .comment-box .person-test p {
+      margin-bottom: 0;
+      color: #686868; }
+
+body .page-content .shopping-cart .book-order {
+  position: relative;
+  background-color: #fafafa;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  -webkit-border-radius: 10px;
+          border-radius: 10px;
+  border: 1px solid #f2f2f2; }
+  body .page-content .shopping-cart .book-order .books-header h1 {
+    color: #2F364A; }
+  body .page-content .shopping-cart .book-order .books-header .author {
+    margin: 0 1rem 0.3rem 0;
+    font-size: 0.85rem;
+    color: #495473; }
+    body .page-content .shopping-cart .book-order .books-header .author i {
+      color: #495473;
+      width: 25px;
+      height: 25px;
+      line-height: 25px;
+      text-align: center;
+      margin-left: 0.5rem;
+      background-color: #eeeeee;
+      -webkit-border-radius: 4px;
+              border-radius: 4px; }
+  body .page-content .shopping-cart .book-order .books-header .badge {
+    font-size: 0.9rem; }
+    body .page-content .shopping-cart .book-order .logo-book-order {
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
+    }
+    body .page-content .shopping-cart .book-order .logo-book-order i {
+        font-size: 1.8rem;
+        color: #000;
+        opacity: 0.1;
+    }
+  body .page-content .shopping-cart .book-order img {
+    -webkit-border-radius: 5px;
+            border-radius: 5px; }
+
+body .page-content .shopping-cart .factor-shopping-cart {
+  -webkit-border-radius: 10px;
+          border-radius: 10px;
+  background-color: #fafafa;
+  padding: 1rem; }
+  body .page-content .shopping-cart .factor-shopping-cart .table td {
+    font-size: 1rem; }
+    body .page-content .shopping-cart .factor-shopping-cart .table td .custom-control-label::before, body .page-content .shopping-cart .factor-shopping-cart .table td .custom-control-label::after {
+      left: auto;
+      top: 5px;
+      right: 0; }
+    body .page-content .shopping-cart .factor-shopping-cart .table td .custom-control, body .page-content .shopping-cart .factor-shopping-cart .table td .form-check {
+      padding-left: 0;
+      padding-right: 0rem; }
+    @media screen and (min-width: 1200px) {
+      body .page-content .shopping-cart .factor-shopping-cart .table td .custom-control, body .page-content .shopping-cart .factor-shopping-cart .table td .form-check {
+        padding-left: 0;
+        padding-right: 1rem; } }
+    body .page-content .shopping-cart .factor-shopping-cart .table td .help-pay a {
+      color: #2F364A;
+      font-weight: 300;
+      font-size: 0.9rem;
+      -webkit-transition: margin-right 0.2s;
+      -o-transition: margin-right 0.2s;
+      transition: margin-right 0.2s; }
+      body .page-content .shopping-cart .factor-shopping-cart .table td .help-pay a:hover {
+        text-decoration: none;
+        margin-right: 0.3rem;
+        font-weight: normal; }
+
+body .page-content .shopping-cart .person-wallet {
+  background-color: #fafafa;
+  padding: 1rem;
+  margin-top: 1rem;
+  -webkit-border-radius: 10px;
+          border-radius: 10px; }
+  body .page-content .shopping-cart .person-wallet .angle {
+    font-size: 3rem; }
+  body .page-content .shopping-cart .person-wallet .table tr td, body .page-content .shopping-cart .person-wallet .table tr th {
+    background-color: #EEF1F7; }
+    body .page-content .shopping-cart .person-wallet .table tr td:first-child, body .page-content .shopping-cart .person-wallet .table tr th:first-child {
+      text-align: center; }
+      body .page-content .shopping-cart .person-wallet .table tr td:first-child i, body .page-content .shopping-cart .person-wallet .table tr th:first-child i {
+        font-size: 1.7rem;
+        color: #686868; }
+    body .page-content .shopping-cart .person-wallet .table tr td .table tr td, body .page-content .shopping-cart .person-wallet .table tr th .table tr td {
+      background-color: rgba(255, 255, 255, 0); }
+
+body .page-content .gift-books nav {
+  background-color: #fafafa;
+  border: 1px solid #dfdfdf;
+  -webkit-border-radius: 5px 5px 0 0;
+          border-radius: 5px 5px 0 0; }
+  body .page-content .gift-books nav .nav-tabs .nav-item {
+    padding: 0.6rem 0.9rem;
+    color: #686868;
+    border: 1px solid #dfdfdf;
+    font-size: 1rem;
+    background-color: #fafafa;
+    -webkit-border-radius: 0;
+            border-radius: 0;
+    border-top: 0;
+    border-bottom: 0; }
+    body .page-content .gift-books nav .nav-tabs .nav-item:hover {
+      background-color: #f2f2f2; }
+    body .page-content .gift-books nav .nav-tabs .nav-item:active, body .page-content .gift-books nav .nav-tabs .nav-item .active {
+      border-top: 5px solid #DC3545; }
+  body .page-content .gift-books nav .nav-tabs .active {
+    background-color: #FFFFFF;
+    border-top: 5px solid #DC3545; }
+    body .page-content .gift-books nav .nav-tabs .active:hover {
+      background-color: #FFFFFF; }
+
+body .page-content .gift-books .tab-content {
+  min-height: 500px;
+  border: 1px solid #eeeeee;
+  border-top: 0;
+  font-size: 1rem; }
+  body .page-content .gift-books .tab-content p {
+    line-height: 2; }
+  body .page-content .gift-books .tab-content .book-order {
+    background-color: #fafafa;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    -webkit-border-radius: 10px;
+            border-radius: 10px;
+    border: 1px solid #f2f2f2; }
+    body .page-content .gift-books .tab-content .book-order .books-header h1 {
+      color: #2F364A; }
+    body .page-content .gift-books .tab-content .book-order .books-header .author {
+      margin: 0 1rem 0.3rem 0;
+      font-size: 0.85rem;
+      color: #495473; }
+      body .page-content .gift-books .tab-content .book-order .books-header .author i {
+        color: #495473;
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+        margin-left: 0.5rem;
+        background-color: #eeeeee;
+        -webkit-border-radius: 4px;
+                border-radius: 4px; }
+    body .page-content .gift-books .tab-content .book-order .books-header .badge {
+      font-size: 0.9rem; }
+    body .page-content .gift-books .tab-content .book-order .logo-book-order {
+      position: absolute;
+      top: 1rem;
+      left: 3rem; }
+      body .page-content .gift-books .tab-content .book-order .logo-book-order i {
+        font-size: 7rem;
+        color: #eee; }
+    body .page-content .gift-books .tab-content .book-order img {
+      -webkit-border-radius: 5px;
+              border-radius: 5px;
+      width: 85%; }
+  body .page-content .gift-books .tab-content .book-order-user {
+    background-color: #fafafa;
+    margin-top: 1rem;
+    padding: 1rem;
+    -webkit-border-radius: 10px;
+            border-radius: 10px;
+    border: 1px solid #f2f2f2; }
+    body .page-content .gift-books .tab-content .book-order-user .books-header h1 {
+      color: #2F364A; }
+    body .page-content .gift-books .tab-content .book-order-user .books-header .author {
+      margin: 0 1rem 0.3rem 0;
+      font-size: 0.85rem;
+      color: #495473; }
+      body .page-content .gift-books .tab-content .book-order-user .books-header .author i {
+        color: #495473;
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+        margin-left: 0.5rem;
+        background-color: #eeeeee;
+        -webkit-border-radius: 4px;
+                border-radius: 4px; }
+    body .page-content .gift-books .tab-content .book-order-user .books-header .badge {
+      font-size: 0.9rem; }
+    body .page-content .gift-books .tab-content .book-order-user .logo-book-order {
+      position: absolute;
+      top: 1rem;
+      left: 3rem; }
+      body .page-content .gift-books .tab-content .book-order-user .logo-book-order i {
+        font-size: 7rem;
+        color: #eee; }
+    body .page-content .gift-books .tab-content .book-order-user img {
+      -webkit-border-radius: 5px;
+              border-radius: 5px;
+      width: 85%; }
+
+body .page-content .transaction {
+  background-color: #fcfcfc;
+  -webkit-border-radius: 10px;
+          border-radius: 10px;
+  border: 1px solid #f2f2f2;
+  padding: 0rem;
+  margin-top: 1rem; }
+  body .page-content .transaction .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05); }
+  body .page-content .transaction .table thead {
+    background-color: #EEF1F7; }
+
+body .page-content .system-profile .card {
+  margin-top: 1rem; }
+  body .page-content .system-profile .card .card-header {
+    background-color: #EEF1F7; }
+
+body .page-content .publishers {
+  background-color: #fcfcfc;
+  -webkit-border-radius: 10px;
+          border-radius: 10px;
+  border: 1px solid #f2f2f2;
+  margin-top: 1rem;
+  padding: 1rem; }
+  body .page-content .publishers .table thead {
+    background-color: #EEF1F7;
+    color: #3a3a3a; }
+  body .page-content .publishers .table img {
+    -webkit-border-radius: 4px;
+            border-radius: 4px;
+    width: auto;
+    height: 3rem; }
+
+body .page-content .teacher-page .media {
+  background-color: #fafafa;
+  padding: 0.5rem;
+  -webkit-border-radius: 10px;
+          border-radius: 10px; }
+  body .page-content .teacher-page .media img {
+    width: 60px;
+    height: 60px;
+    -webkit-border-radius: 5px;
+            border-radius: 5px; }
+  body .page-content .teacher-page .media .media-body p {
+    margin-bottom: 0;
+    line-height: 1.5;
+    font-size: 0.9rem; }
+
+body .page-content .comment .alert .media .user-comment .align-self-start {
+  width: 4.5rem;
+  height: 4.5rem;
+  background-color: #E9ECEF;
+  border: 1px solid #e3e6e9;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
+  text-align: center; }
+  body .page-content .comment .alert .media .user-comment .align-self-start i {
+    font-size: 2rem;
+    margin-top: 1.2rem; }
+.pic-user-comment {
+    width:auto;
+}
+.tabbable .nav-tabs {
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    text-wrap:none;
+}
+
+/*****************CV PDF******************/
+
+.CV-Pages {
+    background-color: #f8f8f8;
+}
+
+    .CV-Pages .navbar-top {
+        background-color: #00BCD4;
+        padding-bottom: 4rem;
+    }
+
+        .CV-Pages .navbar-top .social-media-top ul li a {
+            font-size: 2rem;
+            color: #D8FDFE;
+        }
+
+        .CV-Pages .navbar-top .navbar-nav .nav-link {
+            font-size: 1.7rem;
+        }
+
+    .CV-Pages .short-biographi {
+        padding: 5rem 15rem;
+        background-color: #00A5BB;
+    }
+
+@media screen and (max-width: 768px) {
+    .CV-Pages .short-biographi {
+        padding: 3rem 1rem;
+    }
+}
+
+.CV-Pages .short-biographi .img-CV {
+    top: 4rem;
+    position: absolute;
+    width: 10rem;
+    height: 10rem;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    margin-left: -80px;
+    left: 50%;
+}
+
+.CV-Pages .short-biographi h1 {
+    color: #fff;
+    margin-top: 3rem;
+}
+
+.CV-Pages .short-biographi h4, .CV-Pages .short-biographi p {
+    color: #d8fdfe;
+}
+
+.CV-Pages .info-contact-person {
+    background-color: #008FA1;
+}
+
+    .CV-Pages .info-contact-person p {
+        margin-bottom: 0;
+        font-size: 1.2rem;
+        color: #ffffff;
+    }
+
+.CV-Pages #navbar-scroll {
+    background-color: #007888;
+}
+
+    .CV-Pages #navbar-scroll .nav-link {
+        font-size: 1.2rem;
+        color: #b0f6fd;
+    }
+
+.CV-Pages #navbar-scroll {
+    z-index: 999 !important;
+}
+
+    .CV-Pages #navbar-scroll .nav-pills .nav-link.active, .CV-Pages #navbar-scroll .nav-pills .show > .nav-link {
+        color: #fff;
+        background-color: #00A5BB;
+    }
+
+.CV-Pages #maharat-herfei {
+    /* This for loop creates the 	necessary css animation names
+    Due to the split circle of progress-left and progress right, we must use the animations on each side.
+    */
+}
+
+    .CV-Pages #maharat-herfei .card {
+        -webkit-border-radius: 20px;
+        border-radius: 20px;
+    }
+
+        .CV-Pages #maharat-herfei .card .card-footer {
+            -webkit-border-radius: 0 0 20px 20px;
+            border-radius: 0 0 20px 20px;
+        }
+
+    .CV-Pages #maharat-herfei .progress-primary .progress-bar {
+        border-color: #0275d8;
+    }
+
+    .CV-Pages #maharat-herfei .progress-success .progress-bar {
+        border-color: #5cb85c;
+    }
+
+    .CV-Pages #maharat-herfei .progress-info .progress-bar {
+        border-color: #5bc0de;
+    }
+
+    .CV-Pages #maharat-herfei .progress-danger .progress-bar {
+        border-color: #d9534f;
+    }
+
+    .CV-Pages #maharat-herfei .progress-warning .progress-bar {
+        border-color: #f0ad4e;
+    }
+
+    .CV-Pages #maharat-herfei .progress-dark .progress-bar {
+        border-color: #292b2c;
+    }
+
+    .CV-Pages #maharat-herfei .progress {
+        width: 150px;
+        height: 150px;
+        line-height: 150px;
+        background: none;
+        margin: 0 auto;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        position: relative;
+    }
+
+        .CV-Pages #maharat-herfei .progress:after {
+            content: "";
+            width: 100%;
+            height: 100%;
+            -webkit-border-radius: 50%;
+            border-radius: 50%;
+            border: 7px solid #eee;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress > span {
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            z-index: 1;
+        }
+
+        .CV-Pages #maharat-herfei .progress .progress-left {
+            left: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress .progress-bar {
+            width: 100%;
+            height: 100%;
+            background: none;
+            border-width: 7px;
+            border-style: solid;
+            position: absolute;
+            top: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress .progress-left .progress-bar {
+            left: 100%;
+            -webkit-border-top-right-radius: 75px;
+            border-top-right-radius: 75px;
+            -webkit-border-bottom-right-radius: 75px;
+            border-bottom-right-radius: 75px;
+            border-left: 0;
+            -webkit-transform-origin: center left;
+            -ms-transform-origin: center left;
+            transform-origin: center left;
+        }
+
+        .CV-Pages #maharat-herfei .progress .progress-right {
+            right: 0;
+        }
+
+            .CV-Pages #maharat-herfei .progress .progress-right .progress-bar {
+                left: -100%;
+                -webkit-border-top-left-radius: 75px;
+                border-top-left-radius: 75px;
+                -webkit-border-bottom-left-radius: 75px;
+                border-bottom-left-radius: 75px;
+                border-right: 0;
+                -webkit-transform-origin: center right;
+                -ms-transform-origin: center right;
+                transform-origin: center right;
+            }
+
+        .CV-Pages #maharat-herfei .progress .progress-value {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-border-radius: 50%;
+            border-radius: 50%;
+            font-size: 32px;
+            text-align: center;
+            line-height: 20px;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -webkit-justify-content: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            height: 100%;
+            width: 100% !important;
+            font-weight: 300;
+        }
+
+            .CV-Pages #maharat-herfei .progress .progress-value div {
+                margin-top: 10px;
+            }
+
+            .CV-Pages #maharat-herfei .progress .progress-value span {
+                font-size: 12px;
+                text-transform: uppercase;
+            }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="1"] .progress-right .progress-bar {
+            -webkit-animation: loading-1 1.5s linear forwards;
+            animation: loading-1 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="1"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="2"] .progress-right .progress-bar {
+            -webkit-animation: loading-2 1.5s linear forwards;
+            animation: loading-2 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="2"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="3"] .progress-right .progress-bar {
+            -webkit-animation: loading-3 1.5s linear forwards;
+            animation: loading-3 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="3"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="4"] .progress-right .progress-bar {
+            -webkit-animation: loading-4 1.5s linear forwards;
+            animation: loading-4 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="4"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="5"] .progress-right .progress-bar {
+            -webkit-animation: loading-5 1.5s linear forwards;
+            animation: loading-5 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="5"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="6"] .progress-right .progress-bar {
+            -webkit-animation: loading-6 1.5s linear forwards;
+            animation: loading-6 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="6"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="7"] .progress-right .progress-bar {
+            -webkit-animation: loading-7 1.5s linear forwards;
+            animation: loading-7 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="7"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="8"] .progress-right .progress-bar {
+            -webkit-animation: loading-8 1.5s linear forwards;
+            animation: loading-8 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="8"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="9"] .progress-right .progress-bar {
+            -webkit-animation: loading-9 1.5s linear forwards;
+            animation: loading-9 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="9"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="10"] .progress-right .progress-bar {
+            -webkit-animation: loading-10 1.5s linear forwards;
+            animation: loading-10 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="10"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="11"] .progress-right .progress-bar {
+            -webkit-animation: loading-11 1.5s linear forwards;
+            animation: loading-11 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="11"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="12"] .progress-right .progress-bar {
+            -webkit-animation: loading-12 1.5s linear forwards;
+            animation: loading-12 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="12"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="13"] .progress-right .progress-bar {
+            -webkit-animation: loading-13 1.5s linear forwards;
+            animation: loading-13 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="13"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="14"] .progress-right .progress-bar {
+            -webkit-animation: loading-14 1.5s linear forwards;
+            animation: loading-14 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="14"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="15"] .progress-right .progress-bar {
+            -webkit-animation: loading-15 1.5s linear forwards;
+            animation: loading-15 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="15"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="16"] .progress-right .progress-bar {
+            -webkit-animation: loading-16 1.5s linear forwards;
+            animation: loading-16 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="16"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="17"] .progress-right .progress-bar {
+            -webkit-animation: loading-17 1.5s linear forwards;
+            animation: loading-17 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="17"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="18"] .progress-right .progress-bar {
+            -webkit-animation: loading-18 1.5s linear forwards;
+            animation: loading-18 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="18"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="19"] .progress-right .progress-bar {
+            -webkit-animation: loading-19 1.5s linear forwards;
+            animation: loading-19 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="19"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="20"] .progress-right .progress-bar {
+            -webkit-animation: loading-20 1.5s linear forwards;
+            animation: loading-20 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="20"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="21"] .progress-right .progress-bar {
+            -webkit-animation: loading-21 1.5s linear forwards;
+            animation: loading-21 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="21"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="22"] .progress-right .progress-bar {
+            -webkit-animation: loading-22 1.5s linear forwards;
+            animation: loading-22 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="22"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="23"] .progress-right .progress-bar {
+            -webkit-animation: loading-23 1.5s linear forwards;
+            animation: loading-23 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="23"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="24"] .progress-right .progress-bar {
+            -webkit-animation: loading-24 1.5s linear forwards;
+            animation: loading-24 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="24"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="25"] .progress-right .progress-bar {
+            -webkit-animation: loading-25 1.5s linear forwards;
+            animation: loading-25 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="25"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="26"] .progress-right .progress-bar {
+            -webkit-animation: loading-26 1.5s linear forwards;
+            animation: loading-26 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="26"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="27"] .progress-right .progress-bar {
+            -webkit-animation: loading-27 1.5s linear forwards;
+            animation: loading-27 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="27"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="28"] .progress-right .progress-bar {
+            -webkit-animation: loading-28 1.5s linear forwards;
+            animation: loading-28 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="28"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="29"] .progress-right .progress-bar {
+            -webkit-animation: loading-29 1.5s linear forwards;
+            animation: loading-29 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="29"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="30"] .progress-right .progress-bar {
+            -webkit-animation: loading-30 1.5s linear forwards;
+            animation: loading-30 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="30"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="31"] .progress-right .progress-bar {
+            -webkit-animation: loading-31 1.5s linear forwards;
+            animation: loading-31 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="31"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="32"] .progress-right .progress-bar {
+            -webkit-animation: loading-32 1.5s linear forwards;
+            animation: loading-32 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="32"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="33"] .progress-right .progress-bar {
+            -webkit-animation: loading-33 1.5s linear forwards;
+            animation: loading-33 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="33"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="34"] .progress-right .progress-bar {
+            -webkit-animation: loading-34 1.5s linear forwards;
+            animation: loading-34 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="34"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="35"] .progress-right .progress-bar {
+            -webkit-animation: loading-35 1.5s linear forwards;
+            animation: loading-35 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="35"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="36"] .progress-right .progress-bar {
+            -webkit-animation: loading-36 1.5s linear forwards;
+            animation: loading-36 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="36"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="37"] .progress-right .progress-bar {
+            -webkit-animation: loading-37 1.5s linear forwards;
+            animation: loading-37 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="37"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="38"] .progress-right .progress-bar {
+            -webkit-animation: loading-38 1.5s linear forwards;
+            animation: loading-38 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="38"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="39"] .progress-right .progress-bar {
+            -webkit-animation: loading-39 1.5s linear forwards;
+            animation: loading-39 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="39"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="40"] .progress-right .progress-bar {
+            -webkit-animation: loading-40 1.5s linear forwards;
+            animation: loading-40 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="40"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="41"] .progress-right .progress-bar {
+            -webkit-animation: loading-41 1.5s linear forwards;
+            animation: loading-41 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="41"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="42"] .progress-right .progress-bar {
+            -webkit-animation: loading-42 1.5s linear forwards;
+            animation: loading-42 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="42"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="43"] .progress-right .progress-bar {
+            -webkit-animation: loading-43 1.5s linear forwards;
+            animation: loading-43 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="43"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="44"] .progress-right .progress-bar {
+            -webkit-animation: loading-44 1.5s linear forwards;
+            animation: loading-44 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="44"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="45"] .progress-right .progress-bar {
+            -webkit-animation: loading-45 1.5s linear forwards;
+            animation: loading-45 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="45"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="46"] .progress-right .progress-bar {
+            -webkit-animation: loading-46 1.5s linear forwards;
+            animation: loading-46 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="46"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="47"] .progress-right .progress-bar {
+            -webkit-animation: loading-47 1.5s linear forwards;
+            animation: loading-47 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="47"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="48"] .progress-right .progress-bar {
+            -webkit-animation: loading-48 1.5s linear forwards;
+            animation: loading-48 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="48"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="49"] .progress-right .progress-bar {
+            -webkit-animation: loading-49 1.5s linear forwards;
+            animation: loading-49 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="49"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="50"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="50"] .progress-left .progress-bar {
+            -webkit-animation: 0;
+            animation: 0;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="51"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="51"] .progress-left .progress-bar {
+            -webkit-animation: loading-1 1.5s linear forwards 1.5s;
+            animation: loading-1 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="52"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="52"] .progress-left .progress-bar {
+            -webkit-animation: loading-2 1.5s linear forwards 1.5s;
+            animation: loading-2 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="53"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="53"] .progress-left .progress-bar {
+            -webkit-animation: loading-3 1.5s linear forwards 1.5s;
+            animation: loading-3 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="54"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="54"] .progress-left .progress-bar {
+            -webkit-animation: loading-4 1.5s linear forwards 1.5s;
+            animation: loading-4 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="55"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="55"] .progress-left .progress-bar {
+            -webkit-animation: loading-5 1.5s linear forwards 1.5s;
+            animation: loading-5 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="56"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="56"] .progress-left .progress-bar {
+            -webkit-animation: loading-6 1.5s linear forwards 1.5s;
+            animation: loading-6 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="57"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="57"] .progress-left .progress-bar {
+            -webkit-animation: loading-7 1.5s linear forwards 1.5s;
+            animation: loading-7 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="58"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="58"] .progress-left .progress-bar {
+            -webkit-animation: loading-8 1.5s linear forwards 1.5s;
+            animation: loading-8 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="59"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="59"] .progress-left .progress-bar {
+            -webkit-animation: loading-9 1.5s linear forwards 1.5s;
+            animation: loading-9 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="60"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="60"] .progress-left .progress-bar {
+            -webkit-animation: loading-10 1.5s linear forwards 1.5s;
+            animation: loading-10 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="61"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="61"] .progress-left .progress-bar {
+            -webkit-animation: loading-11 1.5s linear forwards 1.5s;
+            animation: loading-11 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="62"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="62"] .progress-left .progress-bar {
+            -webkit-animation: loading-12 1.5s linear forwards 1.5s;
+            animation: loading-12 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="63"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="63"] .progress-left .progress-bar {
+            -webkit-animation: loading-13 1.5s linear forwards 1.5s;
+            animation: loading-13 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="64"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="64"] .progress-left .progress-bar {
+            -webkit-animation: loading-14 1.5s linear forwards 1.5s;
+            animation: loading-14 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="65"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="65"] .progress-left .progress-bar {
+            -webkit-animation: loading-15 1.5s linear forwards 1.5s;
+            animation: loading-15 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="66"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="66"] .progress-left .progress-bar {
+            -webkit-animation: loading-16 1.5s linear forwards 1.5s;
+            animation: loading-16 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="67"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="67"] .progress-left .progress-bar {
+            -webkit-animation: loading-17 1.5s linear forwards 1.5s;
+            animation: loading-17 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="68"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="68"] .progress-left .progress-bar {
+            -webkit-animation: loading-18 1.5s linear forwards 1.5s;
+            animation: loading-18 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="69"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="69"] .progress-left .progress-bar {
+            -webkit-animation: loading-19 1.5s linear forwards 1.5s;
+            animation: loading-19 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="70"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="70"] .progress-left .progress-bar {
+            -webkit-animation: loading-20 1.5s linear forwards 1.5s;
+            animation: loading-20 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="71"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="71"] .progress-left .progress-bar {
+            -webkit-animation: loading-21 1.5s linear forwards 1.5s;
+            animation: loading-21 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="72"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="72"] .progress-left .progress-bar {
+            -webkit-animation: loading-22 1.5s linear forwards 1.5s;
+            animation: loading-22 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="73"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="73"] .progress-left .progress-bar {
+            -webkit-animation: loading-23 1.5s linear forwards 1.5s;
+            animation: loading-23 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="74"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="74"] .progress-left .progress-bar {
+            -webkit-animation: loading-24 1.5s linear forwards 1.5s;
+            animation: loading-24 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="75"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="75"] .progress-left .progress-bar {
+            -webkit-animation: loading-25 1.5s linear forwards 1.5s;
+            animation: loading-25 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="76"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="76"] .progress-left .progress-bar {
+            -webkit-animation: loading-26 1.5s linear forwards 1.5s;
+            animation: loading-26 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="77"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="77"] .progress-left .progress-bar {
+            -webkit-animation: loading-27 1.5s linear forwards 1.5s;
+            animation: loading-27 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="78"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="78"] .progress-left .progress-bar {
+            -webkit-animation: loading-28 1.5s linear forwards 1.5s;
+            animation: loading-28 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="79"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="79"] .progress-left .progress-bar {
+            -webkit-animation: loading-29 1.5s linear forwards 1.5s;
+            animation: loading-29 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="80"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="80"] .progress-left .progress-bar {
+            -webkit-animation: loading-30 1.5s linear forwards 1.5s;
+            animation: loading-30 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="81"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="81"] .progress-left .progress-bar {
+            -webkit-animation: loading-31 1.5s linear forwards 1.5s;
+            animation: loading-31 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="82"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="82"] .progress-left .progress-bar {
+            -webkit-animation: loading-32 1.5s linear forwards 1.5s;
+            animation: loading-32 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="83"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="83"] .progress-left .progress-bar {
+            -webkit-animation: loading-33 1.5s linear forwards 1.5s;
+            animation: loading-33 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="84"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="84"] .progress-left .progress-bar {
+            -webkit-animation: loading-34 1.5s linear forwards 1.5s;
+            animation: loading-34 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="85"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="85"] .progress-left .progress-bar {
+            -webkit-animation: loading-35 1.5s linear forwards 1.5s;
+            animation: loading-35 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="86"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="86"] .progress-left .progress-bar {
+            -webkit-animation: loading-36 1.5s linear forwards 1.5s;
+            animation: loading-36 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="87"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="87"] .progress-left .progress-bar {
+            -webkit-animation: loading-37 1.5s linear forwards 1.5s;
+            animation: loading-37 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="88"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="88"] .progress-left .progress-bar {
+            -webkit-animation: loading-38 1.5s linear forwards 1.5s;
+            animation: loading-38 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="89"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="89"] .progress-left .progress-bar {
+            -webkit-animation: loading-39 1.5s linear forwards 1.5s;
+            animation: loading-39 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="90"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="90"] .progress-left .progress-bar {
+            -webkit-animation: loading-40 1.5s linear forwards 1.5s;
+            animation: loading-40 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="91"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="91"] .progress-left .progress-bar {
+            -webkit-animation: loading-41 1.5s linear forwards 1.5s;
+            animation: loading-41 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="92"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="92"] .progress-left .progress-bar {
+            -webkit-animation: loading-42 1.5s linear forwards 1.5s;
+            animation: loading-42 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="93"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="93"] .progress-left .progress-bar {
+            -webkit-animation: loading-43 1.5s linear forwards 1.5s;
+            animation: loading-43 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="94"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="94"] .progress-left .progress-bar {
+            -webkit-animation: loading-44 1.5s linear forwards 1.5s;
+            animation: loading-44 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="95"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="95"] .progress-left .progress-bar {
+            -webkit-animation: loading-45 1.5s linear forwards 1.5s;
+            animation: loading-45 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="96"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="96"] .progress-left .progress-bar {
+            -webkit-animation: loading-46 1.5s linear forwards 1.5s;
+            animation: loading-46 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="97"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="97"] .progress-left .progress-bar {
+            -webkit-animation: loading-47 1.5s linear forwards 1.5s;
+            animation: loading-47 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="98"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="98"] .progress-left .progress-bar {
+            -webkit-animation: loading-48 1.5s linear forwards 1.5s;
+            animation: loading-48 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="99"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="99"] .progress-left .progress-bar {
+            -webkit-animation: loading-49 1.5s linear forwards 1.5s;
+            animation: loading-49 1.5s linear forwards 1.5s;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="100"] .progress-right .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards;
+            animation: loading-50 1.5s linear forwards;
+        }
+
+        .CV-Pages #maharat-herfei .progress[data-percentage="100"] .progress-left .progress-bar {
+            -webkit-animation: loading-50 1.5s linear forwards 1.5s;
+            animation: loading-50 1.5s linear forwards 1.5s;
+        }

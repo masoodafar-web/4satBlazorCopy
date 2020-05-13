@@ -1,0 +1,198 @@
+﻿@page
+@model LoginModel
+@inject Wangkanai.Detection.Services.IDetectionService DetectionService
+@{
+    ViewData["Title"] = "ورود";
+}
+
+<div class="spinner">
+    <div class="center-div">
+        <div class="inner-div">
+            @*<div class="loader"></div>*@
+            <div class="spinnerr">
+                <div class="bounce1"></div>
+                <div class="bounce2"></div>
+                <div class="bounce3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="Login_content" style="display: none">
+
+    <div class="wrapper">
+        <div class="login-page-bg">
+            <div class="login-page-bg-2">
+                <div class="container">
+                    <div class="row no-gutters login-page align-content-center">
+                        <div class="col-12 col-lg-6 p-4 login-right mx-auto rounded">
+                            @if (TempData["ErrorMessage"]!=null)
+                            {
+                            <span class="alert alert-info" style="width:100%">@TempData["ErrorMessage"]</span>
+                            }
+                            <div class="logo-login text-center mt-4">
+                                <img src="~/img/Logo.png" class="img-fluid" alt="" />
+                            </div>
+                            <h1 class="login-welcome-text h3 my-4 text-center">ورود به فرصت</h1>
+                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                            <!--======================Register Form========================-->
+
+                            <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="fas fa-user"></i></div>
+                                    </div>
+                                    <input asp-for="Input.UserName" class="form-control" placeholder="ایمیل یا نام کاربری یا شماره موبایل خود را وارد کنید" />
+                                    <div class="col-12">
+                                        <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="input-group mt-4">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="fas fa-key"></i></div>
+                                    </div>
+                                    <input asp-for="Input.Password" class="form-control" placeholder="کلمه عبور" />
+
+                                    <div class="col-12">
+                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <button class="btn btn-block btn-info mt-4"> ورود به حساب</button>
+                                <p class="text-center mb-0 mt-2"><a asp-area="Identity" asp-page="/Account/ForgotPassword" class="text-warning">رمز خود را فراموش کرده‌اید؟</a></p>
+                                <hr id="three" class="custom" data-symbol="یا">
+                            </form>
+                            @*ورود با گوگل بخواطر این که کاربردی در حال حاضر نداشت حذف گردید*@
+                            @*<div class="px-md-4">
+            @Html.Partial("_ExternalLoginsListPartial", new newFace.Models.ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+        </div>*@
+                            <div class="px-md-4">
+                                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-block btn-danger" id="InstallApp">ثبت نام</a>
+                            </div>
+                            <!--======================End Register Form========================-->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@if (DetectionService.Device.Type == Wangkanai.Detection.Models.Device.Mobile)
+{
+    <div id="StandAlone_content" style="display: none">
+
+        @*@Html.Partial("../Home/_Standalone")*@   <noscript>
+            You
+            need to enable JavaScript to run this app.
+        </noscript>
+        <div id="root">
+            <div class="sprite sprite-cache"></div>
+            <div class="sprite2 sprite-cache"></div>
+            <div>
+                <div>
+                </div>
+                <div class="stand-alone">
+                    <i class="sprite2 sprite--logo-stand-alone stand-alone__top-logo"></i>
+                    <div>
+                        <h1 class="stand-alone__header font-family-fa">نصب نسخه جدید iOS اپلیکیشن فرصت برای مروگر Safari</h1>
+                        <div class="stand-alone__main">
+                            <span class="stand-alone__main-item">۱- در نوار پایین گوشی دکمه <i class="sprite2 sprite--ios-share stand-alone__main-item-icon"></i> را کلیک کنید.</span>
+                            <span class="stand-alone__main-item">۲- منوی باز شده را به چپ بکشید و دکمه <i class="sprite2 sprite--ios-home-screen stand-alone__main-item-icon"> </i> را کلیک کنید</span>
+                            <span class="stand-alone__main-item">۳- در آخر در بالای صفحه دکمه Add را کلیک کنید.</span>
+                        </div><i class="sprite2 sprite--add-to-home stand-alone__add-to-home"></i>
+                    </div>
+                </div>
+                <div>
+                </div>
+                <div class="rotation-wrapper">
+                    <i class="rotation__icon sprite2 sprite--rotation"></i>
+                    <p class="rotation__text">برای استفاده از برنامه، گوشی خود را بچرخانید</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    @if (DetectionService.Device.Type == Wangkanai.Detection.Models.Device.Mobile)
+    {
+        <script>
+            var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+
+                $("#Login_content").css("display", "block");
+                $("#StandAlone_content").remove();
+            } else {
+                if (isIOS) {
+                    $("#StandAlone_content").css("display", "block");
+                    $("#Login_content").remove();
+                } else {
+
+                    $("#Login_content").css("display", "block");
+                    $("#StandAlone_content").remove();
+                }
+
+            }
+
+        </script>
+    }
+    else
+    {
+        <script>
+            $("#Login_content").css("display", "block");
+            $("#StandAlone_content").remove();
+        </script>
+    }
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load',
+                function () {
+
+                    navigator.serviceWorker
+                        .register('/serviceworker.js').then(reg => { reg.update(); })
+                        .then(function () {
+                            console.log('Service Worker Registered');
+
+                        });
+                });
+        }
+        new WOW().init();
+        //کدهای مربوط به دکمه نصب Pwa
+
+
+    </script>
+    <script>
+
+
+        function getCookie(name) {
+            var value = "; " + document.cookie;
+            var parts = value.split("; " + name + "=");
+            if (parts.length == 2) return parts.pop().split(";").shift();
+        }
+
+        var username = getCookie("UserName4sat");
+        var password = getCookie("Password4sat");
+        if(username == "none" && password == "none")
+        {
+            localStorage.setItem('UserName4sat', 'none');
+            localStorage.setItem('Password4sat', 'none');
+        }
+
+        var userName = localStorage.getItem('UserName4sat');
+        var passWord = localStorage.getItem('Password4sat');
+        if((userName != "none" && passWord != "none") && (userName != "null" && passWord != "null") && (userName != null && passWord != null))
+        {
+            $("#UserName").val(userName).trigger("change");
+            $("#Password").val(passWord).trigger("change");
+            if(@ViewBag.loginStatus == 1){
+
+                $("#loginform").submit();
+            }
+        }
+    </script>
+}
